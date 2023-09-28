@@ -19,11 +19,12 @@
   align-items: center;
   background-color: white;
   padding: 4rem;
+  /* height: 85vh; */
   border-radius: 15px;
 }
 .login-container{
   /* border: 2px solid black; */
-  padding: 1rem;
+  padding: 2rem;
   color: black;
   display: flex;
   flex-direction: column;
@@ -40,54 +41,76 @@
   /* width: max-content; */
   padding: .8rem 1.3rem;
   border-radius: 15px;
+  cursor:pointer
+
 }
 .login-image{
   border-radius: 50%;
-  width:350px
-      height=350px
-  /* background-repeat: no-repeat;
-  background-size: contain;
-  width: 18vw;
-  height: 30vh;
-  border-radius: 50%; */
+  width: 300px;
+      height:300px;
 }
 .login-bottom{
   display: flex;
   justify-content: space-between;
   padding: 1rem 1.3rem;
-  cursor:pointer
 
-  /* font-size: ; */
 }
 .login-form-group{
-  padding: .8rem 1.3rem;
+  padding: .6rem 1.3rem;
   margin: 1rem;
   background-color: rgb(222, 217, 217);
   border-radius: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .login-input{
   background-color: rgb(222, 217, 217);
   border: none;
   outline: none;
-  color: gray;
+  color: rgb(109, 106, 106);
   font-size: 1rem;
+  font-weight: 400;
+  width: 300px;
 
 }
 @media screen and (max-width: 1000px) {
   .login-image{
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
   }
   .login-box2{
     gap: 1rem;
-    padding: 2rem;
+    padding: 1rem;
+  }
+  .login-input{
+    font-size: .7rem;
+    width: 250px;
+    
+  }
+  .login-form-group{
+    margin: .6rem;
+    gap: 6px;
+    padding: .4rem 1rem;
+
+  }
+  .login-box2{
+    gap: 1rem;
+    padding: 3rem;
   }
   .login-bottom{
     font-size: .8rem;
+  }
+  
+  .login-container{
+    padding: 1rem;
+  }
+}
+@media screen and (max-width:720px){
+  .login-image{
+    width: 220px;
+    height: 220px;
   }
 }
 
@@ -96,14 +119,14 @@
     width: 150px;
     height: 150px;
   }
-  .login-box2{
-    gap: 1rem;
-    padding: 1rem;
-  }
+  
   .login-container{
     padding: 0rem;
   }
   .login-box{
     padding: 1rem;
+  }
+  .login-input{
+    width: 200px;
   }
 }
