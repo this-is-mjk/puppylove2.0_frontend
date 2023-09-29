@@ -1,5 +1,4 @@
 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 .login-box{
   display: flex;
@@ -8,7 +7,7 @@
   padding: 2rem;
   font-family: 'Poppins';
   font-weight: 600;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: black;
 }
 .login-box2{
@@ -19,11 +18,9 @@
   align-items: center;
   background-color: white;
   padding: 4rem;
-  /* height: 85vh; */
   border-radius: 15px;
 }
 .login-container{
-  /* border: 2px solid black; */
   padding: 2rem;
   color: black;
   display: flex;
