@@ -89,7 +89,7 @@ const RegisterPage: React.FC = () => {
               </motion.div>
               <div className={styles['login-bottom']}>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                  <Link href={'/login'} style={{ color: "black"}}>Go Back to Login</Link>
+                  <Link href={'/login'} style={{ color: "black"}}>Go to Login</Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']} onClick={handleLog}>
                   <Link href={'/register2'} style={{ color: "black"}}>Register</Link>

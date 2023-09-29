@@ -7,8 +7,8 @@ export default class Document extends NextDocument {
     return (
       <Html lang="en">
         <Head>
-        <link rel="manifest" href="/static/favicons/manifest.json" />
-      </Head>
+          <link rel="manifest" href="/static/favicons/manifest.json" />
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />

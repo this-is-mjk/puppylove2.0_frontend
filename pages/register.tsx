@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
-import { BiSolidLock } from "react-icons/bi";
-import { BsFillPersonFill, BsPersonVcardFill } from "react-icons/bs";
-import Image from "next/image";
 import "../app/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -58,7 +55,7 @@ const RegisterPage: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
             >
-              <Link style={{ color: "black"}} href={"/login"}>Go Back to Login</Link>
+              <Link style={{ color: "black"}} href={"/login"}>Go to Login</Link>
             </motion.div>
 
             <motion.div
