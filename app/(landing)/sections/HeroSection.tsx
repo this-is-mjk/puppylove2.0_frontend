@@ -37,7 +37,7 @@ import { FiArrowRight } from "react-icons/fi";
                 </HStack> */}
   
                 <ButtonGroup spacing={4} alignItems="center" pt="10">
-                  <ButtonLink colorScheme="primary" size="lg" href="/signup">
+                  <ButtonLink colorScheme="primary" size="lg" href="/register">
                     Sign Up
                   </ButtonLink>
                   <ButtonLink

@@ -1,5 +1,9 @@
 import {
   Box,
+  BoxProps,
+  Button,
+  Center,
+  CenterProps,
   CloseButton,
   Flex,
   Grid,
@@ -17,7 +21,7 @@ import { AnimatePresence, motion, useElementScroll } from 'framer-motion'
 import useRouteChanged from '../../hooks/use-route-changed'
 // import { getRoutes } from '@/layouts/mdx'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { RemoveScroll } from 'react-remove-scroll'
@@ -127,10 +131,10 @@ export function MobileNavContent(props: MobileNavContentProps) {
                 </Flex>
                 <Stack alignItems="stretch" spacing="0">
                   {siteConfig.header.links.map(
-                    ({href, id, label, ...props }, i) => {
+                    ({ href, id, label, ...props }, i) => {
                       return (
                         <NavLink
-                          href={href? (href||`/#${id}`): ""}
+                          href={href || `/#${id}`}
                           key={i}
                           {...(props as any)}
                         >
