@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import styles from "../styles/login.module.css";
+import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
 import { BiSolidLock } from "react-icons/bi";
+import { BsFillPersonFill, BsPersonVcardFill } from "react-icons/bs";
 import Image from "next/image";
-import "../app/(landing)/globals.css";
+import "../app/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
-import ThemeButton from "@/components/Theme";
 
-const LoginPage: React.FC = () => {
-  const [data, setData] = useState({ email: "", password: "" });
+const RegisterPage: React.FC = () => {
+  const [data, setData] = useState({
+    username: "",
+    rollNo: "",
+    email: "",
+    password: "",
+  });
 
   const handleLog = () => {
     console.log(data);
-    setData({ email: "", password: "" });
+    setData({ username: "", rollNo: "", email: "", password: "" });
     console.log(data);
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -28,11 +32,10 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={styles["login-box"]}>
-      <ThemeButton />
       <div className={styles["login-box2"]}>
         <Dog />
         <div className={styles["login-container"]}>
-          <h1 className={styles["login-title"]}>Login</h1>
+          <h1 className={styles["login-title"]}>Register</h1>
           <motion.div
             whileHover={{ scale: 1.05 }}
             className={styles["login-form-group"]}
@@ -49,28 +52,13 @@ const LoginPage: React.FC = () => {
               placeholder="Email"
             />
           </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={styles["login-form-group"]}
-          >
-            <BiSolidLock size={18} />
-            <input
-              className={styles["login-input"]}
-              type="password"
-              name="password"
-              value={data.password}
-              onChange={handleSubmit}
-              required
-              placeholder="Password"
-            />
-          </motion.div>
           <div className={styles["login-bottom"]}>
             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
             >
-              <Link href={"/register"}>Register</Link>
+              <Link href={"/login"}>Go Back to Login</Link>
             </motion.div>
 
             <motion.div
@@ -79,7 +67,7 @@ const LoginPage: React.FC = () => {
               className={styles["login-submit-button"]}
               onClick={handleLog}
             >
-              Login
+              <Link href={"/verify"}>Send OTP</Link>
             </motion.div>
           </div>
         </div>
@@ -88,4 +76,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
