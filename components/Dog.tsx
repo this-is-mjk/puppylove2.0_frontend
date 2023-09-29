@@ -11,14 +11,14 @@ const Dog = () => {
           <motion.div whileHover={{scale:1.08}} >
           <Image
           className={styles['login-image']}
-      src="/Dog.jpg"
-      width={350}
-      height={350}
-      alt="Picture of the author"
+          src="/Dog.jpg"
+          width={350}
+          height={350}
+          alt="PuppyLove"
     />
           </motion.div>
         </div>
-        
+      
   )
 }
 
