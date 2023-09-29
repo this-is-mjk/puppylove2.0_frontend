@@ -22,7 +22,7 @@ const RegisterPage: React.FC = () => {
     setData({ username: "", rollNo: "", email: "", password: "" });
     console.log(data);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     const { name, value } = e.target;
@@ -58,7 +58,7 @@ const RegisterPage: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
             >
-              <Link href={"/login"}>Go Back to Login</Link>
+              <Link style={{ color: "black"}} href={"/login"}>Go Back to Login</Link>
             </motion.div>
 
             <motion.div
@@ -67,7 +67,7 @@ const RegisterPage: React.FC = () => {
               className={styles["login-submit-button"]}
               onClick={handleLog}
             >
-              <Link href={"/verify"}>Send OTP</Link>
+              <Link href={"/verify"} style={{ color: "black"}}>Send OTP</Link>
             </motion.div>
           </div>
         </div>

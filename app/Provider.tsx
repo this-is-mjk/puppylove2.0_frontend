@@ -3,7 +3,7 @@
 import { ThemeProvider } from 'next-themes'
 
 
-const Provider = ({ children }) => {
+const Provider = ({ children } : any) => {
     return (
         <ThemeProvider>
             {children}

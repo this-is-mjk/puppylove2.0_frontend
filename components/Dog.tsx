@@ -11,7 +11,7 @@ const Dog = () => {
           <motion.div whileHover={{scale:1.08}} >
           <Image
           className={styles['login-image']}
-          src="/Dog.jpg"
+          src="/PuppyLove-logo.png"
           width={350}
           height={350}
           alt="PuppyLove"

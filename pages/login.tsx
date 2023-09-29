@@ -3,7 +3,7 @@ import styles from "../styles/login.module.css";
 import { MdEmail } from "react-icons/md";
 import { BiSolidLock } from "react-icons/bi";
 import Image from "next/image";
-import "../app/globals.css";
+import "../app/(landing)/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
     console.log(data);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e : any) => {
     e.preventDefault();
 
     const { name, value } = e.target;
@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
       <div className={styles["login-box2"]}>
         <Dog />
         <div className={styles["login-container"]}>
-          <h1 className={styles["login-title"]}>Login</h1>
+          <h1 className={styles["login-title"]} style={{ color: "black"}}>Login</h1>
           <motion.div
             whileHover={{ scale: 1.05 }}
             className={styles["login-form-group"]}
@@ -70,7 +70,7 @@ const LoginPage: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
             >
-              <Link href={"/register"}>Register</Link>
+              <Link href={"/register"} style={{ color: "black"}}>Register</Link>
             </motion.div>
 
             <motion.div
@@ -78,6 +78,7 @@ const LoginPage: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
               onClick={handleLog}
+              style={{ color: "black"}}
             >
               Login
             </motion.div>
