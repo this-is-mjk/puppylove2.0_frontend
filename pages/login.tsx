@@ -3,7 +3,7 @@ import styles from '../styles/login.module.css'; // Import your CSS module
 import {MdEmail} from 'react-icons/md'
 import {BiSolidLock} from 'react-icons/bi'
 import Image from 'next/image';
-import "../app/globals.css"
+import "../app/(landing)/globals.css"
 // import ""
 
 
