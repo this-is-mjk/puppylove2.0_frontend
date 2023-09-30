@@ -5,6 +5,7 @@ import "../app/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
+import Clear from "@/components/clear";
 
 const RegisterPage: React.FC = () => {
   const [data, setData] = useState({
@@ -28,6 +29,8 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
+    <div>
+      <Clear/>
     <div className={styles["login-box"]}>
       <div className={styles["login-box2"]}>
         <Dog />
@@ -68,7 +71,11 @@ const RegisterPage: React.FC = () => {
             </motion.div>
           </div>
         </div>
+        <Link href={'/'} className={styles["close-button"]}>
+          &times;
+        </Link>
       </div>
+    </div>
     </div>
   );
 };

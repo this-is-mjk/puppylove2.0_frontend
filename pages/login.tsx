@@ -8,6 +8,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
 import ThemeButton from "@/components/Theme";
+import Clear from "@/components/clear";
 
 const LoginPage: React.FC = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -27,8 +28,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
+    <div>
+      <Clear/>
     <div className={styles["login-box"]}>
-      <ThemeButton />
       <div className={styles["login-box2"]}>
         <Dog />
         <div className={styles["login-container"]}>
@@ -84,7 +86,11 @@ const LoginPage: React.FC = () => {
             </motion.div>
           </div>
         </div>
+        <Link href={'/'} className={styles["close-button"]}>
+          &times;
+        </Link>
       </div>
+    </div>
     </div>
   );
 };

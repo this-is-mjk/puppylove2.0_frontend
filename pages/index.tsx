@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   return (
     <Box>
       <SEO
-        title="Saas UI Landingspage"
+        title="Puppy Love"
         description="Free SaaS landingspage starter kit"
       />
       <Box>

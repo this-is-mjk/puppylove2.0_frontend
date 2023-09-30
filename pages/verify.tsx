@@ -39,6 +39,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
+    <div>
     <div className={styles['login-box']}>
       <div className={styles['login-box2']}>
         <Dog />
@@ -98,7 +99,11 @@ const RegisterPage: React.FC = () => {
             </>
           )}
         </div>
+        <Link href={'/'} className={styles["close-button"]}>
+          &times;
+        </Link>
       </div>
+    </div>
     </div>
   );
 };

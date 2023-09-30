@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 // import "../../../../public/pclub-logo.png"
  
-const inter = Inter({ weight: '700', subsets: ['latin'] })
+const inter = Inter({ weight: '800', subsets: ['latin'] })
 
 export const Logo: React.FC<HTMLChakraProps<'svg'>> = (props) => {
   const color = useColorModeValue('#3A3A40', '#d0cadb')
