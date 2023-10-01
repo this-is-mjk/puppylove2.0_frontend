@@ -39,6 +39,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
+    <div>
     <div className={styles['login-box']}>
       <div className={styles['login-box2']}>
         <Dog />
@@ -59,7 +60,7 @@ const RegisterPage: React.FC = () => {
             />
           </motion.div>
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-            <button onClick={handleVerifyOTP}>Verify OTP</button>
+            <button onClick={handleVerifyOTP} style={{ color: "black"}}>Verify OTP</button>
           </motion.div></>)}
           {correctOtp && (
             <>
@@ -89,16 +90,20 @@ const RegisterPage: React.FC = () => {
               </motion.div>
               <div className={styles['login-bottom']}>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                  <Link href={'/login'}>Go Back to Login</Link>
+                  <Link href={'/login'} style={{ color: "black"}}>Go to Login</Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']} onClick={handleLog}>
-                  <Link href={'/register2'}>Register</Link>
+                  <Link href={'/register2'} style={{ color: "black"}}>Register</Link>
                 </motion.div>
               </div>
             </>
           )}
         </div>
+        <Link href={'/'} className={styles["close-button"]}>
+          &times;
+        </Link>
       </div>
+    </div>
     </div>
   );
 };
