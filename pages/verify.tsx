@@ -59,7 +59,7 @@ const RegisterPage: React.FC = () => {
                             />
                         </motion.div>
                         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                            <div onClick={handleVerifyOTP}>Verify OTP</div>
+                            <button onClick={handleVerifyOTP}>Verify OTP</button>
                         </motion.div></>)}
                     {correctOtp && (
                         <>
