@@ -1,49 +1,94 @@
-import * as crypto from 'crypto';
-import { createHash } from "crypto";
+import CryptoJS from 'crypto-js';
 
-export function SHA256(password: string) {
-    const passHash = createHash("sha256").update(password).digest("hex")
-    return passHash
-}
+export async function SHA256(password: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const passHash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return passHash;
+  }
 
-// Generating pubKey and privKey pair
-export function GenerateKeys() {
-    const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-        modulusLength: 2048,
-    })
-    const publicKeyString = publicKey.export({ format: 'pem', type: 'spki' }).toString();
-    const privateKeyString = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+  export async function GenerateKeys() {
+    const keyPair = await crypto.subtle.generateKey(
+      { name: 'RSA-OAEP', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' },
+      true,
+      ['encrypt', 'decrypt']
+    );
+  
+    const publicKey = await crypto.subtle.exportKey('spki', keyPair.publicKey);
+    const privateKey = await crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+  
+    return {
+      pubKey: Buffer.from(publicKey).toString('base64'),
+      privKey: Buffer.from(privateKey).toString('base64')
+    };
+  }
 
-    return { pubKey: publicKeyString, privKey: privateKeyString };
-}
+  export async function Encryption(SHA: string, publicKey: string) {
+    const publicKeyBuffer = Buffer.from(publicKey, 'base64');
+    const publicKeyImported = await crypto.subtle.importKey(
+      'spki',
+      publicKeyBuffer,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['encrypt']
+    );
+  
+    const encodedData = new TextEncoder().encode(SHA);
+    const encryptedArrayBuffer = await crypto.subtle.encrypt(
+      { name: 'RSA-OAEP' },
+      publicKeyImported,
+      encodedData
+    );
+  
+    return Buffer.from(encryptedArrayBuffer).toString('base64');
+  }
 
-// Encryption using pubKey
-export function Encryption(SHA: string, publicKey: string) {
-    const encrypt = crypto.publicEncrypt(publicKey, Buffer.from(SHA))
-    const ENC = encrypt.toString('base64')
-    return ENC
-}
+  export async function Decryption(ENC: string, privateKey: string) {
+    const privateKeyBuffer = Buffer.from(privateKey, 'base64');
+    const privateKeyImported = await crypto.subtle.importKey(
+      'pkcs8',
+      privateKeyBuffer,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['decrypt']
+    );
+  
+    const encryptedData = Buffer.from(ENC, 'base64');
+    const decryptedArrayBuffer = await crypto.subtle.decrypt(
+      { name: 'RSA-OAEP' },
+      privateKeyImported,
+      encryptedData
+    );
+  
+    return new TextDecoder().decode(decryptedArrayBuffer);
+  }
 
-// Decryption using corresponding pvtKey
-export function Decryption(ENC: string, privateKey: string) {
-    const decrypt = crypto.privateEncrypt(privateKey, Buffer.from(ENC, 'base64'))
-    return decrypt.toString('utf-8')
-}
-
-// AES encryption of pvtKey using password
-export function Encryption_AES(privateKey: string, pass: string) {
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(pass), iv)
-    const encrypt = Buffer.concat([cipher.update(Buffer.from(privateKey, 'utf8')), cipher.final()])
-
-    return iv.toString('base64') + ':' + encrypt.toString('base64');
-}
-
-// AES decryption of pvtKey using password
-export function Decryption_AES(ENC: string, pass: string) {
+  // AES encryption of pvtKey using password
+export async function Encryption_AES(privateKey: string, pass: string) {
+    const iv = CryptoJS.lib.WordArray.random(128 / 8);
+    const options = {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    };
+    const encrypted = CryptoJS.AES.encrypt(privateKey, pass, options);
+    const ivString = CryptoJS.enc.Base64.stringify(iv);
+    const encryptedData = encrypted.toString();
+    return ivString + ':' + encryptedData;
+  }
+  
+  // AES decryption of pvtKey using password
+  export async function Decryption_AES(ENC: string, pass: string) {
     const [ivString, encryptedData] = ENC.split(':');
-    const iv = Buffer.from(ivString, 'base64');
-    const encrypt = Buffer.from(encryptedData, 'base64');
-    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(pass), iv);
-    return Buffer.concat([decipher.update(encrypt), decipher.final()]).toString('utf-8');
-}
+    const iv = CryptoJS.enc.Base64.parse(ivString);
+    const options = {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    };
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, pass, options);
+    return decrypted.toString(CryptoJS.enc.Utf8);
+  }
+  
