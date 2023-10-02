@@ -8,6 +8,7 @@ import "../app/globals.css"
 import Link from 'next/link';
 import { motion } from "framer-motion"
 import Dog from '@/components/Dog';
+import Clear from '@/components/clear';
 
 const RegisterPage: React.FC = () => {
     const [data, setData] = useState({
@@ -39,67 +40,71 @@ const RegisterPage: React.FC = () => {
     };
 
     return (
-        <div className={styles['login-box']}>
-            <div className={styles['login-box2']}>
-                <Dog />
+        <>
+            <Clear />
+            <div className={styles['login-box']}>
+                <div className={styles['login-box2']}>
+                    <Dog />
 
-                <div className={styles['login-container']}>
-                    <h1 className={styles['login-title']}>Register</h1>
-                    {!correctOtp && (<>
-                        <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
-                            <BsPersonVcardFill size={18} />
-                            <input
-                                className={styles['login-input']}
-                                type="number"
-                                name='rollNo'
-                                value={data.rollNo}
-                                onChange={handleSubmit}
-                                required
-                                placeholder='OTP token'
-                            />
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                            <button onClick={handleVerifyOTP}>Verify OTP</button>
-                        </motion.div></>)}
-                    {correctOtp && (
-                        <>
+                    <div className={styles['login-container']}>
+                        <h1 className={styles['login-title']}>Register</h1>
+                        {!correctOtp && (<>
                             <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
-                                <BiSolidLock size={18} />
+                                <BsPersonVcardFill size={18} />
                                 <input
                                     className={styles['login-input']}
-                                    type="password"
-                                    name='password'
-                                    value={data.password}
+                                    type="number"
+                                    name='rollNo'
+                                    value={data.rollNo}
                                     onChange={handleSubmit}
                                     required
-                                    placeholder='New Password'
+                                    placeholder='OTP token'
                                 />
                             </motion.div>
-                            <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
-                                <BiSolidLock size={18} />
-                                <input
-                                    className={styles['login-input']}
-                                    type="password"
-                                    name='confirmPassword'
-                                    value={data.password}
-                                    onChange={handleSubmit}
-                                    required
-                                    placeholder='Confirm New Password'
-                                />
-                            </motion.div>
-                            <div className={styles['login-bottom']}>
-                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                                    <Link href={'/login'}>Go Back to Login</Link>
+                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
+                                <button onClick={handleVerifyOTP}>Verify OTP</button>
+                            </motion.div></>)}
+                        {correctOtp && (
+                            <>
+                                <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
+                                    <BiSolidLock size={18} />
+                                    <input
+                                        className={styles['login-input']}
+                                        type="password"
+                                        name='password'
+                                        value={data.password}
+                                        onChange={handleSubmit}
+                                        required
+                                        placeholder='New Password'
+                                    />
                                 </motion.div>
-                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']} onClick={handleLog}>
-                                    <Link href={'/register2'}>Register</Link>
+                                <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
+                                    <BiSolidLock size={18} />
+                                    <input
+                                        className={styles['login-input']}
+                                        type="password"
+                                        name='confirmPassword'
+                                        value={data.password}
+                                        onChange={handleSubmit}
+                                        required
+                                        placeholder='Confirm New Password'
+                                    />
                                 </motion.div>
-                            </div>
-                        </>
-                    )}
+                                <div className={styles['login-bottom']}>
+                                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} >
+                                        <Link href={'/login'} className={styles['login-submit-button']}>Go Back to Login</Link>
+                                    </motion.div>
+                                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={handleLog}>
+                                        <Link href={'/register2'} className={styles['login-submit-button']} >Register</Link>
+                                    </motion.div>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
+
     );
 };
 

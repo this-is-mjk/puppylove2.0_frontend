@@ -6,6 +6,15 @@ input:-webkit-autofill{
   -webkit-background-clip: text;
   
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
 input{
   padding:.5rem  0rem  ;
   border: none;
@@ -42,7 +51,7 @@ body{
   justify-content: center;
   align-items: center;
   padding: 1rem ;
-  background-color: black;
+  /* background-color: black; */
   font-family: "Poppins","sans-serif";
 }
 
@@ -52,9 +61,4 @@ body{
   right: 2rem;
   color: white;
 }
-@media screen and (max-width: 800px) {
-  body{
-    /* overflow-y:scroll; */
-  }
-  
-}
+

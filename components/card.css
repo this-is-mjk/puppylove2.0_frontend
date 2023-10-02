@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 110px   ;
+    width: 120px;
+    /* height: 250px; */
     padding: 10px;
     height:fit-content;
     background-color: rgb(212, 209, 209);
@@ -14,4 +15,6 @@
 }
 .card-details{
     font-size: .8rem;
+    text-align: center;
+
 }
