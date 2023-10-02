@@ -75,9 +75,9 @@ const RegisterPage: React.FC = () => {
             </motion.div>
           </div>
         </div>
-        <Link href={'/'} className={styles["close-button"]}>
+        {/* <Link href={'/'} className={styles["close-button"]}>
           &times;
-        </Link>
+        </Link> */}
       </div>
     </div>
     </div>
