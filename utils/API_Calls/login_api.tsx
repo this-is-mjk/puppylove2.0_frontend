@@ -3,7 +3,7 @@ const SERVER_IP = process.env.SERVER_IP
 
 export const handleLog = async(data: any) => {
     try {
-      const passHash = SHA256(data.password)
+      const passHash = await SHA256(data.password)
       const res = await fetch(
           SERVER_IP+"/session/login", {
               method: "POST",

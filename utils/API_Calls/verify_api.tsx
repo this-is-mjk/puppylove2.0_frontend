@@ -3,20 +3,20 @@ const SERVER_IP = process.env.SERVER_IP
 
 export const handleVerifyOTP = async (user: any) => {
     try {
-      const passHash = SHA256(user.pass)
-      const Keys = GenerateKeys()
+      const passHash = await SHA256(user.pass)
+      const Keys = await GenerateKeys()
       const privKey = Keys.privKey
-      const privKey_encrypt = Encryption_AES(privKey, user.pass) 
+      const privKey_encrypt = await Encryption_AES(privKey, user.pass) 
       const res = await fetch(
           SERVER_IP +"/users/login/first", {
               method: "POST",
               body: JSON.stringify({
-                roll: user.id,
+                roll: user.id.email,
                 authCode: user.auth,
                 passHash: passHash,
                 pubKey: Keys.pubKey,
                 privKey: privKey_encrypt,
-                data: ""
+                data: "FIRST_LOGIN"
               }),
             
               headers: {
