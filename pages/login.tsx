@@ -9,15 +9,23 @@ import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
 import ThemeButton from "@/components/Theme";
 import Clear from "@/components/clear";
+import {handleLog} from "../utils/API_Calls/login_api"
+import {useRouter} from "next/router"
 
 const LoginPage: React.FC = () => {
   const [data, setData] = useState({ email: "", password: "" });
 
-  const handleLog = () => {
-    console.log(data);
-    setData({ email: "", password: "" });
-    console.log(data);
-  };
+  const router = useRouter()
+
+  const handleLog_api = async () => {
+    const isValid = await handleLog(data)
+    if(isValid) {
+      router.push("/dashboard")
+    }
+    else {
+      // WRONG LOGIN CREDENTENTIALS
+    }
+  }
 
   const handleSubmit = (e : any) => {
     e.preventDefault();
@@ -79,7 +87,7 @@ const LoginPage: React.FC = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
-              onClick={handleLog}
+              onClick={handleLog_api}
               style={{ color: "black"}}
             >
               Login

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
 import "../app/globals.css";
@@ -6,26 +6,29 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
+import {handleRegister} from "../utils/API_Calls/register_api"
+import { useRouter } from "next/router";
 
 const RegisterPage: React.FC = () => {
-  const [data, setData] = useState({
-    username: "",
-    rollNo: "",
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
 
-  const handleLog = () => {
-    console.log(data);
-    setData({ username: "", rollNo: "", email: "", password: "" });
-    console.log(data);
+  const router = useRouter()
+
+  const handleRegister_api = async () => {
+    const isValid = await handleRegister(email)
+
+    if(isValid) {
+      setEmail("");
+      router.push(`/verify?email=${email}`)
+    }
+    else{
+      // USER NOT CREATED IN DATABASE
+    }
   };
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
 
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-    console.log(data);
+  const handleSubmit = (e: any) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
   };
 
   return (
@@ -46,7 +49,7 @@ const RegisterPage: React.FC = () => {
               className={styles["login-input"]}
               type="email"
               name="email"
-              value={data.email}
+              value={email}
               onChange={handleSubmit}
               required
               placeholder="Email"
@@ -65,9 +68,10 @@ const RegisterPage: React.FC = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
-              onClick={handleLog}
+              style={{ color: 'black' }}
+              onClick={handleRegister_api}
             >
-              <Link href={"/verify"} style={{ color: "black"}}>Send OTP</Link>
+              Send OTP
             </motion.div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/login.module.css'; 
 import { MdEmail } from 'react-icons/md'
 import { BiSolidLock } from 'react-icons/bi'
@@ -8,34 +8,49 @@ import "../app/globals.css"
 import Link from 'next/link';
 import { motion } from "framer-motion"
 import Dog from '@/components/Dog';
+import { useRouter } from 'next/router';
+import {handleVerifyOTP} from "../utils/API_Calls/verify_api";
 
-const RegisterPage: React.FC = () => {
+const VerifyPage: React.FC = () => {
+  const [input_OTP, setOTP] = useState ("")
+
   const [data, setData] = useState({
-    username: '',
-    rollNo: '',
-    email: '',
+    confirmPassword: '',
     password: '',
   });
-  
-  const [correctOtp, setCorrectOtp] = useState(false); 
 
-  const handleLog = () => {
-    console.log(data);
-    setData({
-      username: '',
-      rollNo: '',
-      email: '',
-      password: '',
-    });
-  };
+  const router = useRouter()
+
+  const handleOTP =(e: any)=>{
+    e.preventDefault()
+    setOTP(e.target.value)
+  }
 
   const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-  const handleVerifyOTP = () => {
-    setCorrectOtp(true);
+  const handleVerifyOTP_api = async () => {
+    const email = router.query    
+    if(email === null) {
+      return
+    }
+    if(data.password !== data.confirmPassword) {
+      // RENTER PASSWORD
+      return
+    }
+
+    const user = {id: email, pass: data.password, auth: input_OTP}
+    const isValid = await handleVerifyOTP(user)
+
+    if(isValid) {
+      router.push("/dashboard")
+    }
+    else{
+      // WRONG OTP
+    }
+
   };
 
   return (
@@ -46,23 +61,7 @@ const RegisterPage: React.FC = () => {
       
             <div className={styles['login-container']}>
           <h1 className={styles['login-title']}>Register</h1>
-            {!correctOtp && (<>
-                <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
-            <BsPersonVcardFill size={18} />
-            <input
-              className={styles['login-input']}
-              type="number"
-              name='rollNo'
-              value={data.rollNo}
-              onChange={handleSubmit}
-              required
-              placeholder='OTP token'
-            />
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-            <button onClick={handleVerifyOTP} style={{ color: "black"}}>Verify OTP</button>
-          </motion.div></>)}
-          {correctOtp && (
+          {(
             <>
               <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
                 <BiSolidLock size={18} />
@@ -82,22 +81,30 @@ const RegisterPage: React.FC = () => {
                   className={styles['login-input']}
                   type="password"
                   name='confirmPassword'
-                  value={data.password}
+                  value={data.confirmPassword}
                   onChange={handleSubmit}
                   required
                   placeholder='Confirm New Password'
                 />
               </motion.div>
-              <div className={styles['login-bottom']}>
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
-                  <Link href={'/login'} style={{ color: "black"}}>Go to Login</Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']} onClick={handleLog}>
-                  <Link href={'/register2'} style={{ color: "black"}}>Register</Link>
-                </motion.div>
-              </div>
             </>
           )}
+            {(<>
+                <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
+            <BsPersonVcardFill size={18} />
+            <input
+              className={styles['login-input']}
+              type="string"
+              name='rollNo'
+              // value={data.rollNo}
+              onChange={handleOTP}
+              required
+              placeholder='OTP token'
+            />
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className={styles['login-submit-button']}>
+            <button onClick={handleVerifyOTP_api} style={{ color: "black"}}>Verify OTP</button>
+          </motion.div></>)}
         </div>
         <Link href={'/'} className={styles["close-button"]}>
           &times;
@@ -108,4 +115,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default VerifyPage;
