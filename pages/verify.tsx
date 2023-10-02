@@ -115,4 +115,4 @@ const VerifyPage: React.FC = () => {
   );
 };
 
-export default VerifyPage;
+export default VerifyPage; 

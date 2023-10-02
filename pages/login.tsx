@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
     }
   }
 
-  const handleSubmit = (e : any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     const { name, value } = e.target;
@@ -37,68 +37,69 @@ const LoginPage: React.FC = () => {
 
   return (
     <div>
-      <Clear/>
-    <div className={styles["login-box"]}>
-      <div className={styles["login-box2"]}>
-        <Dog />
-        <div className={styles["login-container"]}>
-          <h1 className={styles["login-title"]} style={{ color: "black"}}>Login</h1>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={styles["login-form-group"]}
-          >
-            <MdEmail size={18} />
-
-            <input
-              className={styles["login-input"]}
-              type="email"
-              name="email"
-              value={data.email}
-              onChange={handleSubmit}
-              required
-              placeholder="Email"
-            />
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={styles["login-form-group"]}
-          >
-            <BiSolidLock size={18} />
-            <input
-              className={styles["login-input"]}
-              type="password"
-              name="password"
-              value={data.password}
-              onChange={handleSubmit}
-              required
-              placeholder="Password"
-            />
-          </motion.div>
-          <div className={styles["login-bottom"]}>
+      <Clear />
+      <div className={styles["login-box"]}>
+        <div className={styles["login-box2"]}>
+          <Dog />
+          <div className={styles["login-container"]}>
+            <h1 className={styles["login-title"]} style={{ color: "black" }}>Login</h1>
             <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className={styles["login-submit-button"]}
+              whileHover={{ scale: 1.05 }}
+              className={styles["login-form-group"]}
             >
-              <Link href={"/register"} style={{ color: "black"}}>Register</Link>
-            </motion.div>
+              <MdEmail size={18} />
 
+              <input
+                className={styles["login-input"]}
+                type="email"
+                name="email"
+                value={data.email}
+                onChange={handleSubmit}
+                required
+                placeholder="Email"
+              />
+            </motion.div>
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
+              className={styles["login-form-group"]}
+            >
+              <BiSolidLock size={18} />
+              <input
+                className={styles["login-input"]}
+                type="password"
+                name="password"
+                value={data.password}
+                onChange={handleSubmit}
+                required
+                placeholder="Password"
+              />
+            </motion.div>
+            <div className={styles["login-bottom"]}>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+
+              >
+                <Link href={"/register"} className={styles["login-submit-button"]}>Register</Link>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={styles["login-submit-button"]}
               onClick={handleLog_api}
               style={{ color: "black"}}
-            >
-              Login
-            </motion.div>
+              // style={{ color: "black" }}
+              >
+                  Login
+              </motion.div>
+            </div>
           </div>
+          {/* <Link href={'/'} className={styles["close-button"]}>
+            &times;
+          </Link> */}
         </div>
-        <Link href={'/'} className={styles["close-button"]}>
-          &times;
-        </Link>
       </div>
-    </div>
     </div>
   );
 };
