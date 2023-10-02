@@ -1,5 +1,5 @@
 export default function Clear() {
   return (
-    <div style={{height: "60px", width: "100px"}}></div>
+    <div style={{ height: "60px", width: "100px" }}></div>
   )
 }

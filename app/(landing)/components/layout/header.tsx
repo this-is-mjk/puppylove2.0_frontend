@@ -11,7 +11,7 @@ import Navigation from './navigation'
 import { Logo } from './logo'
 import { useScroll } from 'framer-motion'
 
-export interface HeaderProps extends Omit<BoxProps, 'children'> {}
+export interface HeaderProps extends Omit<BoxProps, 'children'> { }
 
 export const Header = (props: HeaderProps) => {
   const ref = React.useRef<HTMLHeadingElement>(null)
@@ -44,21 +44,21 @@ export const Header = (props: HeaderProps) => {
     >
       <Container maxW="container.2xl" px="8" py="4">
         <Flex width="full" align="center" justify="space-between">
-        <div style={{ display: 'flex', alignItems: 'center' , top : "10px"}}>
-          <Logo
-            onClick={(e) => {
-              if (window.location.pathname === '/') {
-                e.preventDefault()
+          <div style={{ display: 'flex', alignItems: 'center', top: "10px" }}>
+            <Logo
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault()
 
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                })
-              }
-            }}
-          />
-           </div>
-        <Navigation />
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  })
+                }
+              }}
+            />
+          </div>
+          <Navigation />
         </Flex>
       </Container>
     </Box>

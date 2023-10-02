@@ -10,14 +10,20 @@ import { fontSizes } from './foundations/typography'
 const styles = {
   global: (props: any) => ({
     body: {
+      
       color: 'gray.900',
-      bg: 'white',
+      bg: '#f5f4f2',
       fontSize: 'lg',
       _dark: {
-        color: 'white',
+        color: 'gray.600',
         bg: 'gray.900',
       },
     },
+    
+    _placeholder:{
+      color:"gray.600",
+      
+    }
   }),
 }
 

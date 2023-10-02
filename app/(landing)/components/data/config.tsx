@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react'
 import { Link } from '@saas-ui/react'
 import { NextSeoProps } from 'next-seo'
-import { FaGithub, FaInstagram, FaLinkedin} from 'react-icons/fa'
+import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import { FiCheck } from 'react-icons/fi'
 import Image from 'next/image'
 import { Logo } from './logo'
@@ -17,8 +17,8 @@ const siteConfig = {
   header: {
     links: [
       {
-        id: 'features',
-        label: 'Features',
+        id: 'Home',
+        label: 'Home',
       },
       {
         id: 'faq',
@@ -30,7 +30,7 @@ const siteConfig = {
     copyright: (
       <>
         Built by{' '}
-        <Link href="https://twitter.com/Pagebakers">Programming Club</Link>
+        <Link href="https://pclub.in/">Programming Club</Link>
       </>
     ),
     links: [
