@@ -1,7 +1,7 @@
 
 import "./hello.css";
 // import "../app/(landing)/globals.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import StudentCard from "../components/StudentCard";
@@ -16,98 +16,111 @@ interface Student {
   n: string;
   p: string;
   r: string;
+  i: string;
 }
 
 export default function Hello() {
   const [searchQuery, setSearchQuery] = useState("");
-  const students: Student[] = [
-    {
-      "_id": "1",
-      "b": "B+",
-      "d": "COMPUTER SCIENCE & ENGG.",
-      "g": "M",
-      "h": "HALL5",
-      "n": "Pratham Sahu",
-      "p": "Btech",
-      "r": "G-319"
-    },
-    {
-      "_id": "2",
-      "b": "B+",
-      "d": "COMPUTER SCIENCE & ENGG.",
-      "g": "M",
-      "h": "hall 12",
-      "n": "ChayanKumawat",
-      "p": "Btech",
-      "r": "B-410"
-    },
-    {
-      "_id": "3",
-      "b": "A-",
-      "d": "ELECTRICAL ENGINEERING",
-      "g": "F",
-      "h": "HALL3",
-      "n": "Alisha Sharma",
-      "p": "Btech",
-      "r": "E-205"
-    },
-    {
-      "_id": "4",
-      "b": "A",
-      "d": "MECHANICAL ENGINEERING",
-      "g": "M",
-      "h": "HALL7",
-      "n": "Rahul Verma",
-      "p": "Btech",
-      "r": "M-101"
-    },
-    {
-      "_id": "5",
-      "b": "B-",
-      "d": "CIVIL ENGINEERING",
-      "g": "F",
-      "h": "HALL9",
-      "n": "Sneha Kapoor",
-      "p": "Btech",
-      "r": "C-512"
-    },
-    {
-      "_id": "6",
-      "b": "A",
-      "d": "ELECTRONICS & COMMUNICATION",
-      "g": "M",
-      "h": "HALL2",
-      "n": "Ankit Patel",
-      "p": "Btech",
-      "r": "E-402"
-    },
-    {
-      "_id": "7",
-      "b": "A+",
-      "d": "CHEMICAL ENGINEERING",
-      "g": "M",
-      "h": "HALL11",
-      "n": "Neha Gupta",
-      "p": "Btech",
-      "r": "C-701"
-    },
-    {
-      "_id": "8",
-      "b": "A+",
-      "d": "CHEMICAL ENGINEERING",
-      "g": "M",
-      "h": "HALL11",
-      "n": "Neha Gupta",
-      "p": "Btech",
-      "r": "C-701"
-    },
+  const [students, setStudents] = useState<Student[]>([]);
+  const [access_token, setAccessToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    // Generate the access_token only once when the component is loaded
+    if (!access_token) {
+      fetchAccessToken();
+    }
+  }, [access_token]);
 
-  ];
+  const config = {
+    APP_ID: "data-yubip",
+    API_KEY: "XvhvZNBWObiDyf651zDE8LsSx59zssBKVMlTHSftn566l7rXoVrbQxnW0L2p6L5A",
+    cluster_name: "Cluster0",
+    db_name: "student_data",
+    collection_name: "student_data",
+  };
+
+  const fetchAccessToken = async () => {
+    try {
+      const response = await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: config.API_KEY,
+        }),
+      });
+      const data = await response.json();
+      setAccessToken(data.access_token);
+    } catch (error) {
+      console.error("Error fetching access token:", error);
+    }
+  };
+
+  const fetchDate = async (search: string) => {
+    try {
+      if (!access_token) {
+        console.error("Access token is not available.");
+        return [];
+      }
+
+      const student_data = await fetch(`https://ap-south-1.aws.data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+        body: JSON.stringify({
+          dataSource: config.cluster_name,
+          database: config.db_name,
+          collection: config.collection_name,
+          filter: {
+            $or: [
+              {
+                n: {
+                  $regex: search,
+                  $options: 'i',
+                },
+              },
+              {
+                i: {
+                  $regex: search,
+                  $options: 'i', 
+                },
+              },
+            ],
+          },
+          limit: 20,
+        }),
+      });
+
+      const response = await student_data.json();
+      // console.log(response.documents);
+      return response.documents;
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, [searchQuery]);
+
+  const fetchStudents = async () => {
+    try {
+      const studentData = await fetchDate(searchQuery);
+      setStudents(studentData);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+  };
 
   const filteredStudents = students.filter((student) =>
-    student.n.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  student.i.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
 
   return (
     <div className="box">
@@ -131,7 +144,9 @@ export default function Hello() {
                 <p className="details-text">ahshhqshhdhw</p>
               </div>
             </div>
-            <div className="heart"></div>
+            <div className="heart">
+              HEARTS HERE
+            </div>
           </div>
           <div className="section-2">
             <div className="search-div">
