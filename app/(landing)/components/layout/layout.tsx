@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         <SkipNavContent />
         {children}
       </Box>
-      <Footer {...footerProps} />
+      <Footer {...footerProps} style={{position: "fixed", bottom :"0", width: "100%", height:"80px"}} />
     </Box>
   )
 }
