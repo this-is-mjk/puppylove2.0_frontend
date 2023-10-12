@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import "./card.css";
 
-const Card = ({ student }) => {
+const Card = ({ student } : any) => {
   var userName = student.u;
   var roll = student.i;
 

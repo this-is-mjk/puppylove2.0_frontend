@@ -21,26 +21,32 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const { columns = 2, ...rest } = props
   return (
     <Box bg="#f5f4f2" _dark={{ bg: 'gray.900' }} {...rest}>
-      <Container maxW="container.2xl" px="8" py="8">
-        <SimpleGrid columns={columns}>
-          <Stack spacing="8">
+      <Container maxW="container.2xl" px="6" py="2">
+        <SimpleGrid columns={[1, 1, columns]} spacing={[4, 4, 0]}>
+          <Stack spacing="1.4"  display={['none', 'none', 'block']}>
             <Stack alignItems="flex-start">
-              <Flex>
-                <Box as={siteConfig.logo} flex="1" height="32px" />
+              <Flex py="2">
+                <Box as={siteConfig.logo} flex="1" height="31px"/>
               </Flex>
+            </Stack>
+          </Stack>
+          <Stack spacing="0" alignItems={['flex-start', 'flex-start', 'flex-end']}>
+            <Stack>
               <Text fontSize="md" color="muted">
                 {siteConfig.seo.description}
               </Text>
             </Stack>
             <Copyright>{siteConfig.footer.copyright}</Copyright>
+            <Flex py="1.7">
+              <HStack spacing="3" alignSelf="flex-end">
+                {siteConfig.footer?.links?.map(({ href, label }) => (
+                  <FooterLink key={href} href={href}>
+                    {label}
+                  </FooterLink>
+                ))}
+              </HStack>
+            </Flex>
           </Stack>
-          <HStack justify="flex-end" spacing="4" alignSelf="flex-end">
-            {siteConfig.footer?.links?.map(({ href, label }) => (
-              <FooterLink key={href} href={href}>
-                {label}
-              </FooterLink>
-            ))}
-          </HStack>
         </SimpleGrid>
       </Container>
     </Box>
