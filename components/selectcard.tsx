@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./card.css";
+import "./selectcard.css";
 
-const Card = ({ student, onClick, clickedStudents }: any) => {
+const Card = ({ student, onClick }: any) => {
   const userName = student.u;
   const roll = student.i;
 
@@ -9,13 +9,14 @@ const Card = ({ student, onClick, clickedStudents }: any) => {
     backgroundImage: `url("https://home.iitk.ac.in/~${userName}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${roll}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
   };
 
-  const isClicked = clickedStudents ? clickedStudents.includes(student.i) : false;
+  const [isClicked, setIsClicked] = useState(false);
 
   const clicked = () => {
     if (!isClicked) {
       onClick(student.i);
+      setIsClicked(true); 
     } else {
-      alert('This student has already been clicked!');
+      alert('This student has already been selected');
     }
   };
 
@@ -27,7 +28,7 @@ const Card = ({ student, onClick, clickedStudents }: any) => {
       <div className="carddetails">
         <p className="card-details">{student.n}</p>
         <button className="button" onClick={clicked}>
-          {isClicked ? "Already Clicked" : "Send Heart"}
+            Unselect
         </button>
       </div>
     </div>
