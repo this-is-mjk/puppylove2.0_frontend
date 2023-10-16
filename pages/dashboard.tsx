@@ -4,8 +4,10 @@ import "./hello.css";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import StudentCard from "../components/StudentCard";
 import Card from "@/components/card";
+import Hearts from "@/components/Hearts";
 
 interface Student {
   _id: string;
@@ -145,7 +147,7 @@ export default function Hello() {
               </div>
             </div>
             <div className="heart">
-              HEARTS HERE
+              <Hearts/>
             </div>
           </div>
           <div className="section-2">
