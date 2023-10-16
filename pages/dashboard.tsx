@@ -1,33 +1,51 @@
-
-import "./hello.css";
-// import "../app/(landing)/globals.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react'
+import "./hello.css"
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import StudentCard from "../components/StudentCard";
 import Card from "@/components/card";
 import Hearts from "@/components/Hearts";
+import ClickedStudent from "../components/clickedstudent";
+import "./hello.css"
+
 
 interface Student {
-  _id: string;
-  b: string;
-  d: string;
-  g: string;
-  h: string;
-  n: string;
-  p: string;
-  r: string;
-  i: string;
+    _id: string;
+    b: string;
+    d: string;
+    g: string;
+    h: string;
+    n: string;
+    p: string;
+    r: string;
+    i: string;
 }
 
-export default function Hello() {
+const New = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState<Student[]>([]);
   const [access_token, setAccessToken] = useState<string | null>(null);
+  const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+
+  const handleButtonClick = (studentRoll: string) => {
+    if (clickedStudents.length >= 4) {
+      alert('You have already selected the maximum number of students 4.');
+      return;
+    }
+    const student = students.find((s) => s.i === studentRoll);
+
+    if (student && !clickedStudents.find((s) => s.i === studentRoll)) {
+      setClickedStudents([...clickedStudents, student]);
+    } else {
+      alert('This student has already been clicked!');
+    }
+  };
+
+  const handleUnselectStudent = (studentRoll: string) => {
+    const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
+    setClickedStudents(updatedStudents);
+  };
 
   useEffect(() => {
-    // Generate the access_token only once when the component is loaded
     if (!access_token) {
       fetchAccessToken();
     }
@@ -97,7 +115,6 @@ export default function Hello() {
       });
 
       const response = await student_data.json();
-      // console.log(response.documents);
       return response.documents;
     } catch (error) {
       console.error("Error fetching student data:", error);
@@ -123,54 +140,54 @@ export default function Hello() {
   student.i.toLowerCase().includes(searchQuery.toLowerCase())
 );
 
+    return (
+        <>
+            <div className='new'>
+                <div className='section_1'>
+                    <div className="section-1">
+                        <div className="image-container">
+                            <div className="image-box">
+                                <Image
+                                    src="/Dog.jpg"
+                                    width={160}
+                                    height={160}
+                                    alt="Profile"
+                                    className="image"
+                                />
+                            </div>
+                            <div className="detail">
+                                <p className="details-text">yoasahshhqshhdhw</p>
+                                <p className="details-text">asahshhqshhdhw</p>
+                                <p className="details-text">ahshhqshhdhw</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='section_2'><Hearts/></div>
+                <div className='section_3'><ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} /></div>
 
-  return (
-    <div className="box">
-      <div>
-        <div className="container">
-          <div className="section-1">
-            <div className="image-container">
-              <div className="image-box">
-                <Image
-                  src="/Dog.jpg"
-                  width={160}
-                  height={160}
-                  alt="Profile"
-                  className="image"
-                />
-              </div>
-              <div className="detail">
-                <p className="details-text">yoasahshhqshhdhw</p>
-                <p className="details-text">asahshhqshhdhw</p>
-                <p className="details-text">ahshhqshhdhw</p>
-                <p className="details-text">ahshhqshhdhw</p>
-              </div>
-            </div>
-            <div className="heart">
-              <Hearts/>
-            </div>
-          </div>
-          <div className="section-2">
-            <div className="search-div">
-              <BsSearch className="icon" />
-              <input
-                type="text"
-                className="search-bar details-text "
-                placeholder="Enter Name To Search."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="student-container">
-              {filteredStudents.map((student) => (
-                <Card key={student._id} student={student} />
-              ))}
-            </div>
-          </div>
 
-        </div>
-
+            </div>
+            <div className="section-2">
+                <div className="search-div">
+                    <BsSearch className="icon" size={20} />
+                    <input
+                        type="text"
+                        className="search-bar details-text "
+                        placeholder="Enter Name To Search."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+                <div className="student-container">
+        {filteredStudents.map((student) => (
+          <Card key={student._id} student={student} onClick={handleButtonClick} />
+        ))}
       </div>
-    </div>
-  );
+            </div>
+        </>
+
+    )
 }
+
+export default New
