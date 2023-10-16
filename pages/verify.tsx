@@ -32,8 +32,8 @@ const VerifyPage: React.FC = () => {
   };
 
   const handleVerifyOTP_api = async () => {
-    const email = router.query    
-    if(email === null) {
+    const id = router.query    
+    if(id === null) {
       return
     }
     if(data.password !== data.confirmPassword) {
@@ -41,14 +41,14 @@ const VerifyPage: React.FC = () => {
       return
     }
 
-    const user = {id: email, pass: data.password, auth: input_OTP}
+    const user = {id: id, pass: data.password, auth: input_OTP}
     const isValid = await handleVerifyOTP(user)
 
     if(isValid) {
-      router.push("/dashboard")
+      router.push("/login")
     }
     else{
-      // WRONG OTP
+      // NOT VEREFIED
     }
 
   };
