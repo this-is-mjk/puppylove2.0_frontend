@@ -11,7 +11,7 @@ export const handleVerifyOTP = async (user: any) => {
           SERVER_IP +"/users/login/first", {
               method: "POST",
               body: JSON.stringify({
-                roll: user.id.email,
+                roll: user.id.id,
                 authCode: user.auth,
                 passHash: passHash,
                 pubKey: Keys.pubKey,

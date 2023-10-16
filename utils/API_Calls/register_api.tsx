@@ -1,11 +1,9 @@
 const SERVER_IP = process.env.SERVER_IP
 
-// email is actually roll number here
-// backend api made for roll no. but Frontend asks for emails
-export const handleRegister = async(email: string) => {
+export const handleRegister = async(id: string) => {
     try {
       const res = await fetch(
-          SERVER_IP +"/users/mail/"+email, {
+          SERVER_IP +"/users/mail/"+id, {
               method: "POST"
           }
       );
@@ -16,6 +14,6 @@ export const handleRegister = async(email: string) => {
     }
     catch(err) {
       console.log(err)
-      return true
+      return false
     }
   }

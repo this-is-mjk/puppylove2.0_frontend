@@ -10,16 +10,16 @@ import {handleRegister} from "../utils/API_Calls/register_api"
 import { useRouter } from "next/router";
 
 const RegisterPage: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
 
   const router = useRouter()
 
   const handleRegister_api = async () => {
-    const isValid = await handleRegister(email)
+    const isValid = await handleRegister(id)
 
     if(isValid) {
-      setEmail("");
-      router.push(`/verify?email=${email}`)
+      setId("");
+      router.push(`/verify?id=${id}`)
     }
     else{
       // USER NOT CREATED IN DATABASE
@@ -27,8 +27,8 @@ const RegisterPage: React.FC = () => {
   };
 
   const handleSubmit = (e: any) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
+    const newId = e.target.value;
+    setId(newId);
   };
 
   return (
@@ -47,12 +47,12 @@ const RegisterPage: React.FC = () => {
 
             <input
               className={styles["login-input"]}
-              type="email"
-              name="email"
-              value={email}
+              type="text"
+              name="ID"
+              value={id}
               onChange={handleSubmit}
               required
-              placeholder="Email"
+              placeholder="ID"
             />
           </motion.div>
           <div className={styles["login-bottom"]}>
