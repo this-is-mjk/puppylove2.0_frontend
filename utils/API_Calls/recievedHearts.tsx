@@ -6,8 +6,17 @@ import { PrivK } from "../UserData"
 const SERVER_IP = process.env.SERVER_IP
 
 let decodedHearts : Array<any> = [] 
-let heartsReceivedFromMales : number = 0
-let heartsReceivedFromFemales : number = 0
+export let heartsReceivedFromMales : number = 0
+export let heartsReceivedFromFemales : number = 0
+
+export function Set_heartsMale(heartsMales : number) {
+  heartsReceivedFromMales = heartsMales
+}
+
+export function Set_heartsFemale(heartsFemales : number) {
+  heartsReceivedFromFemales = heartsFemales
+}
+
 
 export const receivedHeart = async() => {
     try{
@@ -48,8 +57,8 @@ export const sendDecordedSHA = async (decodedHearts: any) => {
   
         if (response.ok) {
           const data = await response.json();
-          heartsReceivedFromMales = data.male
-          heartsReceivedFromFemales = data.female
+          Set_heartsMale(data.male)
+          Set_heartsFemale(data.female)
         } else {
           console.error('Failed to send decoded hearts');
         }
