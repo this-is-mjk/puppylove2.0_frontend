@@ -66,29 +66,20 @@ export async function SHA256(password: string) {
   }
 
   // AES encryption of pvtKey using password
-export async function Encryption_AES(privateKey: string, pass: string) {
-    const iv = CryptoJS.lib.WordArray.random(128 / 8);
-    const options = {
-      iv: iv,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    };
-    const encrypted = CryptoJS.AES.encrypt(privateKey, pass, options);
-    const ivString = CryptoJS.enc.Base64.stringify(iv);
-    const encryptedData = encrypted.toString();
-    return ivString + ':' + encryptedData;
+  export async function Encryption_AES(privateKey: string, pass: string) {
+    const encrypted = CryptoJS.AES.encrypt(privateKey, pass)
+    return encrypted.toString()
   }
   
   // AES decryption of pvtKey using password
   export async function Decryption_AES(ENC: string, pass: string) {
-    const [ivString, encryptedData] = ENC.split(':');
-    const iv = CryptoJS.enc.Base64.parse(ivString);
-    const options = {
-      iv: iv,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    };
-    const decrypted = CryptoJS.AES.decrypt(encryptedData, pass, options);
-    return decrypted.toString(CryptoJS.enc.Utf8);
+    const decrypted = CryptoJS.AES.decrypt(ENC, pass)
+    return decrypted.toString(CryptoJS.enc.Utf8)
+  }
+
+  export async function RandInt() {
+    const randomBytes = new Uint8Array(1);
+    crypto.getRandomValues(randomBytes);
+    return randomBytes[0];
   }
   
