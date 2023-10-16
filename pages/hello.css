@@ -1,4 +1,4 @@
-.box{
+/* .box{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,7 +43,6 @@
     border: none;
     outline: none;
     background-color: white;
-    /* color: rgb(178, 174, 174); */
    
 }
 .image-box{
@@ -181,6 +180,115 @@
 
     }
     
+} */
+
+
+.new{
+    padding: 1rem;
+    margin-top: 10vh;
+    display: grid;
+    height:fit-content;
+    grid-template-columns:1fr 2.5fr;
+    grid-template-rows: 1fr 2fr;
+    grid-gap: 1rem;
+    grid-template-areas: 
+    "section_1 section_2"
+    "section_1 section_3";
+}   
+.section_1{
+    grid-area: section_1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+}
+.image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+    line-height: 2;
+    padding: 1rem   ;
+}
+.image{
+    border-radius: 50%;
+}
+
+.section_2{
+    grid-area: section_2;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.section_3{
+    grid-area: section_3;
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+.section-2{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    gap: 1rem;
+}
+.search-bar{
+    width: 100vw;
+    border: none;
+    outline: none;
+    background-color: white;
+
+}
+.student-container{
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 0;
+
+}
+
+.search-div{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 10px;
+
+}
+@media screen and (max-width: 900px){
+    .image{
+        width: 140px;
+        height: 140px;
+    }
+    .image-container{
+        padding: 0.2rem;
+    }
+    
 }
 
 
+@media screen and (max-width: 600px) {
+    .new{
+        /* height: 70vh; */
+        display: flex;
+        flex-direction: column;
+
+    }
+    .image-container{
+        padding: .6rem;
+    }
+    .search-div{
+        padding: .8rem;
+    }
+    
+}
