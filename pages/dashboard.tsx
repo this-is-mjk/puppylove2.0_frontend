@@ -3,7 +3,8 @@ import "./hello.css"
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import Card from "@/components/card";
-import ClickedStudent from "../components/ClickedStudent";
+import Hearts from "@/components/Hearts";
+import ClickedStudent from "../components/clickedstudent";
 import "./hello.css"
 
 
@@ -162,7 +163,7 @@ const New = () => {
                         </div>
                     </div>
                 </div>
-                <div className='section_2'>Hearts</div>
+                <div className='section_2'><Hearts/></div>
                 <div className='section_3'><ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} /></div>
 
 

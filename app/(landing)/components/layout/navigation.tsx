@@ -34,7 +34,7 @@ const Navigation: React.FC = () => {
   }, [mobileNav.isOpen]);
 
   return (
-    <HStack spacing="3" flexShrink={0}>
+    <HStack spacing="0" flexShrink={0}>
       {siteConfig.header.links.map(({ href, id, ...props }, i) => {
         return (
           <NavLink
