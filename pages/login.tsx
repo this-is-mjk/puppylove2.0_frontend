@@ -13,14 +13,14 @@ import {handleLog} from "../utils/API_Calls/login_api"
 import {useRouter} from "next/router"
 
 const LoginPage: React.FC = () => {
-  const [data, setData] = useState({ email: "", password: "" });
+  const [data, setData] = useState({ id: "", password: "" });
 
   const router = useRouter()
 
   const handleLog_api = async () => {
     const isValid = await handleLog(data)
     if(isValid) {
-      router.push("/dashboard")
+      router.push(`/dashboard?id=${data.id}`)
     }
     else {
       // WRONG LOGIN CREDENTENTIALS
@@ -51,12 +51,12 @@ const LoginPage: React.FC = () => {
 
               <input
                 className={styles["login-input"]}
-                type="email"
-                name="email"
-                value={data.email}
+                type="text"
+                name="id"
+                value={data.id}
                 onChange={handleSubmit}
                 required
-                placeholder="Email"
+                placeholder="ID"
               />
             </motion.div>
             <motion.div
