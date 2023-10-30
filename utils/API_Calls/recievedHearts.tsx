@@ -1,13 +1,15 @@
-import { use } from 'react';
+// import { use } from 'react';
 import {
   Decryption,
 } from '../Encryption'; 
 import { PrivK } from "../UserData"
 const SERVER_IP = process.env.SERVER_IP
 
+// let PrivK : string;
+
 let decodedHearts : Array<any> = [] 
-export let heartsReceivedFromMales : number = 0
-export let heartsReceivedFromFemales : number = 0
+export let heartsReceivedFromMales : number 
+export let heartsReceivedFromFemales : number
 
 export function Set_heartsMale(heartsMales : number) {
   heartsReceivedFromMales = heartsMales
@@ -75,7 +77,4 @@ receivedHeart()
   .catch((err) => {
     console.error('An error occurred:', err);
   });
-
-//   export heartsReceivedFromFemales;
-//   export heartsReceivedFromMales; 
 
