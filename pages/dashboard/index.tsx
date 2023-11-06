@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import "../../styles/hello.css"
+import "../../styles/dashboard.css"
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import Card from "@/components/card";
