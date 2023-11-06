@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { NextPage } from "next";
-import {Box} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import HeroSection from "../app/(landing)/sections/HeroSection"
 import { SEO } from "../app/(landing)/components/seo";
 
@@ -14,16 +14,6 @@ const Home: NextPage = () => {
       />
       <Box>
         <HeroSection />
-
-        {/* <HighlightsSection />
-
-        <FeaturesSection />
-
-        <TestimonialsSection />
-
-        <PricingSection />
-
-        <FaqSection /> */}
       </Box>
     </Box>
   );

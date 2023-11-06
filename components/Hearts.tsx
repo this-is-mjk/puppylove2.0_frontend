@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {heartsReceivedFromFemales, heartsReceivedFromMales} from "../utils/API_Calls/recievedHearts"
+import { heartsReceivedFromFemales, heartsReceivedFromMales } from "../utils/API_Calls/recievedHearts"
 function Hearts() {
   return (
     <div>

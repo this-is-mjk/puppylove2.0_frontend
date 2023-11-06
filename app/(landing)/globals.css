@@ -35,14 +35,7 @@ a {
 h1{
   font-size: 1.2rem;
 }
-body{
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* height: 100vh; */
-  background-color: black;
-  /* overflow-y: hidden; */
-}
+
 
 .theme-icon{
   position: absolute;
