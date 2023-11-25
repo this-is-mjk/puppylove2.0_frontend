@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import styles from "../../styles/login.module.css";
+import styles from "../styles/login.module.css";
 import { MdEmail } from "react-icons/md";
 import { BiSolidLock } from "react-icons/bi";
-import "../../app/(landing)/globals.css";
+import Image from "next/image";
+import "../app/(landing)/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
+import ThemeButton from "@/components/Theme";
 import Clear from "@/components/clear";
 import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
+import { fetchAllOnLogin } from "@/utils/API_Calls/recievedHearts";
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
+
     const router = useRouter()
 
     const handleLog_api = async () => {
         const isValid = await handleLog(data)
         if (isValid) {
             router.push(`/dashboard?id=${data.id}`)
+            await fetchAllOnLogin();
         }
         else {
             // WRONG LOGIN CREDENTENTIALS
@@ -76,9 +81,8 @@ const LoginPage: React.FC = () => {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
 
-
                             >
-                                <Link href={"/register"} className={styles["login-submit-button"]} style={{ color: "black" }}>Register</Link>
+                                <Link href={"/register"} className={styles["login-submit-button"]}>Register</Link>
                             </motion.div>
 
                             <motion.div
@@ -93,10 +97,11 @@ const LoginPage: React.FC = () => {
                             </motion.div>
                         </div>
                     </div>
-
+                    {/* <Link href={'/'} className={styles["close-button"]}>
+            &times;
+          </Link> */}
                 </div>
             </div>
-            <Clear />
         </div>
     );
 };
