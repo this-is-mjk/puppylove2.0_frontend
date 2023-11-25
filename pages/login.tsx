@@ -17,10 +17,7 @@ const LoginPage: React.FC = () => {
     const handleLog_api = async () => {
         const isValid = await handleLog(data)
         if (isValid) {
-            if (router.isReady) {
-                router.push(`/dashboard?id=${data.id}`)
-
-            }
+            router.push(`/dashboard?id=${data.id}`)
         }
         else {
             // WRONG LOGIN CREDENTENTIALS
