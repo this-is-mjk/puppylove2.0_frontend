@@ -6,7 +6,7 @@ import "../../app/globals.css"
 import { motion } from "framer-motion"
 import Dog from '@/components/Dog';
 import { useRouter } from 'next/router';
-import { handleVerifyOTP } from "../../utils/API_Calls/verify_api";
+import { handleVerifyOTP } from "../utils/API_Calls/verify_api";
 import Clear from '@/components/clear';
 import Link from 'next/link';
 

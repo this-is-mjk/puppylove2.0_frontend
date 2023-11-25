@@ -1,12 +1,12 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import "../../styles/dashboard.css"
+import "../styles/dashboard.css"
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import Card from "@/components/card";
 import Hearts from "@/components/Hearts";
 import ClickedStudent from "@/components/clickedstudent";
-import "../../app/globals.css";
+import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';

@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { BsLinkedin, BsGithub } from "react-icons/bs"
-import "../../styles/credits.css"
+import "../styles/credits.css"
 import Clear from "@/components/clear"
 const CreditCard = ({ check }) => {
     return (

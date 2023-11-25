@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
-import { handleLog } from "../../utils/API_Calls/login_api"
+import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
 
 const LoginPage: React.FC = () => {

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
-import { handleRegister } from "../../utils/API_Calls/register_api"
+import { handleRegister } from "../utils/API_Calls/register_api"
 import { useRouter } from "next/router";
 
 const RegisterPage: React.FC = () => {
