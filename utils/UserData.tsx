@@ -1,9 +1,15 @@
 import { Decryption } from "./Encryption"
 
+
+export let Gender = ""
 export let PubK = ""
 export let PrivK = ""
 export let Data = ""
 export let receiverIds: string[] = [] 
+
+export function Set_Gender(Gender: string) {
+    Gender = Gender
+}
 
 export function Set_PrivK(pvtKey_login: string) {
     PrivK = pvtKey_login
@@ -48,4 +54,15 @@ export async function Set_Data(data: string) {
         receiverIds.push(parts[0])
         console.log(parts[0])
     }
+}
+
+export let heartsReceivedFromMales = 0
+export let heartsReceivedFromFemales = 0
+
+export function Set_heartsMale(heartsMales : number) {
+  heartsReceivedFromMales = heartsMales
+}
+
+export function Set_heartsFemale(heartsFemales : number) {
+  heartsReceivedFromFemales = heartsFemales
 }
