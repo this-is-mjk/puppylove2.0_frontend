@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./selectcard.css";
+import "../styles/selectcard.css";
 
 const Card = ({ student, onClick }: any) => {
   const userName = student.u;
@@ -14,21 +14,22 @@ const Card = ({ student, onClick }: any) => {
   const clicked = () => {
     if (!isClicked) {
       onClick(student.i);
-      setIsClicked(true); 
+      setIsClicked(true);
     } else {
       alert('This student has already been selected');
     }
   };
 
   return (
-    <div className="card">
-      <div className="image-box">
-        <div className="profile" style={stylesss}></div>
+    <div className="select-card">
+      <div className="select-image-box">
+        <div className="select-profile" style={stylesss}></div>
       </div>
-      <div className="carddetails">
-        <p className="card-details">{student.n}</p>
-        <button className="button" onClick={clicked}>
-            Unselect
+      <p className="select-card-details">{student.n}</p>
+
+      <div className="select-carddetails">
+        <button className="select-button" onClick={clicked}>
+          Unselect
         </button>
       </div>
     </div>

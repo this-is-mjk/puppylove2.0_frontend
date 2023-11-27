@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import "../app/globals.css";
 
 import { AuthProvider } from "@saas-ui/auth";
 import { SaasProvider } from "@saas-ui/react";
@@ -24,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Head>
           <Component {...pageProps} />
         </Layout>
-        
+
       </AuthProvider>
     </SaasProvider>
   );

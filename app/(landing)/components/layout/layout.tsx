@@ -21,7 +21,7 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = (props) => {
   const { children, announcementProps, headerProps, footerProps } = props
   return (
-    <Box style={{minHeight: "100vh", position: "relative"}}>
+    <Box style={{ minHeight: "100vh", position: "relative" }}>
       <SkipNavLink>Skip to content</SkipNavLink>
       <AnnouncementBanner {...announcementProps} />
       <Header {...headerProps} />
@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         <SkipNavContent />
         {children}
       </Box>
-      <Footer {...footerProps} style={{position: "absolute", bottom :"0", width: "100%", height:"80px"}} />
+      <Footer {...footerProps} style={{ position: "fixed", bottom: "0", width: "100%", height: "80px" }} />
     </Box>
   )
 }

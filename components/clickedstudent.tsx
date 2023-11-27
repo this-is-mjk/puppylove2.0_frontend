@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "./selectcard";
-import "./clickedstudent.css";
+import "../styles/selectcard.css";
 
 interface ClickedStudentsProps {
   clickedStudents: Student[];
@@ -10,7 +10,6 @@ interface ClickedStudentsProps {
 const ClickedStudents: React.FC<ClickedStudentsProps> = ({ clickedStudents, onUnselectStudent }) => {
   return (
     <div className="clicked-students-container">
-      <h2>Clicked Students:</h2>
       {clickedStudents.map((student) => (
         <Card
           key={student.i}
@@ -19,7 +18,7 @@ const ClickedStudents: React.FC<ClickedStudentsProps> = ({ clickedStudents, onUn
           unselectButton={true}
         />
       ))}
-    </div> 
+    </div>
   );
 };
 

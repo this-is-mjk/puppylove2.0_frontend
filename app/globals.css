@@ -8,11 +8,13 @@ input:-webkit-autofill{
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  /* background: #9f5353; */
+  /* width: 1px/; */
 }
 
 input{
@@ -23,6 +25,7 @@ input{
 *{
   margin: 0;
   padding: 0;
+  scrollbar-width: thin;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -47,12 +50,12 @@ h1{
   font-size: 1.2rem;
 }
 body{
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem ; */
-  /* background-color: black; */
   font-family: "Poppins","sans-serif";
+  overflow-x: hidden;
+
+}
+body::-webkit-scrollbar{
+  display: none;
 }
 
 .theme-icon{
