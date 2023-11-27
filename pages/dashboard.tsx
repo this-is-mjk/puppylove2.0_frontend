@@ -9,9 +9,8 @@ import ClickedStudent from "@/components/clickedstudent";
 import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
-import Clear from '@/components/clear';
-
-
+import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
+import {receiverIds} from '../utils/UserData';
 
 interface Student {
     _id: string;
@@ -51,6 +50,33 @@ const New = () => {
         const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
         setClickedStudents(updatedStudents);
     };
+
+    const Handle_SendHeart = async () => {
+        await SendHeart_api(false)
+      }
+    
+      const Handle_SubmitHeart = async () => {
+        await SendHeart_api(true)
+      }
+    
+      const SendHeart_api = async (Submit: boolean) => {
+        if(!Submit) {
+          for(let i=0; i <4; i++) {
+            const id: string = clickedStudents[i].i
+            receiverIds[i] = id
+          }
+        }
+        const query = new URLSearchParams(window.location.search);
+        const id = query.get("id")
+        const isValid = await SendHeart(id as string, receiverIds, Submit)
+        if(isValid) {
+          // ALERT HEART SENT
+          console.log("HEARTS SEND")
+        }
+        else {
+          console.log("Error")
+        }
+      }
 
     useEffect(() => {
         if (!access_token) {
@@ -179,6 +205,11 @@ const New = () => {
                                 <p className="details-text">{user?.n}</p>
                                 <p className="details-text">{user?.d}</p>
                                 <p className="details-text">{user?.i}</p>
+                                <p>{receiverIds[0]}</p>
+                                <p>{receiverIds[1]}</p>
+                                <p>{receiverIds[2]}</p>
+                                <p>{receiverIds[3]}</p>
+                                <button onClick={Handle_SubmitHeart}>SUBMIT HEARTS</button>
                             </div>}
 
                         </div>
@@ -191,6 +222,7 @@ const New = () => {
                         :
                         <h2>Clicked Students :</h2>
                     }
+                    <button onClick={Handle_SendHeart}>SEND HEART</button>
                 </div>
 
 
