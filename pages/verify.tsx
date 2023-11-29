@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import styles from '../../styles/login.module.css';
+import styles from '../styles/login.module.css';
 import { BiSolidLock } from 'react-icons/bi'
 import { BsPersonVcardFill } from 'react-icons/bs'
-import "../../app/globals.css"
+import "../app/globals.css"
 import { motion } from "framer-motion"
 import Dog from '@/components/Dog';
 import { useRouter } from 'next/router';
