@@ -46,23 +46,28 @@ export async function SHA256(password: string) {
   }
 
   export async function Decryption(ENC: string, privateKey: string) {
-    const privateKeyBuffer = Buffer.from(privateKey, 'base64');
-    const privateKeyImported = await crypto.subtle.importKey(
-      'pkcs8',
-      privateKeyBuffer,
-      { name: 'RSA-OAEP', hash: 'SHA-256' },
-      false,
-      ['decrypt']
-    );
-  
-    const encryptedData = Buffer.from(ENC, 'base64');
-    const decryptedArrayBuffer = await crypto.subtle.decrypt(
-      { name: 'RSA-OAEP' },
-      privateKeyImported,
-      encryptedData
-    );
-  
-    return new TextDecoder().decode(decryptedArrayBuffer);
+    try {
+      const privateKeyBuffer = Buffer.from(privateKey, 'base64');
+      const privateKeyImported = await crypto.subtle.importKey(
+        'pkcs8',
+        privateKeyBuffer,
+        { name: 'RSA-OAEP', hash: 'SHA-256' },
+        false,
+        ['decrypt']
+      );
+      
+      const encryptedData = Buffer.from(ENC, 'base64');
+      const decryptedArrayBuffer = await crypto.subtle.decrypt(
+        { name: 'RSA-OAEP' },
+        privateKeyImported,
+        encryptedData
+      );
+      
+      return new TextDecoder().decode(decryptedArrayBuffer);
+    }
+    catch(err) {
+      return 'Fail'
+    }
   }
 
   // AES encryption of pvtKey using password
