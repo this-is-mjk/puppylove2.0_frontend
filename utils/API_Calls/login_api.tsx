@@ -1,6 +1,7 @@
 import {SHA256, Decryption_AES} from "../Encryption"
-import {Set_PrivK, Set_PubK, Set_Data, Set_Gender} from "../UserData"
-// import { fetchAllOnLogin } from "./recievedHearts"
+import {Set_PrivK, Set_PubK, Set_Data, Set_Gender, Set_Claims, Set_Submit} from "../UserData"
+import { fetchAndDecodeHearts } from "./recievedHearts"
+import { returnHearts_Late } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
 export const handleLog = async(data: any) => {
@@ -9,7 +10,7 @@ export const handleLog = async(data: any) => {
       const res = await fetch(
           `${SERVER_IP}/session/login`, {
               method: "POST",
-              credentials: "include",
+              // credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
               body: JSON.stringify({
                   _id: data.id,
                   passHash: passHash
@@ -30,8 +31,16 @@ export const handleLog = async(data: any) => {
       Set_PrivK(pvtKey_login)
       Set_PubK(res_json.pubKey)
       Set_Gender(res_json.gender)
+      Set_Submit(res_json.submit)
       await Set_Data(res_json.data)
-      // await fetchAllOnLogin()
+      await Set_Claims(res_json.claims)
+
+      await fetchAndDecodeHearts()
+
+      if(res_json.submit === true) {
+        // await returnHearts_Late() // Not Working
+      }
+
       return true
     }
     catch(err) {
