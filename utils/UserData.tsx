@@ -1,14 +1,17 @@
 import { Decryption } from "./Encryption"
 
-
 export let Gender = ""
 export let PubK = ""
 export let PrivK = ""
 export let Data = ""
-export let receiverIds: string[] = [] 
+export let Submit = false
+// IDs of receivers of heart from User
+export let receiverIds: string[] = []
 
-export function Set_Gender(Gender: string) {
-    Gender = Gender
+export let pubKeys: string[] = []
+
+export function Set_Gender(gender: string) {
+    Gender = gender
 }
 
 export function Set_PrivK(pvtKey_login: string) {
@@ -19,6 +22,11 @@ export function Set_PubK(pubKey_login: string) {
     PubK = pubKey_login
 }
 
+export function Set_Submit(submit: boolean) {
+    Submit = submit
+}
+
+// Send Heart
 interface Heart {
     enc: string;
     sha: string;
@@ -60,9 +68,55 @@ export let heartsReceivedFromMales = 0
 export let heartsReceivedFromFemales = 0
 
 export function Set_heartsMale(heartsMales : number) {
-  heartsReceivedFromMales = heartsMales
+  heartsReceivedFromMales += heartsMales;
 }
 
 export function Set_heartsFemale(heartsFemales : number) {
-  heartsReceivedFromFemales = heartsFemales
+  heartsReceivedFromFemales += heartsFemales;
 }
+
+//Claimed Heart
+interface heart {
+    enc: string;
+    sha: string;
+    gender: string;
+}
+
+// Return Claimed Hearts
+interface ReturnHeart {
+    enc: string;
+    sha: string;
+}
+
+export let ReturnHearts: ReturnHeart[] = [] 
+export let ReturnHearts_Late: ReturnHeart[] = []
+
+export let Claims: heart[] = []
+export let Claims_Late : ReturnHeart[] = []
+
+export async function Set_Claims(claims: string) {
+    if (claims === "") {
+        return
+    }
+
+    let jsonStrings: string[];
+
+    if(claims.includes("+")) {
+        jsonStrings = claims.split('+');
+    }
+    else {
+        jsonStrings = [claims];
+    }
+
+    jsonStrings.forEach(jsonString => {
+        const claim = JSON.parse(decodeURIComponent(jsonString)) as heart
+        if(claim.gender === 'F') {
+            heartsReceivedFromFemales++;
+        }
+        else {
+            heartsReceivedFromMales++;
+        }
+        Claims.push(claim)
+    });
+}
+
