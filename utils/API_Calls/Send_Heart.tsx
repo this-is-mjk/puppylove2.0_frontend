@@ -1,5 +1,6 @@
 import {SHA256, Encryption, RandInt} from "../Encryption"
-import { PubK, Gender } from "../UserData"
+import { PubK, Gender, ReturnHearts, pubKeys } from "../UserData"
+import { returnHearts } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
 export const SendHeart = async(senderId: string, receiverIds: string [], Submit: boolean) => {
@@ -12,65 +13,62 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
             const R2: number = parseInt(id)
             const random = await RandInt()
             const R3: string = random.toString()
-            const pubKey: string|null = await get_pubKey(id)
-            if(pubKey === null) {
-                throw new Error("Error")
-            }
+            const pubKey_: string = await get_pubKey(id)
+            pubKeys.push(pubKey_)
             if(R1 < R2) {
                 const sha_:string = await SHA256(R1.toString() + R2.toString() + R3)
                 sha.push(sha_)
-                const enc_:string = await Encryption(sha_, pubKey)
+                const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
             else {
                 const sha_:string = await SHA256(R2.toString() + R1.toString() + R3)
                 sha.push(sha_)
-                const enc_:string = await Encryption(sha_, pubKey)
+                const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
             const id_encrypt:string = await Encryption(R2.toString() + '+' + R3, PubK)
             ids_encrypt.push(id_encrypt)
         }
-        if(!Submit) {
-            const res = await fetch(
-                `${SERVER_IP}/users/sendheartVirtual`, {
-                    method: "POST",
-                    credentials: "include",
-                    body: JSON.stringify({
-                        hearts: {
-                            heart1: {
-                                enc: enc[0],
-                                sha: sha[0],
-                                id_encrypt: ids_encrypt[0]
-                            },
-                            heart2: {
-                                enc: enc[1],
-                                sha: sha[1],
-                                id_encrypt: ids_encrypt[1]
-                            },
-                            heart3: {
-                                enc: enc[2],
-                                sha: sha[2],
-                                id_encrypt: ids_encrypt[2]
-                            },
-                            heart4: {
-                                enc: enc[3],
-                                sha: sha[3],
-                                id_encrypt: ids_encrypt[3]
-                            }
+        const res = await fetch(
+            `${SERVER_IP}/users/sendheartVirtual`, {
+                method: "POST",
+                credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
+                body: JSON.stringify({
+                    hearts: {
+                        heart1: {
+                            enc: enc[0],
+                            sha: sha[0],
+                            id_encrypt: ids_encrypt[0]
+                        },
+                        heart2: {
+                            enc: enc[1],
+                            sha: sha[1],
+                            id_encrypt: ids_encrypt[1]
+                        },
+                        heart3: {
+                            enc: enc[2],
+                            sha: sha[2],
+                            id_encrypt: ids_encrypt[2]
+                        },
+                        heart4: {
+                            enc: enc[3],
+                            sha: sha[3],
+                            id_encrypt: ids_encrypt[3]
                         }
-                    }),
-                }
-            );
-            if (!res.ok) {
-                throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+                    }
+                }),
             }
+        );
+        if (!res.ok) {
+            throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
         }
-        else {
+        if(Submit) {
+            await returnHearts()
             const res = await fetch(
                 `${SERVER_IP}/users/sendheart`, {
                     method: "POST",
-                    credentials: "include",
+                    credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
                     body: JSON.stringify({
                         genderofsender: Gender,
                         enc1: enc[0],
@@ -80,7 +78,8 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
                         enc3: enc[2],
                         sha3: sha[2],
                         enc4: enc[3],
-                        sha4: sha[4]
+                        sha4: sha[3],
+                        returnhearts: ReturnHearts
                     }),
                 }
             );
@@ -96,26 +95,21 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
     }
   }
 
-  async function get_pubKey (id: string) {
-    try {
-        const res = await fetch(
-            `${SERVER_IP}/users/fetchPublicKeys`, {
-                method: "GET",
-                credentials: "include"
-            }
-            )
-            if (!res.ok) {
-                throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
-            }
-            const res_json = await res.json()
-            for (const publicKey of res_json) {
-                if (publicKey._id === id) {
-                    return publicKey.pubKey;
-                }
-            }
-            throw new Error("Public Key Not Found")
+export async function get_pubKey (id: string) {
+    const res = await fetch(
+        `${SERVER_IP}/users/fetchPublicKeys`, {
+            method: "GET",
+            credentials: "include"  // uncomment this line if server running on same host as frontend (CORS)
+        }
+    )
+    if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
     }
-    catch(err) {
-        console.log(err)
+    const res_json = await res.json()
+    for (const publicKey of res_json) {
+        if (publicKey._id === id) {
+            return publicKey.pubKey;
+        }
     }
+    throw new Error("Public Key Not Found");
   }
