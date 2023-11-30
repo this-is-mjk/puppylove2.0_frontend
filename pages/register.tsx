@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styles from "../../styles/login.module.css"; // Import your CSS module
+import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
-import "../../app/globals.css";
+import "../app/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";

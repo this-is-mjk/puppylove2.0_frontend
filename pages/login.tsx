@@ -7,11 +7,10 @@ import "../app/(landing)/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
-import ThemeButton from "@/components/Theme";
+// import ThemeButton from "@/components/Theme";
 import Clear from "@/components/clear";
 import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
-import { fetchAllOnLogin } from "@/utils/API_Calls/recievedHearts";
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
@@ -22,7 +21,6 @@ const LoginPage: React.FC = () => {
         const isValid = await handleLog(data)
         if (isValid) {
             router.push(`/dashboard?id=${data.id}`)
-            await fetchAllOnLogin();
         }
         else {
             // WRONG LOGIN CREDENTENTIALS

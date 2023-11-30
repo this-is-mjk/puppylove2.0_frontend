@@ -1,146 +1,64 @@
-// import { use } from 'react';
-import {
-  Decryption,
-} from '../Encryption'; 
-import { PrivK } from "../UserData"
+import { encode } from 'punycode';
+import { Decryption } from '../Encryption'; 
+import { PrivK, Set_heartsMale, Set_heartsFemale, Claims, Submit , Claims_Late} from "../UserData"
 const SERVER_IP = process.env.SERVER_IP
 
-// let PrivK : string;
+export const fetchAndDecodeHearts = async () => {
+  const res = await fetch(`${SERVER_IP}/users/fetchall`, {
+    method: "GET",
+    // credentials: "include"  // uncomment this line if server running on same host as frontend (CORS)
+  });
+  if (!res.ok) {
+    throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+  } 
+  else {
+    let heartsMales: number = 0
+    let heartsFemales: number = 0
+    const data = await res.json();
+    // console.log(data)
+    await Promise.all(data.map( async (element : any) => {
+      const encoded_sha = element.enc;
+      const gender = element.genderOfSender;
+      const decrypted_sha = await Decryption(encoded_sha, PrivK);
 
-let decodedHearts : Array<any> = [] 
-export let heartsReceivedFromMales : number 
-export let heartsReceivedFromFemales : number
+      if(decrypted_sha === 'Fail') {
+        return;
+      }
 
-export function Set_heartsMale(heartsMales : number) {
-  heartsReceivedFromMales = heartsMales
+      const claim_status = await ClaimHeart(encoded_sha, decrypted_sha, gender);
+
+      if(claim_status === 'true') {
+        if(gender === 'F') {
+          heartsFemales++;
+        }
+        else {
+          heartsMales++;
+        }
+
+        Claims.push({enc: encoded_sha, sha: decrypted_sha, gender: gender})
+        if(Submit === true) {
+          Claims_Late.push({enc: encoded_sha, sha: decrypted_sha})
+        }
+      }
+    }));
+    Set_heartsFemale(heartsFemales)
+    Set_heartsMale(heartsMales)
+  }
+};
+
+const ClaimHeart = async (enc: string, sha: string, gender: string) => {
+    const res = await fetch(`${SERVER_IP}/users/claimheart`, {
+    method: "POST",
+    // credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
+    body: JSON.stringify({
+      enc: enc,
+      sha: sha,
+      genderOfSender: gender,
+    })
+  });
+  if (!res.ok) {
+    throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+  }
+  const res_json = await res.json()
+  return res_json.claim_status
 }
-
-export function Set_heartsFemale(heartsFemales : number) {
-  heartsReceivedFromFemales = heartsFemales
-}
-
-
-// Import necessary modules and variables
-
-export const fetchAllOnLogin = async () => {
-  try {
-    // Fetch data and decode hearts
-    const decodedHearts = await fetchAndDecodeHearts();
-    console.log("fetched")
-    
-    // Send decoded hearts
-    await sendDecodedHearts(decodedHearts);
-  } catch (error) {
-    console.error('An error occurred during login:', error);
-  }
-};
-
-const fetchAndDecodeHearts = async () => {
-  try {
-    const res = await fetch(`${SERVER_IP}/fetchall`, {
-      method: "GET",
-    });
-    if (!res.ok) {
-      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
-    } else {
-      const data = await res.json();
-      const decodedHearts = data.map((element : any) => {
-        const encoded_sha = element.enc;
-        const gender = element.gender_of_sender;
-        const decrypted_sha = Decryption(encoded_sha, PrivK);
-
-        return {
-          enc: decrypted_sha,
-          genderOfSender: gender,
-        };
-      });
-      return decodedHearts;
-    }
-  } catch (err) {
-    throw new Error('Error while fetching and decrypting data: ' + err);
-  }
-};
-
-const sendDecodedHearts = async (decodedHearts : any) => {
-  try {
-    const response = await fetch(`${SERVER_IP}/sentHeartDecoded`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ DecodedHearts: decodedHearts }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      Set_heartsMale(data.male);
-      Set_heartsFemale(data.female);
-    } else {
-      throw new Error('Failed to send decoded hearts');
-    }
-  } catch (error) {
-    throw new Error('Error while sending decoded hearts: ' + error);
-  }
-};
-
-// // Call the login function during login
-// login();
-
-// export const receivedHeart = async() => {
-//     try{
-//         const res = await fetch(`${SERVER_IP}/fetchall`, {
-//             method: "GET"
-//         });
-//         if (!res.ok) {
-//             throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
-//         }else{
-//             const data = await res.json()
-//             decodedHearts = data.map((element : any) => {
-//                 const encoded_sha = element.enc
-//                 const gender = element.gender_of_sender
-//                 const decrypted_sha = Decryption(encoded_sha, PrivK)
-
-//                 return {
-//                     enc : decrypted_sha,
-//                     genderOfSender : gender
-//                 }
-//             })
-//         }
-
-//     }catch (err){
-//         console.error('Error while fetching and decrypting data', err);
-//     }
-// }
-
-
-// export const sendDecordedSHA = async (decodedHearts: any) => {
-//     try {
-//         const response = await fetch(`${SERVER_IP}/sentHeartDecoded`, {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({ DecodedHearts: decodedHearts }),
-//         });
-  
-//         if (response.ok) {
-//           const data = await response.json();
-//           Set_heartsMale(data.male)
-//           Set_heartsFemale(data.female)
-//         } else {
-//           console.error('Failed to send decoded hearts');
-//         }
-//     } catch (error) {
-//         console.error('Error while sending decoded hearts', error);
-//     }
-// }
-
-
-// receivedHeart()
-//   .then(() => {
-//     sendDecordedSHA(decodedHearts);
-//   })
-//   .catch((err) => {
-//     console.error('An error occurred:', err);
-//   });
-
