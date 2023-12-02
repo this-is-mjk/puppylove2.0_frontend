@@ -35,7 +35,6 @@ export const handleLog = async(data: any) => {
       await Set_Data(res_json.data)
       await Set_Claims(res_json.claims)
 
-      await fetchAndDecodeHearts()
 
       if(res_json.submit === true) {
         // await returnHearts_Late() // Not Working
