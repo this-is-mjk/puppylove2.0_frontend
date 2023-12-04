@@ -26,6 +26,7 @@ const LoginPage: React.FC = () => {
             await fetchAndDecodeHearts()
         }
         else {
+            alert("Invalid ID or password")
             // WRONG LOGIN CREDENTENTIALS
         }
     }
