@@ -1,5 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import {motion} from "framer-motion";
+import styles from "../styles/login.module.css";
 import "../styles/dashboard.css"
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
@@ -62,7 +64,7 @@ const New = () => {
       const SendHeart_api = async (Submit: boolean) => {
         if(!Submit) {
           for(let i=0; i <4; i++) {
-            const id: string = clickedStudents[i].i
+            const id: string = clickedStudents[i]?.i
             receiverIds[i] = id
           }
         }
@@ -185,68 +187,90 @@ const New = () => {
         student.i.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const stylesss = {
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
+      };
+
     return (
-        <>
+        <div className='box'>
             <Clear />
-            <div className='new'>
+            <div className='hero'>
+            <div className='section-A'>
                 <div className='section_1'>
-                    <div className="section-1">
+                    <div className="info">
                         <div className="image-container">
                             <div className="image-box">
-                                <Image
-                                    src="/Dog.jpg"
-                                    width={160}
-                                    height={160}
-                                    alt="Profile"
-                                    className="image"
-                                />
+                            <div className="profile" style={stylesss}></div>
                             </div>
                             {user && <div className="detail">
-                                <p className="details-text">{user?.n}</p>
-                                <p className="details-text">{user?.d}</p>
-                                <p className="details-text">{user?.i}</p>
-                                <p>{receiverIds[0]}</p>
+                                <div className="details-text-name">{user?.n}</div>
+                                <div className="details-text" >{user?.d}</div>
+                                <div className="details-text" >{user?.i}</div>
+                                {/* <p>{receiverIds[0]}</p>
                                 <p>{receiverIds[1]}</p>
                                 <p>{receiverIds[2]}</p>
-                                <p>{receiverIds[3]}</p>
-                                <button onClick={Handle_SubmitHeart}>SUBMIT HEARTS</button>
+                                <p>{receiverIds[3]}</p> */}
+                                <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={styles["heart-submit-button"]}
+                                onClick={Handle_SubmitHeart}
+                                style={{ color: "white" }}
+                                // style={{ color: "black" }}
+                                >
+                                    Submit Button
+                                </motion.div>
                             </div>}
 
                         </div>
                     </div>
                 </div>
-                <div className='section_2'><Hearts /></div>
-                <div className='section_3'>
+                
+                <div className='section_2'>
                     {clickedStudents.length > 0 ?
+                    <div>
                         <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} />
+                    </div>
                         :
                         <h2>Clicked Students :</h2>
                     }
-                    <button onClick={Handle_SendHeart}>SEND HEART</button>
+                    <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className={styles["save-button"]}
+                        onClick={Handle_SendHeart}
+                        style={{ color: "black"}}
+                        // style={{ color: "black" }}
+                    >
+                        Save
+                    </motion.div>
+                    {/* <div onClick={Handle_SendHeart}>SEND HEART</div> */}
                 </div>
-
-
             </div>
-            <div className="section-2">
-                <div className="search-div">
-                    <BsSearch className="icon" size={20} />
-                    <input
-                        type="text"
-                        className="search-bar details-text "
-                        placeholder="Enter Name To Search."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
-                <div className="student-container">
-                    {filteredStudents.map((student) => (
-                        <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} />
-                    ))}
+            <div className="section-B">
+            <div className='section_3'><Hearts /></div>
+                <div className="section_4">
+                    <div className="search-div">
+                        <BsSearch className="icon" size={20} />
+                        <input
+                            type="text"
+                            className="search-bar details-text "
+                            placeholder="Enter Name To Search."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <div className="student-container">
+                        {filteredStudents.map((student) => (
+                            <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} />
+                        ))}
+                    </div>
                 </div>
                 <GoToTop />
             </div>
+            </div>
             <Clear />
-        </>
+        </div>
 
     )
 }
