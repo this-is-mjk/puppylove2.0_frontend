@@ -36,6 +36,7 @@ const VerifyPage: React.FC = () => {
             return
         }
         if (data.password !== data.confirmPassword) {
+            alert("Passwords do not match")
             // RENTER PASSWORD
             return
         }
@@ -48,6 +49,7 @@ const VerifyPage: React.FC = () => {
         }
         else {
             console.log("Not Verified");
+            alert("Wrong OTP. Please try again");
             // NOT VEREFIED
         }
 

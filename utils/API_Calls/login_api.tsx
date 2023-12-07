@@ -10,7 +10,7 @@ export const handleLog = async(data: any) => {
       const res = await fetch(
           `${SERVER_IP}/session/login`, {
               method: "POST",
-              // credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
+              // credentials: "include"
               body: JSON.stringify({
                   _id: data.id,
                   passHash: passHash

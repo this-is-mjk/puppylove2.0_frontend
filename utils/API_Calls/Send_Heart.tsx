@@ -99,7 +99,7 @@ export async function get_pubKey (id: string) {
     const res = await fetch(
         `${SERVER_IP}/users/fetchPublicKeys`, {
             method: "GET",
-            credentials: "include"  // uncomment this line if server running on same host as frontend (CORS)
+            // credentials: "include" 
         }
     )
     if (!res.ok) {

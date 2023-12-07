@@ -23,6 +23,7 @@ const RegisterPage: React.FC = () => {
         }
         else {
             console.log("user Not in Database")
+            alert("User not found in data base")
             // USER NOT CREATED IN DATABASE
         }
     };
