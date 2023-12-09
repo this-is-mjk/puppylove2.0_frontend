@@ -1,16 +1,18 @@
 import {SHA256, Decryption_AES} from "../Encryption"
-import {Set_PrivK, Set_PubK, Set_Data, Set_Gender, Set_Claims, Set_Submit} from "../UserData"
+import {Set_PrivK, Set_PubK, Set_Data, Set_Gender, Set_Claims, Set_Submit, Set_Id} from "../UserData"
 import { fetchAndDecodeHearts } from "./recievedHearts"
 import { returnHearts_Late } from "./returnHearts"
+import { FetchReturnedHearts } from "./Matching"
 const SERVER_IP = process.env.SERVER_IP
 
 export const handleLog = async(data: any) => {
     try {
+      Set_Id(data.id);
       const passHash = await SHA256(data.password)
       const res = await fetch(
           `${SERVER_IP}/session/login`, {
               method: "POST",
-              // credentials: "include"
+              credentials: "include",  // For CORS
               body: JSON.stringify({
                   _id: data.id,
                   passHash: passHash
@@ -32,12 +34,14 @@ export const handleLog = async(data: any) => {
       Set_PubK(res_json.pubKey)
       Set_Gender(res_json.gender)
       Set_Submit(res_json.submit)
-      await Set_Data(res_json.data)
+      await Set_Data(res_json.data, data.id)
       await Set_Claims(res_json.claims)
 
+      await fetchAndDecodeHearts()
 
       if(res_json.submit === true) {
-        // await returnHearts_Late() // Not Working
+        await returnHearts_Late()
+        await FetchReturnedHearts()
       }
 
       return true
@@ -47,3 +51,21 @@ export const handleLog = async(data: any) => {
       return false
     }
   }
+
+export const handle_Logout = async() => {
+  try {
+    const res = await fetch(
+      `${SERVER_IP}/session/logout`, {
+        method: "GET"
+      }
+    )
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    }
+    return true;
+  }
+  catch(err) {
+    console.log(err)
+    return false 
+  }
+}

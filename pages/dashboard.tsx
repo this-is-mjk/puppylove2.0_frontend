@@ -1,9 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import { Button } from "@chakra-ui/react";
+import { FaSignOutAlt } from "react-icons/fa";
 import {motion} from "framer-motion";
 import styles from "../styles/login.module.css";
 import "../styles/dashboard.css"
-import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import Card from "@/components/card";
 import Hearts from "@/components/Hearts";
@@ -13,6 +14,9 @@ import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import {receiverIds} from '../utils/UserData';
+import { handle_Logout } from '@/utils/API_Calls/login_api';
+import { Id, Submit as hearts_submitted } from "../utils/UserData"
+const SERVER_IP = process.env.SERVER_IP
 
 interface Student {
     _id: string;
@@ -33,6 +37,7 @@ const New = () => {
     const [access_token, setAccessToken] = useState<string | null>(null);
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [user, setUser] = useState(null);
+    const [activeUsers, setActiveUsers] = useState<string[]>([]);
 
     const handleButtonClick = (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
@@ -54,31 +59,104 @@ const New = () => {
     };
 
     const Handle_SendHeart = async () => {
-        await SendHeart_api(false)
-      }
-    
-      const Handle_SubmitHeart = async () => {
         await SendHeart_api(true)
-      }
+    }
     
-      const SendHeart_api = async (Submit: boolean) => {
-        if(!Submit) {
-          for(let i=0; i <4; i++) {
-            const id: string = clickedStudents[i]?.i
-            receiverIds[i] = id
-          }
+    const SendHeart_api = async (Submit: boolean) => {
+        if(hearts_submitted) {
+            if(Submit) {
+                alert(`Hearts Already Submitted, Cannot Send Hearts Again.`)
+            }
+            else {
+                alert(`Hearts Already Submitted, New Selections will not be Saved.`)
+            }
+            return;
         }
-        const query = new URLSearchParams(window.location.search);
-        const id = query.get("id")
-        const isValid = await SendHeart(id as string, receiverIds, Submit)
-        if(isValid) {
-          // ALERT HEART SENT
-          console.log("HEARTS SEND")
+        for(let j=0; j < clickedStudents.length; j++) {
+            const id: string = clickedStudents[j].i
+            receiverIds[j] = id
+        }
+        for(let j = clickedStudents.length; j < 4; j++) {
+            receiverIds[j] = ''
+        }
+        const isValid = await SendHeart(Id, receiverIds, Submit)
+        if(isValid && Submit) {
+            alert('HEARTS SENT')
+            console.log("HEARTS SEND")
+        }
+        else if(!isValid && Submit) {
+            alert('Error Occurred , Hearts not sent')
+            console.log("Error")
+        }
+        else if(!isValid && !Submit) {
+            console.log('Choices Not Saved')
+        }
+    }
+
+    const Logout = async () => {
+
+        console.log(clickedStudents)
+
+        await SendHeart_api(false);
+        const isValid = await handle_Logout()
+        router.push('/')
+        if(!isValid) {
+            alert('Some Error Occured while Logging Out')
         }
         else {
-          console.log("Error")
+            console.log('Logged Out')
         }
-      }
+    }
+
+    const fetchAndSelectStudents = async () => {
+        const selected: Student[] = []
+        for(let i=0; i < 4; i++) {
+            const id = receiverIds[i]
+            if(id === '') {
+                continue
+            }
+            const data = await fetchData(id);
+            const student = data[0];
+            if (student) {
+                selected.push(student);
+            }
+        }
+        setClickedStudents(selected)
+    }
+
+    useEffect(() => {
+        if(access_token) {
+            fetchAndSelectStudents();
+        }
+    }, [access_token]);
+
+    useEffect(() => {
+        const fetchActiveUsers = async () => {
+            try {
+                const res = await fetch(
+                    `${SERVER_IP}/users/activeusers`, {
+                        method: "GET",
+                        credentials: "include" // For CORS
+                    }
+                )
+                if (!res.ok) {
+                    throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+                }
+                const active = await res.json()
+                setActiveUsers(active.users)
+            }
+            catch(err) {
+                // Cannot fetch Active users
+                console.log(err)
+            }
+        }
+
+        fetchActiveUsers()
+    }, []);
+
+    const isActive = (id: string) => {
+        return activeUsers.includes(id);
+    };
 
     useEffect(() => {
         if (!access_token) {
@@ -161,13 +239,13 @@ const New = () => {
         setUser(user[0]);
     }
     useEffect(() => {
-
-
-        const { id } = router.query;
-        const userId = id?.toString();
-        FetchUser(userId);
-        //Change it
-    }, [router, FetchUser]);
+        if(Id === '') {
+            router.push('/login')
+        }
+        if(access_token) {
+            FetchUser(Id)
+        }
+    }, [access_token]);
 
     useEffect(() => {
         fetchStudents();
@@ -194,6 +272,12 @@ const New = () => {
     return (
         <div className='box'>
             <Clear />
+            {/* LOGOUT BUTTON */}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button as="a" className="chakra-button css-q9srah" onClick={Logout} leftIcon={<FaSignOutAlt />} style={{ top: '10px', left: '1310px' }}>
+                Logout
+            </Button>
+            </div>
             <div className='hero'>
             <div className='section-A'>
                 <div className='section_1'>
@@ -206,17 +290,12 @@ const New = () => {
                                 <div className="details-text-name">{user?.n}</div>
                                 <div className="details-text" >{user?.d}</div>
                                 <div className="details-text" >{user?.i}</div>
-                                {/* <p>{receiverIds[0]}</p>
-                                <p>{receiverIds[1]}</p>
-                                <p>{receiverIds[2]}</p>
-                                <p>{receiverIds[3]}</p> */}
                                 <motion.div
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className={styles["heart-submit-button"]}
-                                onClick={Handle_SubmitHeart}
+                                onClick={Handle_SendHeart}
                                 style={{ color: "white" }}
-                                // style={{ color: "black" }}
                                 >
                                     Submit Button
                                 </motion.div>
@@ -234,17 +313,18 @@ const New = () => {
                         :
                         <h2>Clicked Students :</h2>
                     }
-                    <motion.div
+
+                    {/* Automatic Save on Login , So no need of Save Button */}
+                    {/* <motion.div
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className={styles["save-button"]}
                         onClick={Handle_SendHeart}
                         style={{ color: "black"}}
-                        // style={{ color: "black" }}
                     >
                         Save
-                    </motion.div>
-                    {/* <div onClick={Handle_SendHeart}>SEND HEART</div> */}
+                    </motion.div> */}
+
                 </div>
             </div>
             <div className="section-B">
@@ -262,7 +342,7 @@ const New = () => {
                     </div>
                     <div className="student-container">
                         {filteredStudents.map((student) => (
-                            <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} />
+                            <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} isActive={isActive}/>
                         ))}
                     </div>
                 </div>

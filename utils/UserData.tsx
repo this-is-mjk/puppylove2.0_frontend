@@ -1,14 +1,17 @@
 import { Decryption } from "./Encryption"
 
-export let Gender = ""
-export let PubK = ""
-export let PrivK = ""
-export let Data = ""
+export let Id = ''
+export let Gender = ''
+export let PubK = ''
+export let PrivK = ''
+export let Data = ''
 export let Submit = false
 // IDs of receivers of heart from User
 export let receiverIds: string[] = []
 
-export let pubKeys: string[] = []
+export function Set_Id(id: string) {
+    Id = id
+}
 
 export function Set_Gender(gender: string) {
     Gender = gender
@@ -27,40 +30,57 @@ export function Set_Submit(submit: boolean) {
 }
 
 // Send Heart
-interface Heart {
+export interface Heart {
     enc: string;
     sha: string;
     id_encrypt: string;
 }
   
-interface Hearts {
+export interface Hearts {
     heart1: Heart;
     heart2: Heart;
     heart3: Heart;
     heart4: Heart;
 }
 
-export async function Set_Data(data: string) {
+export let Sent_Hearts: Hearts;
+
+export async function Set_Data(data: string, id: string) {
+
+    // Initializing Every State Varibale to 0 incase user Logins again immediately after Logout
+    for(let i=0; i < 4; i++) {
+        receiverIds[i] = ''
+    }
+
     if(data === "FIRST_LOGIN") {
         return
     }
 
-    const Data = JSON.parse(data) as Hearts;
+    Sent_Hearts = JSON.parse(data) as Hearts;
+    console.log(Sent_Hearts)
 
     const idEncrypts: string[] = []
-    idEncrypts.push(Data.heart1.id_encrypt)
-    idEncrypts.push(Data.heart2.id_encrypt)
-    idEncrypts.push(Data.heart3.id_encrypt)
-    idEncrypts.push(Data.heart4.id_encrypt)
+    for(const key in Sent_Hearts) {
+        idEncrypts.push(Sent_Hearts[key as keyof Hearts].id_encrypt);
+    }
 
     for(let i=0; i < 4; i++) {
+        if(idEncrypts[i] === '') {
+            receiverIds[i] = ''
+            continue
+        }
         const id: string = await Decryption(idEncrypts[i], PrivK)
         if(id === null){
             return
         }
-        const parts = id.split("+")
-        receiverIds.push(parts[0])
-        console.log(parts[0])
+        if(id.slice(0,6) === Id) {
+            receiverIds[i] = (id.slice(6,12))
+            console.log(id.slice(6,12))
+        }
+        else {
+            receiverIds[i] = (id.slice(0,6))
+            console.log(id.slice(0,6))
+        }
     }
 }
 
@@ -79,7 +99,7 @@ export function Set_heartsFemale(heartsFemales : number) {
 interface heart {
     enc: string;
     sha: string;
-    gender: string;
+    genderOfSender: string;
 }
 
 // Return Claimed Hearts
@@ -95,6 +115,14 @@ export let Claims: heart[] = []
 export let Claims_Late : ReturnHeart[] = []
 
 export async function Set_Claims(claims: string) {
+    // Initializing Every State Varibale to 0 incase user logins again immediately after logout
+    heartsReceivedFromFemales = 0;
+    heartsReceivedFromMales = 0;
+    Claims = []
+    Claims_Late = []
+    ReturnHearts = []
+    ReturnHearts_Late = []
+    
     if (claims === "") {
         return
     }
@@ -110,7 +138,8 @@ export async function Set_Claims(claims: string) {
 
     jsonStrings.forEach(jsonString => {
         const claim = JSON.parse(decodeURIComponent(jsonString)) as heart
-        if(claim.gender === 'F') {
+        console.log(claim)
+        if(claim.genderOfSender === 'F') {
             heartsReceivedFromFemales++;
         }
         else {
@@ -119,4 +148,3 @@ export async function Set_Claims(claims: string) {
         Claims.push(claim)
     });
 }
-

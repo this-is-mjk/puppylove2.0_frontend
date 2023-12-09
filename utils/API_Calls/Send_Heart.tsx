@@ -1,5 +1,5 @@
 import {SHA256, Encryption, RandInt} from "../Encryption"
-import { PubK, Gender, ReturnHearts, pubKeys } from "../UserData"
+import { PubK, Gender, ReturnHearts, Set_Submit } from "../UserData"
 import { returnHearts } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
@@ -10,30 +10,39 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
         const ids_encrypt: string[] = []
         const R1: number = parseInt(senderId)
         for(const id of receiverIds) {
+            if(id === '') {
+                enc.push('')
+                sha.push('')
+                ids_encrypt.push('')
+                continue
+            }
             const R2: number = parseInt(id)
             const random = await RandInt()
             const R3: string = random.toString()
             const pubKey_: string = await get_pubKey(id)
-            pubKeys.push(pubKey_)
+            let id_encrypt: string;
             if(R1 < R2) {
-                const sha_:string = await SHA256(R1.toString() + R2.toString() + R3)
+                const id_plain:string  = R1.toString() + R2.toString() + R3
+                id_encrypt = await Encryption(id_plain, PubK)
+                const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
                 const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
             else {
-                const sha_:string = await SHA256(R2.toString() + R1.toString() + R3)
+                const id_plain: string = R2.toString() + R1.toString() + R3
+                id_encrypt = await Encryption(id_plain, PubK)
+                const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
                 const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
-            const id_encrypt:string = await Encryption(R2.toString() + '+' + R3, PubK)
             ids_encrypt.push(id_encrypt)
         }
         const res = await fetch(
             `${SERVER_IP}/users/sendheartVirtual`, {
                 method: "POST",
-                credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
+                credentials: "include",  // For CORS
                 body: JSON.stringify({
                     hearts: {
                         heart1: {
@@ -64,11 +73,12 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
             throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
         }
         if(Submit) {
+            Set_Submit(Submit)
             await returnHearts()
             const res = await fetch(
                 `${SERVER_IP}/users/sendheart`, {
                     method: "POST",
-                    credentials: "include",  // uncomment this line if server running on same host as frontend (CORS)
+                    credentials: "include",  // For CORS
                     body: JSON.stringify({
                         genderofsender: Gender,
                         enc1: enc[0],
@@ -99,7 +109,7 @@ export async function get_pubKey (id: string) {
     const res = await fetch(
         `${SERVER_IP}/users/fetchPublicKeys`, {
             method: "GET",
-            // credentials: "include" 
+            credentials: "include"  // For CORS
         }
     )
     if (!res.ok) {
