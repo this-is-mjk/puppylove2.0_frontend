@@ -38,6 +38,7 @@ const New = () => {
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [user, setUser] = useState(null);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
+    let access_token_found = false;
 
     const handleButtonClick = (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
@@ -116,6 +117,9 @@ const New = () => {
                 continue
             }
             const data = await fetchData(id);
+            if (data == undefined) {
+                return;
+            }
             const student = data[0];
             if (student) {
                 selected.push(student);
@@ -236,6 +240,10 @@ const New = () => {
     };
     const FetchUser = async (id: string) => {
         const user = await fetchData(id);
+        if(user == undefined) {
+            console.log("Not able to Fetch User");
+            return;
+        }
         setUser(user[0]);
     }
     useEffect(() => {
@@ -254,105 +262,114 @@ const New = () => {
     const fetchStudents = async () => {
         try {
             const studentData = await fetchData(searchQuery);
+            if(studentData == undefined) {
+                console.log("Not able to Fetch Students");
+                return;
+            }
             setStudents(studentData);
         } catch (error) {
             console.error("Error fetching student data:", error);
         }
     };
 
-    const filteredStudents = students.filter((student) =>
-        student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.i.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    if(access_token_found) {
+        const filteredStudents = students.filter((student) =>
+            student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            student.i.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
 
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
       };
 
-    return (
-        <div className='box'>
-            <Clear />
-            {/* LOGOUT BUTTON */}
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button as="a" className="chakra-button css-q9srah" onClick={Logout} leftIcon={<FaSignOutAlt />} style={{ top: '10px', left: '1310px' }}>
-                Logout
-            </Button>
-            </div>
-            <div className='hero'>
-            <div className='section-A'>
-                <div className='section_1'>
-                    <div className="info">
-                        <div className="image-container">
-                            <div className="image-box">
-                            <div className="profile" style={stylesss}></div>
-                            </div>
-                            {user && <div className="detail">
-                                <div className="details-text-name">{user?.n}</div>
-                                <div className="details-text" >{user?.d}</div>
-                                <div className="details-text" >{user?.i}</div>
-                                <motion.div
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                className={styles["heart-submit-button"]}
-                                onClick={Handle_SendHeart}
-                                style={{ color: "white" }}
-                                >
-                                    Submit Button
-                                </motion.div>
-                            </div>}
+    if(access_token_found) {
+        return (
+            <div className='box'>
+                <Clear />
+                {/* LOGOUT BUTTON */}
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button as="a" className="chakra-button css-q9srah" onClick={Logout} leftIcon={<FaSignOutAlt />} style={{ top: '10px', left: '1310px' }}>
+                    Logout
+                </Button>
+                </div>
+                <div className='hero'>
+                <div className='section-A'>
+                    <div className='section_1'>
+                        <div className="info">
+                            <div className="image-container">
+                                <div className="image-box">
+                                <div className="profile" style={stylesss}></div>
+                                </div>
+                                {user && <div className="detail">
+                                    <div className="details-text-name">{user?.n}</div>
+                                    <div className="details-text" >{user?.d}</div>
+                                    <div className="details-text" >{user?.i}</div>
+                                    <motion.div
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className={styles["heart-submit-button"]}
+                                    onClick={Handle_SendHeart}
+                                    style={{ color: "white" }}
+                                    >
+                                        Submit Button
+                                    </motion.div>
+                                </div>}
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div className='section_2'>
-                    {clickedStudents.length > 0 ?
-                    <div>
-                        <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} />
-                    </div>
-                        :
-                        <h2>Clicked Students :</h2>
-                    }
 
-                    {/* Automatic Save on Login , So no need of Save Button */}
-                    {/* <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className={styles["save-button"]}
-                        onClick={Handle_SendHeart}
-                        style={{ color: "black"}}
-                    >
-                        Save
-                    </motion.div> */}
+                    <div className='section_2'>
+                        {clickedStudents.length > 0 ?
+                        <div>
+                            <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} />
+                        </div>
+                            :
+                            <h2>Clicked Students :</h2>
+                        }
 
-                </div>
-            </div>
-            <div className="section-B">
-            <div className='section_3'><Hearts /></div>
-                <div className="section_4">
-                    <div className="search-div">
-                        <BsSearch className="icon" size={20} />
-                        <input
-                            type="text"
-                            className="search-bar details-text "
-                            placeholder="Enter Name To Search."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <div className="student-container">
-                        {filteredStudents.map((student) => (
-                            <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} isActive={isActive}/>
-                        ))}
+                        {/* Automatic Save on Login , So no need of Save Button */}
+                        {/* <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={styles["save-button"]}
+                            onClick={Handle_SendHeart}
+                            style={{ color: "black"}}
+                        >
+                            Save
+                        </motion.div> */}
+
                     </div>
                 </div>
-                <GoToTop />
+                <div className="section-B">
+                <div className='section_3'><Hearts /></div>
+                    <div className="section_4">
+                        <div className="search-div">
+                            <BsSearch className="icon" size={20} />
+                            <input
+                                type="text"
+                                className="search-bar details-text "
+                                placeholder="Enter Name To Search."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <div className="student-container">
+                            {filteredStudents.map((student) => (
+                                <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} isActive={isActive}/>
+                            ))}
+                        </div>
+                    </div>
+                    <GoToTop />
+                </div>
+                </div>
+                <Clear />
             </div>
-            </div>
-            <Clear />
-        </div>
-
-    )
+        )
+    } else {
+        return ;
+    }
 }
 
 export default New
