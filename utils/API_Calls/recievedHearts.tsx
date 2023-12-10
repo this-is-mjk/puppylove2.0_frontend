@@ -34,7 +34,7 @@ export const fetchAndDecodeHearts = async () => {
           heartsMales++;
         }
 
-        Claims.push({enc: encoded_sha, sha: decrypted_sha, gender: gender})
+        Claims.push({enc: encoded_sha, sha: decrypted_sha, genderOfSender: gender})
         if(Submit === true) {
           Claims_Late.push({enc: encoded_sha, sha: decrypted_sha})
         }
