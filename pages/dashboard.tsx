@@ -38,7 +38,6 @@ const New = () => {
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [user, setUser] = useState(null);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
-    let access_token_found = false;
 
     const handleButtonClick = (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
@@ -272,18 +271,16 @@ const New = () => {
         }
     };
 
-    if(access_token_found) {
-        const filteredStudents = students.filter((student) =>
-            student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.i.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }
+    const filteredStudents = students.filter((student) =>
+        student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.i.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
       };
 
-    if(access_token_found) {
+    if(access_token) {
         return (
             <div className='box'>
                 <Clear />
