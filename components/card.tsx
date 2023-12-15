@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/card.css";
 
-const Card = ({ student, onClick, clickedCheck, isActive }: any) => {
+const Card = ({ student, onClick, clickedCheck, isActive, hearts_submitted }: any) => {
   const userName = student.u;
   const roll = student.i;
 
@@ -25,19 +25,22 @@ const Card = ({ student, onClick, clickedCheck, isActive }: any) => {
         <div className="profile" style={stylesss}></div>
       </div>
       <p className="card-details">{student.n}</p>
-
-      {isActive(student.i) ? (
+      {hearts_submitted && isActive(student.i) ? (
+        <div className="carddetails">
+          Hearts Submitted
+        </div>
+      ) : isActive(student.i) ? (
         <div className="carddetails">
           <button className="button" onClick={clicked} disabled={clickedCheck}>
             {clickedCheck ? "Selected" : "Send Heart"}
           </button>
         </div>
       ) : (
-      <div className="carddetails">
-        <button className="button" disabled>
-          Not Registered
-        </button>
-      </div>
+        <div className="carddetails">
+          <button className="button" disabled>
+            Not Registered
+          </button>
+        </div>
       )}
     </div>
   );

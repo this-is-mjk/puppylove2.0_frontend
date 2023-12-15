@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/selectcard.css";
 
-const Card = ({ student, onClick }: any) => {
+const Card = ({ student, onClick, hearts_submitted }: any) => {
   const userName = student.u;
   const roll = student.i;
 
@@ -26,12 +26,17 @@ const Card = ({ student, onClick }: any) => {
         <div className="select-profile" style={stylesss}></div>
       </div>
       <p className="select-card-details">{student.n}</p>
-
-      <div className="select-carddetails">
-        <button className="select-button" onClick={clicked}>
-          Unselect
-        </button>
-      </div>
+      {!hearts_submitted ? (
+        <div className="carddetails">
+          <button className="select-button" onClick={clicked}>
+            Unselect
+          </button>
+        </div>
+      ) : (
+        <div className="carddetails">
+          Hearts Submitted
+        </div>
+      )}
     </div>
   );
 };

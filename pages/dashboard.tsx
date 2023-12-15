@@ -15,10 +15,10 @@ import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import {receiverIds} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
-import { Id, Submit as hearts_submitted } from "../utils/UserData"
+import { Id, Submit} from "../utils/UserData"
 const SERVER_IP = process.env.SERVER_IP
 
-interface Student {
+export interface Student {
     _id: string;
     b: string;
     d: string;
@@ -38,6 +38,23 @@ const New = () => {
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [user, setUser] = useState(null);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
+    const [hearts_submitted, set_hearts_submitted] = useState(Submit);
+    
+    useEffect(() => {
+        const handle_Tab_Close = (e: any) => {
+            e.preventDefault();
+            // Browser may show its defualt message because of Security Reasons
+            return 'Your selections will not be saved if you do not logout. Are you sure you want to leave?';
+        };
+
+        if(!hearts_submitted) {
+            window.addEventListener('beforeunload', handle_Tab_Close);
+        }
+      
+        return () => {
+          window.removeEventListener('beforeunload', handle_Tab_Close);
+        };
+    }, []);
 
     const handleButtonClick = (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
@@ -64,13 +81,10 @@ const New = () => {
     
     const SendHeart_api = async (Submit: boolean) => {
         if(hearts_submitted) {
-            if(Submit) {
-                alert(`Hearts Already Submitted, Cannot Send Hearts Again.`)
-            }
-            else {
-                alert(`Hearts Already Submitted, New Selections will not be Saved.`)
-            }
             return;
+        }
+        if(Submit) {
+            set_hearts_submitted(true);
         }
         for(let j=0; j < clickedStudents.length; j++) {
             const id: string = clickedStudents[j].i
@@ -302,17 +316,27 @@ const New = () => {
                                     <div className="details-text-name">{user?.n}</div>
                                     <div className="details-text" >{user?.d}</div>
                                     <div className="details-text" >{user?.i}</div>
-                                    <motion.div
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    className={styles["heart-submit-button"]}
-                                    onClick={Handle_SendHeart}
-                                    style={{ color: "white" }}
-                                    >
-                                        Submit Button
-                                    </motion.div>
+                                    {!hearts_submitted ? (
+                                        <motion.div
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        className={styles["heart-submit-button"]}
+                                        onClick={Handle_SendHeart}
+                                        style={{ color: "white" }}
+                                        >
+                                            Submit Hearts
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        className={styles["heart-submit-button"]}
+                                        style={{ color: "white" }}
+                                        >
+                                            Hearts Submitted
+                                        </motion.div>
+                                    )}
                                 </div>}
-
                             </div>
                         </div>
                     </div>
@@ -320,7 +344,7 @@ const New = () => {
                     <div className='section_2'>
                         {clickedStudents.length > 0 ?
                         <div>
-                            <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} />
+                            <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} hearts_submitted={hearts_submitted} />
                         </div>
                             :
                             <h2>Clicked Students :</h2>
@@ -354,7 +378,8 @@ const New = () => {
                         </div>
                         <div className="student-container">
                             {filteredStudents.map((student) => (
-                                <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)} isActive={isActive}/>
+                                <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)}
+                                isActive={isActive} hearts_submitted={hearts_submitted}/>
                             ))}
                         </div>
                     </div>
