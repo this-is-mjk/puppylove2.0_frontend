@@ -17,8 +17,6 @@ interface Student {
    p: string; //programme
    r: string; //room number
    u: string; //username
-   s: string; //roll number of baapu/amma
-   c: Array<string> | string; //array containing roll numbers of bacchas (or the words "not available")
 }
 
 interface Query {
@@ -38,11 +36,11 @@ interface Query {
 var students: any[] = []
 var new_students: any[] | undefined = undefined;
 var config = {
-    "APP_ID": "data-yubip",
-    "API_KEY": "XvhvZNBWObiDyf651zDE8LsSx59zssBKVMlTHSftn566l7rXoVrbQxnW0L2p6L5A",
+	"APP_ID": "data-qziug",
+    "API_KEY": "u9Nf0dLpfEvH1HvGqgj8CvIJY4b2G7dZi4WOpX1W4oFAUhmNdN430YwRc1xPG9Ha",
     "cluster_name": "Cluster0",
-    "db_name": "student_data",
-    "collection_name": "student_data"
+    "db_name": "student_search",
+    "collection_name": "student_search"
 }
 
 const options: Options = {
@@ -55,9 +53,10 @@ const options: Options = {
 
 var db: any | undefined = ""; //holds the reference to the IndexedDB storing student data locally
 
+
 async function fetch_student_data() { //WILL throw errors when something goes wrong - this is intentional
 	console.log("Sending access token request...");
-	const access_token = (await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
+	const access_token = (await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -72,7 +71,7 @@ async function fetch_student_data() { //WILL throw errors when something goes wr
     console.log(`Access token:`);
     console.log(access_token);
     if (access_token === undefined) {throw new Error("Access token undefined");}
-    const student_data = (await fetch(`https://ap-south-1.aws.data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
+    const student_data = (await fetch(`https://data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -212,8 +211,7 @@ function prepare_worker() {//student data should be in a global variable called 
 //			console.log("Family tree");
 			let student = event.data[1];
 			let baapu = students.filter((st: Student) => (st.i === student.s))[0]; //note that this can also be undefined - this will be handled by TreeCard
-			let bacchas = check_bacchas(student.c);
-			postMessage(["ft", [baapu, student, bacchas]]);
+			postMessage(["ft", [baapu, student]]);
 	
 		} else {
 			//query stuff - should post list of satisfying students
@@ -282,16 +280,7 @@ function rollToYear(roll: string): string {
 	} else return "Other";
 }
 
-function check_bacchas(bacchas: "Not Available" | Array<string>) : Array<Student> {
-	if (bacchas === "Not Available") {
-		return [];
-	} else {
-		return students.filter((student) => (bacchas.includes(student.i)));
-		
-	}
-}
-
-function check_query(query: Query) : Array<Student> {
+export function check_query(query: Query) : Array<Student> {
 	//goes through the array of students and selects only those that match the query given.
 
 	return students.filter((student: Student) => {
