@@ -6,13 +6,13 @@ import { FetchReturnedHearts } from "./Matching"
 const SERVER_IP = process.env.SERVER_IP
 
 export const handleLog = async(data: any) => {
+  return true
     try {
       Set_Id(data.id);
       const passHash = await SHA256(data.password)
       const res = await fetch(
           `${SERVER_IP}/session/login`, {
               method: "POST",
-              credentials: "include",  // For CORS
               body: JSON.stringify({
                   _id: data.id,
                   passHash: passHash

@@ -152,8 +152,7 @@ const New = () => {
             try {
                 const res = await fetch(
                     `${SERVER_IP}/users/activeusers`, {
-                        method: "GET",
-                        credentials: "include" // For CORS
+                        method: "GET",// For CORS
                     }
                 )
                 if (!res.ok) {
