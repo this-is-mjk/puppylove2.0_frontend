@@ -6,20 +6,20 @@ import { FetchReturnedHearts } from "./Matching"
 const SERVER_IP = process.env.SERVER_IP
 
 export const handleLog = async(data: any) => {
-  return true
     try {
       Set_Id(data.id);
       const passHash = await SHA256(data.password)
       const res = await fetch(
           `${SERVER_IP}/session/login`, {
               method: "POST",
+              credentials:"include",
               body: JSON.stringify({
                   _id: data.id,
                   passHash: passHash
               }),
 
               headers: {
-                  "Content-type": "application/json; charset=UTF-8"
+                  "Content-type": "application/json; charset=UTF-8",
               }
           }
       );
@@ -29,7 +29,7 @@ export const handleLog = async(data: any) => {
       const res_json = await res.json()
       const pvtKey_Enc: string = res_json.pvtKey_Enc
       const pvtKey_login = await Decryption_AES(pvtKey_Enc, data.password)
-
+      
       Set_PrivK(pvtKey_login)
       Set_PubK(res_json.pubKey)
       Set_Gender(res_json.gender)

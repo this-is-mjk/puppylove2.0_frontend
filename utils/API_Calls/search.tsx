@@ -346,6 +346,7 @@ function check_query(query: Query) : Array<Student> {
 }
 
 export function search_students(nameOrRoll:string):Array<Student> {
+	if (nameOrRoll === undefined) return []
 	const query = {"name":nameOrRoll}
-	return check_query(query)
+	return check_query(query).slice(0,20);
 }
