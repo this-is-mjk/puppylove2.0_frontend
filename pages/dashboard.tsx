@@ -16,6 +16,7 @@ import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Ca
 import {receiverIds} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
+import { search_students } from '@/utils/API_Calls/search';
 const SERVER_IP = process.env.SERVER_IP
 
 export interface Student {
@@ -34,11 +35,19 @@ const New = () => {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
     const [students, setStudents] = useState<Student[]>([]);
-    const [access_token, setAccessToken] = useState<string | null>(null);
-    const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
-    const [user, setUser] = useState(null);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
     const [hearts_submitted, set_hearts_submitted] = useState(Submit);
+    const [user,setUser] = useState("")
+    const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+
+    useEffect(() => {
+        
+        if (Id === '') {
+          router.push('/login');
+        } else {
+          setUser(search_students(Id)[0]);
+        }
+      }, []);
     
     useEffect(() => {
         const handle_Tab_Close = (e: any) => {
@@ -56,7 +65,30 @@ const New = () => {
         };
     }, []);
 
-    const handleButtonClick = (studentRoll: string) => {
+    const fetchAndSelectStudents =  () => {
+        const selected: Student[] = []
+        for(let i=0; i < 4; i++) {
+            const id = receiverIds[i]
+            if(id === '') {
+                continue
+            }
+            const data = search_students(id);
+            if (data == undefined) {
+                return;
+            }
+            const student = data[0];
+            if (student) {
+                selected.push(student);
+            }
+        }
+        setClickedStudents([...clickedStudents,...selected])
+    }
+
+    useEffect(()=>{
+        fetchAndSelectStudents()
+    },[])
+
+    const handleButtonClick = async (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
             alert('You have already selected the maximum number of students 4.');
             return;
@@ -64,15 +96,15 @@ const New = () => {
         const student = students.find((s) => s.i === studentRoll);
 
         if (student && !clickedStudents.find((s) => s.i === studentRoll)) {
-            setClickedStudents([...clickedStudents, student]);
+            setClickedStudents([...clickedStudents,student])
         } else {
             alert('This student has already been clicked!');
         }
     };
 
-    const handleUnselectStudent = (studentRoll: string) => {
+    const handleUnselectStudent = async (studentRoll: string) => {
         const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
-        setClickedStudents(updatedStudents);
+        setClickedStudents(updatedStudents)
     };
 
     const Handle_SendHeart = async () => {
@@ -122,37 +154,22 @@ const New = () => {
         }
     }
 
-    const fetchAndSelectStudents = async () => {
-        const selected: Student[] = []
-        for(let i=0; i < 4; i++) {
-            const id = receiverIds[i]
-            if(id === '') {
-                continue
-            }
-            const data = await fetchData(id);
-            if (data == undefined) {
-                return;
-            }
-            const student = data[0];
-            if (student) {
-                selected.push(student);
-            }
+    useEffect( ()=>{
+        const updateVirtualHeart = async () => {
+            console.log(clickedStudents)
+            await SendHeart_api(false);
         }
-        setClickedStudents(selected)
-    }
 
-    useEffect(() => {
-        if(access_token) {
-            fetchAndSelectStudents();
-        }
-    }, [access_token]);
+        updateVirtualHeart()
+    },[clickedStudents])
 
     useEffect(() => {
         const fetchActiveUsers = async () => {
             try {
                 const res = await fetch(
                     `${SERVER_IP}/users/activeusers`, {
-                        method: "GET",// For CORS
+                        method: "GET",
+                        credentials:"include",// For CORS
                     }
                 )
                 if (!res.ok) {
@@ -175,125 +192,27 @@ const New = () => {
     };
 
     useEffect(() => {
-        if (!access_token) {
-            fetchAccessToken();
-        }
-    }, [access_token]);
-
-    const config = {
-        APP_ID: "data-yubip",
-        API_KEY: "XvhvZNBWObiDyf651zDE8LsSx59zssBKVMlTHSftn566l7rXoVrbQxnW0L2p6L5A",
-        cluster_name: "Cluster0",
-        db_name: "student_data",
-        collection_name: "student_data",
-    };
-
-    const fetchAccessToken = async () => {
-        try {
-            const response = await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    key: config.API_KEY,
-                }),
-            });
-            const data = await response.json();
-            setAccessToken(data.access_token);
-        } catch (error) {
-            console.error("Error fetching access token:", error);
-        }
-    };
-
-    const fetchData = async (search: string) => {
-        try {
-            if (!access_token) {
-                console.error("Access token is not available.");
-                return [];
-            }
-
-            const student_data = await fetch(`https://ap-south-1.aws.data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${access_token}`,
-                },
-                body: JSON.stringify({
-                    dataSource: config.cluster_name,
-                    database: config.db_name,
-                    collection: config.collection_name,
-                    filter: {
-                        $or: [
-                            {
-                                n: {
-                                    $regex: search,
-                                    $options: 'i',
-                                },
-                            },
-                            {
-                                i: {
-                                    $regex: search,
-                                    $options: 'i',
-                                },
-                            },
-                        ],
-                    },
-                    limit: 20,
-                }),
-            });
-
-            const response = await student_data.json();
-            return response.documents;
-        } catch (error) {
-            console.error("Error fetching student data:", error);
-            return [];
-        }
-    };
-    const FetchUser = async (id: string) => {
-        const user = await fetchData(id);
-        if(user == undefined) {
-            console.log("Not able to Fetch User");
-            return;
-        }
-        setUser(user[0]);
-    }
-    useEffect(() => {
-        if(Id === '') {
-            router.push('/login')
-        }
-        if(access_token) {
-            FetchUser(Id)
-        }
-    }, [access_token]);
-
-    useEffect(() => {
         fetchStudents();
     }, [searchQuery]);
 
-    const fetchStudents = async () => {
-        try {
-            const studentData = await fetchData(searchQuery);
+    const fetchStudents = () => {
+            if (searchQuery === ""){
+                setStudents([])
+                return 
+            }
+            const studentData = search_students(searchQuery);
             if(studentData == undefined) {
                 console.log("Not able to Fetch Students");
                 return;
             }
             setStudents(studentData);
-        } catch (error) {
-            console.error("Error fetching student data:", error);
-        }
     };
 
-    const filteredStudents = students.filter((student) =>
-        student.n.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.i.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     const stylesss = {
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
 
-    if(access_token) {
+      if (Id=='') return ;
         return (
             <div className='box'>
                 <Clear />
@@ -376,7 +295,8 @@ const New = () => {
                             />
                         </div>
                         <div className="student-container">
-                            {filteredStudents.map((student) => (
+                            {students.map((student) => (
+                                student.i!=Id &&
                                 <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)}
                                 isActive={isActive} hearts_submitted={hearts_submitted}/>
                             ))}
@@ -388,9 +308,6 @@ const New = () => {
                 <Clear />
             </div>
         )
-    } else {
-        return ;
-    }
 }
 
 export default New

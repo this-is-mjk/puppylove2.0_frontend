@@ -6,7 +6,7 @@ const Card = ({ student, onClick, clickedCheck, isActive, hearts_submitted }: an
   const roll = student.i;
 
   const stylesss = {
-    backgroundImage: `url("https://home.iitk.ac.in/~${userName}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${roll}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
+    backgroundImage: `url("https://home.iitk.ac.in/~${userName}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${roll}_0.jpg"), url("/dummy.png")`,
   };
 
   const isClicked = false;
@@ -25,6 +25,7 @@ const Card = ({ student, onClick, clickedCheck, isActive, hearts_submitted }: an
         <div className="profile" style={stylesss}></div>
       </div>
       <p className="card-details">{student.n}</p>
+      <p className="card-details">{student.i}</p>
       {hearts_submitted && isActive(student.i) ? (
         <div className="carddetails">
           Hearts Submitted

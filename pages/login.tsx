@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/login.module.css";
 import { MdEmail } from "react-icons/md";
 import { BiSolidLock } from "react-icons/bi";
 import Image from "next/image";
+import { search_students } from "../utils/API_Calls/search";
 import "../app/(landing)/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -33,8 +34,10 @@ const LoginPage: React.FC = () => {
 
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
-        console.log(data);
+        // console.log(data);
     };
+
+    useEffect(()=>{search_students("")},[])
 
     return (
         <div>
