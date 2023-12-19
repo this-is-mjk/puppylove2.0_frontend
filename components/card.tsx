@@ -25,6 +25,7 @@ const Card = ({ student, onClick, clickedCheck, isActive, hearts_submitted }: an
         <div className="profile" style={stylesss}></div>
       </div>
       <p className="card-details">{student.n}</p>
+      <p className="card-details">{student.i}</p>
       {hearts_submitted && isActive(student.i) ? (
         <div className="carddetails">
           Hearts Submitted

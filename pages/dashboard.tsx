@@ -88,7 +88,7 @@ const New = () => {
         fetchAndSelectStudents()
     },[])
 
-    const handleButtonClick = (studentRoll: string) => {
+    const handleButtonClick = async (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
             alert('You have already selected the maximum number of students 4.');
             return;
@@ -100,10 +100,9 @@ const New = () => {
         } else {
             alert('This student has already been clicked!');
         }
-        console.log(clickedStudents)
     };
 
-    const handleUnselectStudent = (studentRoll: string) => {
+    const handleUnselectStudent = async (studentRoll: string) => {
         const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
         setClickedStudents(updatedStudents)
     };
@@ -154,6 +153,15 @@ const New = () => {
             console.log('Logged Out')
         }
     }
+
+    useEffect( ()=>{
+        const updateVirtualHeart = async () => {
+            console.log(clickedStudents)
+            await SendHeart_api(false);
+        }
+
+        updateVirtualHeart()
+    },[clickedStudents])
 
     useEffect(() => {
         const fetchActiveUsers = async () => {
@@ -288,6 +296,7 @@ const New = () => {
                         </div>
                         <div className="student-container">
                             {students.map((student) => (
+                                student.i!=Id &&
                                 <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)}
                                 isActive={isActive} hearts_submitted={hearts_submitted}/>
                             ))}
