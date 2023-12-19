@@ -20,14 +20,7 @@ interface Student {
 }
 
 interface Query {
-   gender: string;
    name: string;
-   batch: Array<string>;
-   hall: Array<string>;
-   prog: Array<string>;
-   dept: Array<string>;
-   bloodgrp: Array<string>;
-   address: string;
 }
 
 
@@ -36,8 +29,8 @@ interface Query {
 var students: any[] = []
 var new_students: any[] | undefined = undefined;
 var config = {
-	"APP_ID": "data-qziug",
-    "API_KEY": "u9Nf0dLpfEvH1HvGqgj8CvIJY4b2G7dZi4WOpX1W4oFAUhmNdN430YwRc1xPG9Ha",
+	"APP_ID": "data-rgzxa",
+    "API_KEY": "A6r4akrfAeBxnyxwpUwj5TiyWbiXtmFkfFUnbQw4QWBlqUnd0MKGphsSaYs8bcjd",
     "cluster_name": "Cluster0",
     "db_name": "student_search",
     "collection_name": "student_search"
@@ -56,7 +49,7 @@ var db: any | undefined = ""; //holds the reference to the IndexedDB storing stu
 
 async function fetch_student_data() { //WILL throw errors when something goes wrong - this is intentional
 	console.log("Sending access token request...");
-	const access_token = (await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
+	const access_token = (await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${config.APP_ID}/auth/providers/api-key/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -71,7 +64,7 @@ async function fetch_student_data() { //WILL throw errors when something goes wr
     console.log(`Access token:`);
     console.log(access_token);
     if (access_token === undefined) {throw new Error("Access token undefined");}
-    const student_data = (await fetch(`https://data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
+    const student_data = (await fetch(`https://ap-south-1.aws.data.mongodb-api.com/app/${config.APP_ID}/endpoint/data/v1/action/find`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -280,7 +273,7 @@ function rollToYear(roll: string): string {
 	} else return "Other";
 }
 
-export function check_query(query: Query) : Array<Student> {
+function check_query(query: Query) : Array<Student> {
 	//goes through the array of students and selects only those that match the query given.
 
 	return students.filter((student: Student) => {
@@ -289,9 +282,7 @@ export function check_query(query: Query) : Array<Student> {
 		for (key in query) {
 			// the idea here is that if a student DOESN'T satisfy a certain part of the query, we immediately discard them using "return false"
 			// at the end, we have a "return true" - so any records that make it to the end of the "gauntlet" are added to the final list.
-			if (query[key].length == 0) { //skip any fields that don't have anything in them
-				continue
-			}
+
 			entry = true; //if query is not totally empty, entry is set to true
 			if (key === "name") {
 				// special processing for the "name" field
@@ -344,15 +335,6 @@ export function check_query(query: Query) : Array<Student> {
 					let lowercased_name = query.name.toLowerCase();
 					if (!(student.i.includes(lowercased_name)) && !(student.u.startsWith(lowercased_name))) return false;
 				} //if the name doesn't match EITHER, then we discard that student's record.
-			} else if (key === "batch") {
-				// special processing for the "batch"/"year" field
-				if (!(query.batch.includes(rollToYear(student.i)))) return false;
-			} else if (key === "gender") {
-				let student_data = student[key[0] as "g"].toLowerCase();
-				let query_data = query[key].toLowerCase();
-				if (!(student_data === query_data)) return false;
-			}else if (key === "address") {
-				if (!(student.a.toLowerCase().includes(query.address.toLowerCase()))) return false;
 			} else { //all the other stuff
 				let key0 : Query0 = key[0] as Query0;
 				if (!(query[key].includes(student[key0]))) return false; //note that this allows query[key] to be an array - so, if e.g. query is just {i:[1, 2, 3]} it will return the students with roll numbers 1, 2 and 3 - this helps with finding bacchas
@@ -361,4 +343,9 @@ export function check_query(query: Query) : Array<Student> {
 		}
 		return entry; //if query is totally empty, this will be false - otherwise it will be true
 	});
+}
+
+export function search_students(nameOrRoll:string):Array<Student> {
+	const query = {"name":nameOrRoll}
+	return check_query(query)
 }
