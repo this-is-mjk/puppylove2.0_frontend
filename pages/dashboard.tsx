@@ -37,21 +37,21 @@ const New = () => {
         }
       }, []);
     
-    useEffect(() => {
-        const handle_Tab_Close = (e: any) => {
-            e.preventDefault();
-            // Browser may show its defualt message because of Security Reasons
-            return 'Your selections will not be saved if you do not logout. Are you sure you want to leave?';
-        };
+    // useEffect(() => {
+    //     const handle_Tab_Close = (e: any) => {
+    //         e.preventDefault();
+    //         // Browser may show its defualt message because of Security Reasons
+    //         return 'Your selections will not be saved if you do not logout. Are you sure you want to leave?';
+    //     };
 
-        if(!hearts_submitted) {
-            window.addEventListener('beforeunload', handle_Tab_Close);
-        }
+    //     if(!hearts_submitted) {
+    //         window.addEventListener('beforeunload', handle_Tab_Close);
+    //     }
       
-        return () => {
-          window.removeEventListener('beforeunload', handle_Tab_Close);
-        };
-    }, []);
+    //     return () => {
+    //       window.removeEventListener('beforeunload', handle_Tab_Close);
+    //     };
+    // }, []);
 
     const fetchAndSelectStudents =  () => {
         const selected: Student[] = []
