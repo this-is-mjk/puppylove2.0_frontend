@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "./selectcard";
 import "../styles/selectcard.css";
-import {Student} from "../pages/dashboard"
+import {Student} from "../utils/API_Calls/search"
 
 interface ClickedStudentsProps {
   clickedStudents: Student[];
