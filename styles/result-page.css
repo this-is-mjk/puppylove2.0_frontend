@@ -1,0 +1,156 @@
+.box{
+    max-width: 100%;
+}
+
+.hero{
+    max-width: 100%;
+    padding: 1rem;
+    display: grid;
+    height:fit-content;
+    grid-template-columns:.6fr 2fr;
+    grid-template-rows: 1fr;
+    /* grid-gap: 1rem; */
+    height: 100%;
+    align-items: stretch;
+    grid-template-areas: 
+    "section-Ar section-Br";
+}
+
+.image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+    line-height: 2;
+    padding: 1rem   ;
+}
+.image-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image{
+    border-radius: 50%;
+}
+
+.section-Ar{
+    grid-area: section-Ar;
+    /* background-color: aqua; */
+    padding: 1rem;
+    display: grid;
+    height:fit-content;
+    grid-template-columns:1fr;
+    grid-template-rows: .5fr .5fr;
+    grid-gap: 1rem;
+    grid-template-areas: 
+    "section_1r"
+    "section_2r";
+}   
+
+.section-Br{
+    grid-area: section-Br;
+    /* background-color: antiquewhite; */
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    gap: 1rem;
+}
+
+.section_1r{
+    grid-area: section_1r;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.section_2r{
+    grid-area: section_2r;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.section_3r{
+    grid-area: section_3r;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 6px;
+    min-height: 550px;
+    padding-left: 20%;
+    overflow-x: scroll;
+}
+
+.student-container{
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 1rem 1rem;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+.details-text {
+    font-size: 14px;
+    margin: -9px 0;
+}
+
+.details-text-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.search-div{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: white;
+    border-radius: 10px;
+
+}
+@media screen and (max-width: 900px){
+    .image{
+        width: 140px;
+        height: 140px;
+    }
+    .image-container{
+        padding: 0.2rem;
+    }
+    .search-div{
+        padding: .5rem .8rem;
+    }
+    
+}
+
+
+@media screen and (max-width: 600px) {
+    .section-Ar{
+        display: flex;
+        flex-direction: column;
+
+    }
+    .image-container{
+        padding: .6rem;
+    }
+
+    .hero{
+        grid-template-columns: 1fr 2fr;
+    }
+    
+    
+    
+}
