@@ -13,10 +13,11 @@ import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import {receiverIds} from '../utils/UserData';
+import {receiverIds, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
 import { search_students } from '@/utils/API_Calls/search';
+import Link from 'next/link';
 const SERVER_IP = process.env.SERVER_IP
 
 export interface Student {
@@ -37,7 +38,6 @@ const New = () => {
     const [students, setStudents] = useState<Student[]>([]);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
     const [hearts_submitted, set_hearts_submitted] = useState(Submit);
-    const [user,setUser] = useState("")
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
 
     useEffect(() => {
@@ -251,7 +251,7 @@ const New = () => {
                                         className={styles["heart-submit-button"]}
                                         style={{ color: "white" }}
                                         >
-                                            Hearts Submitted
+                                            <Link href={"/result"}>Results</Link>
                                         </motion.div>
                                     )}
                                 </div>}
