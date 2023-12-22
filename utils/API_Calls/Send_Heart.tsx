@@ -3,8 +3,31 @@ import { PubK, Gender, ReturnHearts, Set_Submit } from "../UserData"
 import { returnHearts } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
+let PublicKeys;
+let isPubliKAvail = false;
+
+
+
+async function fetchPubKeys(){
+    const res = await fetch(
+        `${SERVER_IP}/users/fetchPublicKeys`, {
+            method: "GET",
+            credentials: "include"  // For CORS
+        }
+    )
+    if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    }
+    const res_json = await res.json()
+    PublicKeys = res_json
+}
+
 export const SendHeart = async(senderId: string, receiverIds: string [], Submit: boolean) => {
     try {
+        if(!isPubliKAvail){
+            await fetchPubKeys()
+            isPubliKAvail = true
+        }
         const enc : string[] = []
         const sha : string[] = []
         const ids_encrypt: string[] = []
@@ -19,7 +42,7 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
             const R2: number = parseInt(id)
             const random = await RandInt()
             const R3: string = random.toString()
-            const pubKey_: string = await get_pubKey(id)
+            const pubKey_: string = get_pubKey(id)
             let id_encrypt: string;
             if(R1 < R2) {
                 const id_plain:string  = R1.toString() + R2.toString() + R3
@@ -105,18 +128,8 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
     }
   }
 
-export async function get_pubKey (id: string) {
-    const res = await fetch(
-        `${SERVER_IP}/users/fetchPublicKeys`, {
-            method: "GET",
-            credentials: "include"  // For CORS
-        }
-    )
-    if (!res.ok) {
-        throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
-    }
-    const res_json = await res.json()
-    for (const publicKey of res_json) {
+export function get_pubKey (id: string) {
+    for (const publicKey of PublicKeys) {
         if (publicKey._id === id) {
             return publicKey.pubKey;
         }

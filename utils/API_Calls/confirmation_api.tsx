@@ -2,8 +2,9 @@ const SERVER_IP = process.env.SERVER_IP
 
 export const confirmationToPublish = async() => {
     try {
-        const response = await fetch(`https://${SERVER_IP}/users/publish`, {
+        const response = await fetch(`${SERVER_IP}/users/publish`, {
           method: 'POST',
+          credentials:'include',
           headers: {
             'Content-Type': 'application/json',
           },

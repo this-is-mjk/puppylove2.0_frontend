@@ -6,16 +6,11 @@ interface Options {//type declaration
     bloodgrp: Array<string>
 }
 
-interface Student {
-   a: string; //address
-   b: string; //blood group
-   d: string; //department
+export interface Student {
+    _id: string;
    g: string; //gender
-   h: string; //hall of residence
    i: string; //roll number
    n: string; //full name
-   p: string; //programme
-   r: string; //room number
    u: string; //username
 }
 
@@ -75,6 +70,7 @@ async function fetch_student_data() { //WILL throw errors when something goes wr
             database: config.db_name,
             collection: config.collection_name,
             filter: {},
+			projection:{"n":1,"_id":1,"g":1,"i":1,"u":1},
             limit: 30000
         })
 	}).then(res => res.json())).documents;
@@ -176,20 +172,6 @@ function prepare_worker() {//student data should be in a global variable called 
 	
 	let st: Student;
 	for (st of students) {
-		let key: keyof Options;
-		for (key in options) {
-			if (key === "batch") {
-				if (!(options.batch.includes(rollToYear(st.i)))) options.batch.push(rollToYear(st.i));
-			} else {
-				let key0: "h"|"p"|"d"|"b" = key[0] as "h"|"p"|"d"|"b";
-				if (!options[key].includes(st[key0])) options[key].push(st[key0])
-			}
-		}
-	}
-
-	let key: keyof Options;
-	for (key in options) {
-		options[key].sort();	
 	}
 	onmessage = function (event) {
 	// 	console.log("Received a message.");
@@ -259,10 +241,6 @@ function prepare_worker() {//student data should be in a global variable called 
 	}
 	
 })(); //execute immediately
-
-
-
-type Query0 = "g"|"n"|"h"|"p"|"d"|"b"|"a";
 
 function rollToYear(roll: string): string {
 	//take a student's roll number, and output the batch they were in.
@@ -335,10 +313,6 @@ function check_query(query: Query) : Array<Student> {
 					let lowercased_name = query.name.toLowerCase();
 					if (!(student.i.includes(lowercased_name)) && !(student.u.startsWith(lowercased_name))) return false;
 				} //if the name doesn't match EITHER, then we discard that student's record.
-			} else { //all the other stuff
-				let key0 : Query0 = key[0] as Query0;
-				if (!(query[key].includes(student[key0]))) return false; //note that this allows query[key] to be an array - so, if e.g. query is just {i:[1, 2, 3]} it will return the students with roll numbers 1, 2 and 3 - this helps with finding bacchas
-				// note that because typescript is such a stickler for everything, the above trick is no longer possible without making changes. >:/
 			}
 		}
 		return entry; //if query is totally empty, this will be false - otherwise it will be true
