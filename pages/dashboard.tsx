@@ -16,21 +16,10 @@ import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Ca
 import {receiverIds, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
-import { search_students } from '@/utils/API_Calls/search';
 import Link from 'next/link';
-const SERVER_IP = process.env.SERVER_IP
+import { search_students,Student } from '@/utils/API_Calls/search';
 
-export interface Student {
-    _id: string;
-    b: string;
-    d: string;
-    g: string;
-    h: string;
-    n: string;
-    p: string;
-    r: string;
-    i: string;
-}
+const SERVER_IP = process.env.SERVER_IP
 
 const New = () => {
     const router = useRouter();
@@ -295,6 +284,9 @@ const New = () => {
                             />
                         </div>
                         <div className="student-container">
+
+                            {students.length == 0 && <p>Welcome to Puppy Love</p>}
+
                             {students.map((student) => (
                                 student.i!=Id &&
                                 <Card key={student._id} student={student} onClick={handleButtonClick} clickedCheck={clickedStudents.includes(student)}

@@ -12,7 +12,7 @@ export const handleVerifyOTP = async (user: any) => {
               method: "POST",
               body: JSON.stringify({
                 roll: user.id.id,
-                authCode: user.auth,
+                authCode: (user.auth).trim(),
                 passHash: passHash,
                 pubKey: Keys.pubKey,
                 privKey: privKey_encrypt,
