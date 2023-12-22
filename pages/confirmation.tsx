@@ -23,6 +23,8 @@ const ConfirmationPage: React.FC = () => {
         const isValid = await handleLog(data)
         if (isValid) {
             await confirmationToPublish();
+            alert("Yay! Your confirmation was submitted")
+            router.push("./")
         }
         else {
             alert("Invalid ID or password")

@@ -8,6 +8,21 @@ export let Data = ''
 export let Submit = false
 // IDs of receivers of heart from User
 export let receiverIds: string[] = []
+export let Matched_Ids: string[] = []
+export let admin_pulished : boolean = false;
+export let user = ""
+
+export const setUser = ( student_user : any) => {
+    user = student_user;
+};
+
+export const setAdminPublished = (publish : boolean) => {
+    admin_pulished = publish;
+};
+
+export const setMatchedIds = (newIds: string[]) => {
+    Matched_Ids = newIds;
+};
 
 export function Set_Id(id: string) {
     Id = id
