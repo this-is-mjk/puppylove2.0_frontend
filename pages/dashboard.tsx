@@ -206,8 +206,8 @@ const New = () => {
             <div className='box'>
                 <Clear />
                 {/* LOGOUT BUTTON */}
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button as="a" className="chakra-button css-q9srah" onClick={Logout} leftIcon={<FaSignOutAlt />} style={{ top: '10px', left: '1310px' }}>
+                <div className='logout-button-div'>
+                <Button as="a" className="chakra-button" onClick={Logout} leftIcon={<FaSignOutAlt />}>
                     Logout
                 </Button>
                 </div>
