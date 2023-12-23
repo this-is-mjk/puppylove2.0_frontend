@@ -28,6 +28,7 @@ const New = () => {
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
     const [hearts_submitted, set_hearts_submitted] = useState(Submit);
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+    const [isShowStud,setShowStud] = useState(false);
 
     useEffect(() => {
         
@@ -39,10 +40,9 @@ const New = () => {
       }, []);
     
     useEffect(() => {
-        const handle_Tab_Close = (e: any) => {
-            e.preventDefault();
-            // Browser may show its defualt message because of Security Reasons
-            return 'Your selections will not be saved if you do not logout. Are you sure you want to leave?';
+        const handle_Tab_Close = async (e: any) => {
+            await handle_Logout();
+            return;
         };
 
         if(!hearts_submitted) {
@@ -197,6 +197,10 @@ const New = () => {
             setStudents(studentData);
     };
 
+    const handleShowStud = () => {
+        setShowStud(!isShowStud);
+    }
+
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
@@ -249,24 +253,17 @@ const New = () => {
                     </div>
 
                     <div className='section_2'>
-                        {clickedStudents.length > 0 ?
-                        <div>
-                            <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} hearts_submitted={hearts_submitted} />
-                        </div>
-                            :
-                            <h2>Clicked Students :</h2>
+                        <button className="button" style={{marginBottom:"8px"}} onClick={handleShowStud} type="button">{isShowStud ? "Hide" : "Show"}</button>
+                        {
+                            isShowStud ? (clickedStudents.length > 0 ?
+                                <div>
+                                    <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} hearts_submitted={hearts_submitted} />
+                                </div>
+                                    :
+                                    <h2>Use search to select someone</h2>
+                            ): ""
                         }
-
-                        {/* Automatic Save on Login , So no need of Save Button */}
-                        {/* <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={styles["save-button"]}
-                            onClick={Handle_SendHeart}
-                            style={{ color: "black"}}
-                        >
-                            Save
-                        </motion.div> */}
+                        
 
                     </div>
                 </div>

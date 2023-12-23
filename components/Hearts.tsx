@@ -9,7 +9,7 @@ function Hearts() {
     <div className='recieved-box'>
       <div style={{ fontWeight: 'bold' }}>Your Hearts</div>
       <div className="heart-container" style={style}>
-        <div>Female :</div>
+        <div className='gender-heart'>Female :</div>
         <div className='hearts'>
           {Array(heartsReceivedFromFemales).fill(heartsReceivedFromFemales).map((_, index) => (
             <FavoriteIcon key={`female-heart-${index}`} color="secondary" fontSize="small" />
@@ -17,7 +17,7 @@ function Hearts() {
         </div>
       </div>
       <div className="heart-container" style={style}>
-        <div>Male : </div>
+        <div className='gender-heart'>Male : </div>
         <div className='hearts'>
         {Array(heartsReceivedFromMales).fill(heartsReceivedFromMales).map((_, index) => (
           <FavoriteIcon key={`male-heart-${index}`} color="secondary" fontSize="small" />
