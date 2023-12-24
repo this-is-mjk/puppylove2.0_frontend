@@ -130,7 +130,7 @@ const New = () => {
 
     const Logout = async () => {
 
-        console.log(clickedStudents)
+        // console.log(clickedStudents)
 
         await SendHeart_api(false);
         const isValid = await handle_Logout()
@@ -139,13 +139,13 @@ const New = () => {
             alert('Some Error Occured while Logging Out')
         }
         else {
-            console.log('Logged Out')
+            // console.log('Logged Out')
         }
     }
 
     useEffect( ()=>{
         const updateVirtualHeart = async () => {
-            console.log(clickedStudents)
+            // console.log(clickedStudents)
             await SendHeart_api(false);
         }
 

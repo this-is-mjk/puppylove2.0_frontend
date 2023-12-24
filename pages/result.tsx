@@ -2,16 +2,33 @@
 import "../styles/result-page.css"
 import Clear from "@/components/clear"
 import Hearts from "@/components/Hearts"
-import { motion } from "framer-motion";
-// import GoToTop from "@/components/GoToTop"
-import { admin_pulished, user } from "@/utils/UserData"
+import { admin_pulished, Id, Matched_Ids, user } from "@/utils/UserData"
 import Results from "@/components/matchedResults"
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/router"
+import { get_result } from "@/utils/API_Calls/get_results"
 
 const ResultPage = () => {
-          
+    const router = useRouter()
+    
+    useEffect(() => {
+        if (Id === '') {
+          router.push('/login');
+        } else {
+            get_result()
+        }
+        console.log(admin_pulished)
+      }, []);
+
+      useEffect(()=>{
+
+      },[admin_pulished])
+
+      if (Id === '') return ;
+
     const stylesss = {
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
 
         return (
@@ -50,7 +67,7 @@ const ResultPage = () => {
                     <h1>Results Yet to be Published</h1>
                 </div>
                 }
-                <Link href={"/dashboard"}  style={{ color: "white" , fontSize : "20px"}}>Back</Link>
+                <Link href="/dashboard"  style={{ color: "white" , fontSize : "20px"}}>Back</Link>
             </div>
             </div>
             <Clear />
