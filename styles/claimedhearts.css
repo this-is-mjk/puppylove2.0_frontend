@@ -14,8 +14,13 @@
     max-height: fit-content;
 }
 
+.gender-heart{
+    width: 72px;
+}
+
 .hearts{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    color: red;
 }

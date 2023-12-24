@@ -1,4 +1,5 @@
 "use client"
+
 import React, { useEffect } from 'react';
 import "../styles/result-page.css";
 import Clear from "@/components/clear";
@@ -28,8 +29,9 @@ const ResultPage = () => {
     }, [])
     
           
+
     const stylesss = {
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
 
         return (
@@ -68,7 +70,7 @@ const ResultPage = () => {
                     <h1>Results Yet to be Published</h1>
                 </div>
                 }
-                <Link href={"/dashboard"}  style={{ color: "white" , fontSize : "20px"}}>Back</Link>
+                <Link href="/dashboard"  style={{ color: "white" , fontSize : "20px"}}>Back</Link>
             </div>
             </div>
             <Clear />

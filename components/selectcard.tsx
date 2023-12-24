@@ -26,6 +26,7 @@ const Card = ({ student, onClick, hearts_submitted }: any) => {
         <div className="select-profile" style={stylesss}></div>
       </div>
       <p className="select-card-details">{student.n}</p>
+      <p className="select-card-details">{student.i}</p>
       {!hearts_submitted ? (
         <div className="carddetails">
           <button className="select-button" onClick={clicked}>
