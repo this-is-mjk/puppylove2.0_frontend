@@ -1,3 +1,4 @@
+import { Student } from "./API_Calls/search"
 import { Decryption } from "./Encryption"
 
 export let Id = ''
@@ -9,9 +10,13 @@ export let Submit = false
 // IDs of receivers of heart from User
 export let receiverIds: string[] = []
 export let Matched_Ids: string[] = []
+export let Matches: Student[] = []
 export let admin_pulished : boolean = false;
 export let user = ""
 
+export const setMatches = ( student_matched : any) => {
+    Matches.push(student_matched);
+};
 export const setUser = ( student_user : any) => {
     user = student_user;
 };

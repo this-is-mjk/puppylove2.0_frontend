@@ -1,14 +1,32 @@
 "use client"
-import "../styles/result-page.css"
-import Clear from "@/components/clear"
-import Hearts from "@/components/Hearts"
+import React, { useEffect } from 'react';
+import "../styles/result-page.css";
+import Clear from "@/components/clear";
+import Hearts from "@/components/Hearts";
 import { motion } from "framer-motion";
-// import GoToTop from "@/components/GoToTop"
-import { admin_pulished, user } from "@/utils/UserData"
-import Results from "@/components/matchedResults"
+import { admin_pulished, Matched_Ids, setMatches, user } from "@/utils/UserData";
+import Results from "@/components/matchedResults";
 import Link from "next/link";
+import { search_students, Student } from "@/utils/API_Calls/search";
+import { get_result } from "@/utils/API_Calls/get_results";
 
 const ResultPage = () => {
+
+    useEffect(() => {
+        const show_result = async() => {
+            await get_result();
+            for(let j=0; j < Matched_Ids.length; j++) {
+                const data: Array<Student> = search_students(Matched_Ids[j]);
+                if(!data.length) {
+                    return;
+                }
+                const student = data[0];
+                setMatches(student)
+            }
+        }
+        show_result();
+    }, [])
+    
           
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/_next/static/media/GenericMale.592f9e48.png")`,
