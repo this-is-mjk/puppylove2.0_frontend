@@ -1,31 +1,34 @@
 "use client"
-import "../styles/result-page.css"
-import Clear from "@/components/clear"
-import Hearts from "@/components/Hearts"
-import { admin_pulished, Id, Matched_Ids, user } from "@/utils/UserData"
-import Results from "@/components/matchedResults"
+
+import React, { useEffect } from 'react';
+import "../styles/result-page.css";
+import Clear from "@/components/clear";
+import Hearts from "@/components/Hearts";
+import { motion } from "framer-motion";
+import { admin_pulished, Matched_Ids, setMatches, user } from "@/utils/UserData";
+import Results from "@/components/matchedResults";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useRouter } from "next/router"
-import { get_result } from "@/utils/API_Calls/get_results"
+import { search_students, Student } from "@/utils/API_Calls/search";
+import { get_result } from "@/utils/API_Calls/get_results";
 
 const ResultPage = () => {
-    const router = useRouter()
-    
+
     useEffect(() => {
-        if (Id === '') {
-          router.push('/login');
-        } else {
-            get_result()
+        const show_result = async() => {
+            await get_result();
+            for(let j=0; j < Matched_Ids.length; j++) {
+                const data: Array<Student> = search_students(Matched_Ids[j]);
+                if(!data.length) {
+                    return;
+                }
+                const student = data[0];
+                setMatches(student)
+            }
         }
-        console.log(admin_pulished)
-      }, []);
-
-      useEffect(()=>{
-
-      },[admin_pulished])
-
-      if (Id === '') return ;
+        show_result();
+    }, [])
+    
+          
 
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
