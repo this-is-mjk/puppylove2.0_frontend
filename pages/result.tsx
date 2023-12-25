@@ -37,7 +37,7 @@ const ResultPage = () => {
         return (
         <div className='box'>
             <Clear />
-            <div className='hero'>
+            <div className='heror'>
             <div className='section-Ar'>
                 <div className='section_1r'>
                     <div className="info">
