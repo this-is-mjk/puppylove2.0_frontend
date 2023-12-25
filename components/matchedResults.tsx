@@ -8,37 +8,17 @@ import { Matched_Ids, Matches } from '@/utils/UserData';
 
 const Results = () => {
 
-//     let Matches: Student[] = []
-
-
-//     useEffect(() => {
-//        // Fetching Data of the Matched_Ids for Displaying
-//           const display_result = async() => {
-//             await get_result();
-//             for(let j=0; j < Matched_Ids.length; j++) {
-//                 const data: Array<Student> = search_students(Matched_Ids[j]);
-//                 if(!data.length) {
-//                     return;
-//                 }
-//                 const student = data[0];
-//                 Matches.push(student)
-//             }
-//             console.log(Matches)
-//         }
-//         display_result();
-//     }, [])
-
-//     console.log(Matches)
   return (
     <div>
       {Matches.map((student) => (
-        <MatchedCard
-          key={student.i}
-          student={student}
-          matched
-        />
+        // <MatchedCard
+        //   key={student.i}
+        //   student={student}
+        //   matched
+        // />
+        <div>{student.i}</div>
       ))}
-    </div>
+    </div>    
   );
 };
 

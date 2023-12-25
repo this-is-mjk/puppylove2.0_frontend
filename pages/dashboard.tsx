@@ -13,11 +13,12 @@ import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import {receiverIds, setUser, user} from '../utils/UserData';
+import {Matched_Ids, receiverIds, setMatches, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
 import Link from 'next/link';
 import { search_students,Student } from '@/utils/API_Calls/search';
+import { get_result } from '@/utils/API_Calls/get_results';
 
 const SERVER_IP = process.env.SERVER_IP
 
@@ -200,6 +201,23 @@ const New = () => {
     const handleShowStud = () => {
         setShowStud(!isShowStud);
     }
+
+    useEffect(() => {
+        const show_result = async() => {
+            await get_result();
+            setMatches([])
+            for(let j=0; j < Matched_Ids.length; j++) {
+                const data: Array<Student> = search_students(Matched_Ids[j]);
+                if(!data.length) {
+                    return;
+                }
+                const student = data[0];
+                console.log(student)
+                setMatches(student)
+            }
+        }
+        show_result();
+    }, [])
 
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,

@@ -137,7 +137,7 @@
 
 }
 
-logout-button-div{
+.logout-button-div{
     max-width: 100%;
     display: flex;
     justify-content: flex-end;
