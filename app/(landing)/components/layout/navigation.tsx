@@ -35,16 +35,16 @@ const Navigation: React.FC = () => {
 
   return (
     <HStack spacing="0" flexShrink={0}>
-      {siteConfig.header.links.map(({ href, id, ...props }, i) => {
+      {/* {siteConfig.header.links.map(({ id, ...props }, i) => {
         return (
           <NavLink
             display={["none", null, "block"]}
-            href={href || `/#${id}`}
+            // href={href || `/#${id}`}
             key={i}
             isActive={
               !!(
-                (id && activeId === id) ||
-                (href && !!router.asPath.match(new RegExp(href)))
+                (id && activeId === id) 
+                // (href && !!router.asPath.match(new RegExp(href)))
               )
             }
             {...props}
@@ -53,7 +53,7 @@ const Navigation: React.FC = () => {
             {props.label}
           </NavLink>
         );
-      })}
+      })} */}
 
       <ThemeToggle />
 

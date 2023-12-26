@@ -3,7 +3,7 @@ import { PubK, Gender, ReturnHearts, Set_Submit } from "../UserData"
 import { returnHearts } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
-let PublicKeys;
+let PublicKeys: any[] = [];
 let isPubliKAvail = false;
 
 

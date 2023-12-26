@@ -21,7 +21,7 @@ interface Query {
 
 
 
-var students: any[] = []
+var students: Student[] = [];
 var new_students: any[] | undefined = undefined;
 var config = {
 	"APP_ID": "data-rgzxa",
@@ -84,6 +84,7 @@ async function fetch_student_data() { //WILL throw errors when something goes wr
 async function start_IDB() { //if this resolves, the global variable 'db' should contain a reference to the database - otherwise it should remain an empty string
 	return new Promise((resolve, reject) => {
 		db = "";
+		
 		const openRequest = indexedDB.open("students", 1);
 		openRequest.addEventListener("error", (error) => {
 //			console.error("Failed to access local database.");
@@ -95,7 +96,7 @@ async function start_IDB() { //if this resolves, the global variable 'db' should
 			db = openRequest.result;
 			resolve("Success");
 		}, {once: true});
-		openRequest.addEventListener("upgradeneeded", (event) => {
+		openRequest.addEventListener("upgradeneeded", (event : any) => {
 			//set up the DB, and if nothing goes wrong (i.e. no errors) then resolve successfully
 //			console.log("Setting up IDB");
 			db = event.target?.result;
@@ -108,14 +109,14 @@ async function start_IDB() { //if this resolves, the global variable 'db' should
 }
 
 //both of these assume that 'db' has the reference to the IndexedDB after 'start_IDB()' finishes - otherwise, will throw errors
-async function update_IDB(students) {
+async function update_IDB(students: any[]) {
 	await start_IDB();
 	//first: we get a cursor to see if there is already a record - if so, we delete it
 	//then, we store "students" into the DB
 	//this should all happen in one transaction so that if trxn fails, we don't end up with an empty DB or two items
 	let trxn = db.transaction(["students"], "readwrite");
 //	console.log("Opened transaction");
-	trxn.objectStore("students").openCursor().onsuccess = (event) => {
+	trxn.objectStore("students").openCursor().onsuccess = (event: any) => {
 		let cursor = event.target?.result;
 		if (cursor) {
 //			console.log("Deleting an entry");
@@ -133,18 +134,18 @@ async function update_IDB(students) {
 	trxn.oncomplete = () => {
 //		console.log("Student data successfully saved locally.");
 	}
-	trxn.onerror = (error) => {
+	trxn.onerror = (error : any) => {
 //		console.error("Something went wrong when trying to update the local database.");
 //		console.error(error);
 	}
 }
 
-async function check_IDB() {
+async function check_IDB() : Promise<Student[]>{
 	return new Promise(async (resolve, reject) => {
 		await start_IDB();
 		//just get a cursor and see if the record is there - if yes, put it into the global variable "students" - if not, throw an error
 		let trxn = db.transaction(["students"],"readwrite")
-		trxn.objectStore("students").openCursor().onsuccess = (event) => {
+		trxn.objectStore("students").openCursor().onsuccess = (event : any) => {
 			let cursor = event.target?.result;
 			if (cursor) {//if there is an entry
 				if (!Array.isArray(cursor.value.students)) {reject("IDB entry is improper")}
@@ -156,7 +157,7 @@ async function check_IDB() {
 				reject("IDB is empty.");
 			}
 		}
-		trxn.onerror = (error) => {
+		trxn.onerror = (error: any) => {
 //			console.error("Error occurred when trying to access IDB.");
 			reject(error);
 		}
@@ -202,13 +203,24 @@ function prepare_worker() {//student data should be in a global variable called 
 	postMessage(["Options", options]); //when worker processes everything it should send out options headers again
 }
 
+if (typeof window !== 'undefined' && 'indexedDB' in window) {
 (async function () {
 	let error_count = 0;
 	try {
-		console.log("Grabbing data locally...");
-		students = await check_IDB();
-		console.log("Preparing worker using local data...");
-		prepare_worker();
+		// if (typeof window !== 'undefined' && 'indexedDB' in window) {
+		// 	// indexedDB is available in the browser environment, so you can use it here
+			console.log("Grabbing data locally...");
+			students = await check_IDB();
+			console.log("Preparing worker using local data...");
+			prepare_worker();
+			// Perform your indexedDB operations here
+		//   } else {
+			// Handle the case where indexedDB is not available
+			// console.error('indexedDB is not available in this environment.');
+			// You can provide a fallback or alternative storage mechanism here
+		//   }
+		  
+		
 	} catch (error) {
 		console.error("Failed to find data locally");
 		console.error(error);
@@ -240,7 +252,11 @@ function prepare_worker() {//student data should be in a global variable called 
 		console.error("Could not find data locally or fetch it. This web app will not work.");
 	}
 	
-})(); //execute immediately
+})(); //execute immediately}
+}else {
+	console.error("IndexedDB not supported in this environment.");
+}
+
 
 function rollToYear(roll: string): string {
 	//take a student's roll number, and output the batch they were in.

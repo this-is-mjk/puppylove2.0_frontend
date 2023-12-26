@@ -24,9 +24,6 @@ function Hearts() {
         ))}
         </div>
       </div>
-
-
-
     </div>
   );
 }

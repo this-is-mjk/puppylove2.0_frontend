@@ -12,12 +12,12 @@ export let receiverIds: string[] = []
 export let Matched_Ids: string[] = []
 export let Matches: Student[] = []
 export let admin_pulished : boolean = false;
-export let user = ""
+export let user : Student = {} as Student;
 
 export const setMatches = ( student_matched : any) => {
     Matches.push(student_matched);
 };
-export const setUser = ( student_user : any) => {
+export const setUser = ( student_user : Student) => {
     user = student_user;
 };
 

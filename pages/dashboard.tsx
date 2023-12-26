@@ -243,7 +243,7 @@ const New = () => {
                                 </div>
                                 {user && <div className="detail">
                                     <div className="details-text-name">{user?.n}</div>
-                                    <div className="details-text" >{user?.d}</div>
+                                    {/* <div className="details-text" >{user?.d}</div> */}
                                     <div className="details-text" >{user?.i}</div>
                                     {!hearts_submitted ? (
                                         <motion.div

@@ -10,13 +10,16 @@ const Results = () => {
 
   return (
     <div>
-      {Matches.map((student) => (
+      {/* {Matches.map((student) => (
         // <MatchedCard
         //   key={student.i}
         //   student={student}
         //   matched
         // />
         <div>{student.i}</div>
+      ))} */}
+      {Matches.map((student) => (
+        <div key={student.i}>{student.i}</div>
       ))}
     </div>    
   );
