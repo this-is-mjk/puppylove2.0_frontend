@@ -15,7 +15,9 @@ export let admin_pulished : boolean = false;
 export let user : Student = {} as Student;
 
 export const setMatches = ( student_matched : any) => {
-    Matches.push(student_matched);
+    if (!Matches.includes(student_matched)) {
+        Matches.push(student_matched);
+    }
 };
 export const setUser = ( student_user : Student) => {
     user = student_user;

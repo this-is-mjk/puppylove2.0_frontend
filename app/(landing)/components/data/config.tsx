@@ -17,12 +17,12 @@ const siteConfig = {
   header: {
     links: [
       {
-        id: 'Home',
+        id: '',
         label: 'Home',
       },
       {
-        id: 'faq',
-        label: 'FAQ',
+        id: 'credits',
+        label: 'Credits',
       },
     ],
   },

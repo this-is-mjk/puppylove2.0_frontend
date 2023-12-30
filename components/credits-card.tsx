@@ -1,7 +1,9 @@
 import React from "react";
 import "../styles/result-card.css";
 
-const MatchedCard = ({ student }: any) => {
+
+
+const CreditCard = ({ student }: any) => {
   const userName = student.u;
   const roll = student.i;
 
@@ -21,4 +23,4 @@ const MatchedCard = ({ student }: any) => {
   );
 };
 
-export default MatchedCard;
+export default CreditCard;

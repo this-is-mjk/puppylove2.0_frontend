@@ -2,61 +2,78 @@ import Image from "next/image"
 import { BsLinkedin, BsGithub } from "react-icons/bs"
 import "../styles/credits.css"
 import Clear from "@/components/clear"
-// const CreditCard = ({ check }) => {
-//     return (
-//         <div className="credit-card">
-//             <div>
-//                 <Image
-//                     src="/Dog.jpg"
-//                     width={140}
-//                     height={140}
-//                     alt="Profile"
-//                     className="credit-image"
-//                 />
-//             </div>
-//             <div className="credit-sec2">
-//                 <p className="credits-text">Pratham Sahu</p>
-//                 {check && <p>Coordinator</p>}
+import { useEffect, useState } from "react"
+import { Student, search_students } from "@/utils/API_Calls/search"
+import CreditCard from "@/components/credits-card"
 
-//             </div>
-//             <div className="centered">
-//                 <BsLinkedin className="icons" />
-//                 <BsGithub className="icons" />
-//             </div>
-
-
-//         </div>
-//     )
-// }
 const Credits = () => {
+
+    const Contributors : string[] = ['210755', '210667', '220120', '220950', '221029', '221223' ]
+    const [LeadDevelopers, setLeadDevelopers] = useState<Student[]>([]);
+    const [Developers, setDevelopers] = useState<Student[]>([]);
+
+
+    useEffect(() => {
+        const credits = async() => {
+            for(let j=0; j < 2; j++) {
+                const data: Array<Student> = search_students(Contributors[j]);
+                if(!data.length) {
+                    return;
+                }
+                const student = data[0];
+                // console.log(student)
+                if (!LeadDevelopers.some((existingStudent) => existingStudent.i === student.i)) {
+                    setLeadDevelopers((prevLeadDevelopers) => [...prevLeadDevelopers, student]);
+                }
+            }
+
+            for(let j=2; j < Contributors.length; j++) {
+                const data: Array<Student> = search_students(Contributors[j]);
+                if(!data.length) {
+                    return;
+                }
+                const student = data[0];
+                // console.log(student)
+                if (!Developers.some((existingStudent) => existingStudent.i === student.i)) {
+                    setDevelopers((prevDevelopers) => [...prevDevelopers, student]);
+                }
+            }
+        }
+        credits()
+        // console.log(LeadDevelopers)
+    }, [])
+
+    // console.log(LeadDevelopers)
+
     return (
         <div className="credits section_padding">
             <div>
-                <h1 className="credit-font">Credits</h1>
+                <h1 className="credit-font">Lead Developers</h1>
                 <div className="credits-sec1">
-
-
-                    {/* <CreditCard check={true} />
-                    <CreditCard check={true} /> */}
-
+                {LeadDevelopers.map((student) => (
+                    // <div key={student.i}>{student.i}</div>
+                    <CreditCard
+                      key={student.i}
+                      student={student}
+                      matched
+                    />
+                ))}
                 </div>
 
 
             </div>
-            <div>
-                <h1 className="credit-font">Other Contributors</h1>
+                <h1 className="credit-font">Developers</h1>
                 <div className="credits-sec1">
-                    {/* <CreditCard check={false} />
-
-
-                    <CreditCard check={false} />
-                    <CreditCard check={false} />
-                    <CreditCard check={false} />
-                    <CreditCard check={false} /> */}
-
+                {Developers.map((student) => (
+                    <CreditCard
+                    key={student.i}
+                    student={student}
+                    matched
+                  />
+                ))}
                 </div>
-
-
+            <div>
+              
             </div>
             <Clear />
 
