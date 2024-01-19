@@ -1,44 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/login.module.css";
-import { MdEmail } from "react-icons/md";
-import { BiSolidLock } from "react-icons/bi";
-import Image from "next/image";
 import "../app/(landing)/globals.css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Dog from "@/components/Dog";
-// import ThemeButton from "@/components/Theme";
 import Clear from "@/components/clear";
-import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
-import { fetchAndDecodeHearts } from "@/utils/API_Calls/recievedHearts";
 import { confirmationToPublish } from "@/utils/API_Calls/confirmation_api";
+import {Id} from "@/utils/UserData"
 
 const ConfirmationPage: React.FC = () => {
-    const [data, setData] = useState({ id: "", password: "" });
-
     const router = useRouter()
 
     const submit_yes = async () => {
-        const isValid = await handleLog(data)
-        if (isValid) {
-            await confirmationToPublish();
+        const status = await confirmationToPublish();
+        if(status.success) {
             alert("Yay! Your confirmation was submitted")
-            router.push("./")
+            router.push("/result")
         }
         else {
-            alert("Invalid ID or password")
-            // WRONG LOGIN CREDENTENTIALS
+            if(status.error === "Results Published") {
+                alert("You are Late, Results are Already Published :(")
+                router.push("/")
+            }
+            else {
+                alert("Error in Publishing, Contact Developers")
+            }
         }
     }
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-
-        const { name, value } = e.target;
-        setData({ ...data, [name]: value });
-        console.log(data);
-    };
+    // Either Page was Reloaded or User Tried to Access the page before time.
+    // In Any Case push router to Login Page
+    useEffect(() => {
+        if(Id === '') {
+            router.push(`/login`)
+        }
+    })
+    if(Id === '') {
+        return
+    }
 
     return (
         <div>
@@ -48,37 +48,6 @@ const ConfirmationPage: React.FC = () => {
                     <Dog />
                     <div className={styles["login-container"]}>
                         <h1 className={styles["login-title"]} style={{ color: "black" }}>Do you want to get matched?</h1>
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className={styles["login-form-group"]}
-                        >
-                            <MdEmail size={18} />
-
-                            <input
-                                className={styles["login-input"]}
-                                type="text"
-                                name="id"
-                                value={data.id}
-                                onChange={handleSubmit}
-                                required
-                                placeholder="ID"
-                            />
-                        </motion.div>
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className={styles["login-form-group"]}
-                        >
-                            <BiSolidLock size={18} />
-                            <input
-                                className={styles["login-input"]}
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                onChange={handleSubmit}
-                                required
-                                placeholder="Password"
-                            />
-                        </motion.div>
                         <div className={styles["login-bottom"]}>
                             
                             <motion.div
@@ -95,7 +64,7 @@ const ConfirmationPage: React.FC = () => {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                             >
-                                <Link href={"/register"}>NO</Link>
+                                <Link href={"/"}>NO</Link>
                             </motion.div>
                         </div>
                     </div>
