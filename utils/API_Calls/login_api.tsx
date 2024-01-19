@@ -5,6 +5,9 @@ import { returnHearts_Late } from "./returnHearts"
 import { FetchReturnedHearts } from "./Matching"
 const SERVER_IP = process.env.SERVER_IP
 
+// Admin Permit to Send Hearts
+export var Permit = true
+
 export const handleLog = async(data: any) => {
     try {
       Set_Id(data.id);
@@ -24,31 +27,34 @@ export const handleLog = async(data: any) => {
           }
       );
       if (!res.ok) {
-        throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+        console.log(`HTTP Error: ${res.status} - ${res.statusText}`);
+        return {"success": false, "credentialError": true}
       }
       const res_json = await res.json()
       const pvtKey_Enc: string = res_json.pvtKey_Enc
       const pvtKey_login = await Decryption_AES(pvtKey_Enc, data.password)
-      
+      Permit = res_json.permit
       Set_PrivK(pvtKey_login)
       Set_PubK(res_json.pubKey)
       Set_Gender(res_json.gender)
       Set_Submit(res_json.submit)
-      await Set_Data(res_json.data, data.id)
+      await Set_Data(res_json.data)
       await Set_Claims(res_json.claims)
 
       await fetchAndDecodeHearts()
 
       if(res_json.submit === true) {
-        await returnHearts_Late()
+        if(Permit) {
+          await returnHearts_Late()
+        }
         await FetchReturnedHearts()
       }
 
-      return true
+      return {"success": true, "permit": res_json.permit, "publish": res_json.publish}
     }
     catch(err) {
       console.log(err)
-      return false
+      return {"success": false, "credentialErr": false}
     }
   }
 

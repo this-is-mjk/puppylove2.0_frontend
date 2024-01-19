@@ -19,13 +19,30 @@ const LoginPage: React.FC = () => {
     const router = useRouter()
 
     const handleLog_api = async () => {
-        const isValid = await handleLog(data)
-        if (isValid) {
-            router.push(`/dashboard`)
+        const status = await handleLog(data)
+
+        if (status.success) {
+            // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
+            if(!status.permit) {
+                if(!status.publish) {
+                    router.push(`/confirmation`)
+                }
+                else {
+                    router.push(`/result`)
+                }
+            }
+            else {
+                router.push(`/dashboard`)
+            }
         }
         else {
-            alert("Invalid ID or password")
             // WRONG LOGIN CREDENTENTIALS
+            if(status.credentialErr) {
+                alert("Wrong Credentials !!")
+            }
+            else {
+                alert("Server Error in Logging, Contact Developers")
+            }
         }
     }
 
