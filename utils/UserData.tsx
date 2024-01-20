@@ -1,5 +1,5 @@
 import { Student } from "./API_Calls/search"
-import { Decryption } from "./Encryption"
+import { Decryption, Decryption_AES } from "./Encryption"
 
 export let Id = ''
 export let Gender = ''
@@ -7,6 +7,7 @@ export let PubK = ''
 export let PrivK = ''
 export let Data = ''
 export let Submit = false
+
 // IDs of receivers of heart from User
 export let receiverIds: string[] = []
 export let Matched_Ids: string[] = []
@@ -54,7 +55,7 @@ export function Set_Submit(submit: boolean) {
 // Send Heart
 export interface Heart {
     enc: string;
-    sha: string;
+    sha_encrypt: string;
     id_encrypt: string;
 }
   
@@ -67,7 +68,7 @@ export interface Hearts {
 
 export let Sent_Hearts: Hearts;
 
-export async function Set_Data(data: string, id: string) {
+export async function Set_Data(data: string) {
 
     // Initializing Every State Varibale to 0 incase user Logins again immediately after Logout
     for(let i=0; i < 4; i++) {
@@ -79,7 +80,7 @@ export async function Set_Data(data: string, id: string) {
     }
 
     Sent_Hearts = JSON.parse(data) as Hearts;
-    console.log(Sent_Hearts)
+    // console.log(Sent_Hearts)
 
     const idEncrypts: string[] = []
     for(const key in Sent_Hearts) {
@@ -97,11 +98,11 @@ export async function Set_Data(data: string, id: string) {
         }
         if(id.slice(0,6) === Id) {
             receiverIds[i] = (id.slice(6,12))
-            console.log(id.slice(6,12))
+            // console.log(id.slice(6,12))
         }
         else {
             receiverIds[i] = (id.slice(0,6))
-            console.log(id.slice(0,6))
+            // console.log(id.slice(0,6))
         }
     }
 }
@@ -160,7 +161,7 @@ export async function Set_Claims(claims: string) {
 
     jsonStrings.forEach(jsonString => {
         const claim = JSON.parse(decodeURIComponent(jsonString)) as heart
-        console.log(claim)
+        // console.log(claim)
         if(claim.genderOfSender === 'F') {
             heartsReceivedFromFemales++;
         }
