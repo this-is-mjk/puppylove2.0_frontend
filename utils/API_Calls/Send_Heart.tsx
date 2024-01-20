@@ -1,12 +1,10 @@
-import {SHA256, Encryption, RandInt} from "../Encryption"
-import { PubK, Gender, ReturnHearts, Set_Submit } from "../UserData"
+import {SHA256, Encryption, RandInt, Encryption_AES} from "../Encryption"
+import { PubK, Gender, ReturnHearts, Set_Submit, PrivK } from "../UserData"
 import { returnHearts } from "./returnHearts"
 const SERVER_IP = process.env.SERVER_IP
 
 let PublicKeys: any[] = [];
 let isPubliKAvail = false;
-
-
 
 async function fetchPubKeys(){
     const res = await fetch(
@@ -30,6 +28,7 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
         }
         const enc : string[] = []
         const sha : string[] = []
+        const sha_encrypt: string[] = []
         const ids_encrypt: string[] = []
         const R1: number = parseInt(senderId)
         for(const id of receiverIds) {
@@ -49,6 +48,8 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
                 id_encrypt = await Encryption(id_plain, PubK)
                 const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
+                const sha_encrypt_:string = await Encryption_AES(sha_, PrivK)
+                sha_encrypt.push(sha_encrypt_)
                 const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
@@ -57,6 +58,8 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
                 id_encrypt = await Encryption(id_plain, PubK)
                 const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
+                const sha_encrypt_:string = await Encryption_AES(sha_, PrivK)
+                sha_encrypt.push(sha_encrypt_)
                 const enc_:string = await Encryption(sha_, pubKey_)
                 enc.push(enc_)
             }
@@ -70,22 +73,22 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
                     hearts: {
                         heart1: {
                             enc: enc[0],
-                            sha: sha[0],
+                            sha_encrypt: sha_encrypt[0],
                             id_encrypt: ids_encrypt[0]
                         },
                         heart2: {
                             enc: enc[1],
-                            sha: sha[1],
+                            sha_encrypt: sha_encrypt[1],
                             id_encrypt: ids_encrypt[1]
                         },
                         heart3: {
                             enc: enc[2],
-                            sha: sha[2],
+                            sha_encrypt: sha_encrypt[2],
                             id_encrypt: ids_encrypt[2]
                         },
                         heart4: {
                             enc: enc[3],
-                            sha: sha[3],
+                            sha_encrypt: sha_encrypt[3],
                             id_encrypt: ids_encrypt[3]
                         }
                     }
