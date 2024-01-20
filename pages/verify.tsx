@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/login.module.css';
 import { BiSolidLock } from 'react-icons/bi'
 import { BsPersonVcardFill } from 'react-icons/bs'
@@ -18,6 +18,10 @@ const VerifyPage: React.FC = () => {
         password: '',
     });
 
+    // flags to enforce alpha-numeric passwords
+    const [isAlphaPresent, setIsAlphaPresent] = useState(false)
+    const [isNumPresent, setIsNumPresent] = useState(false)
+
     const router = useRouter()
 
     const handleOTP = (e: any) => {
@@ -27,8 +31,18 @@ const VerifyPage: React.FC = () => {
 
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+    
+        // Update the state with the entered password
         setData({ ...data, [name]: value });
     };
+
+    useEffect(() => {
+        const alphaRegex = /[a-zA-Z]/
+        setIsAlphaPresent(alphaRegex.test(data.password))
+
+        const numRegex = /\d/;
+        setIsNumPresent(numRegex.test(data.password))
+    }, [data.password]);
 
     const handleVerifyOTP_api = async () => {
         const id = router.query
@@ -38,6 +52,11 @@ const VerifyPage: React.FC = () => {
         if (data.password !== data.confirmPassword) {
             alert("Passwords do not match")
             // RENTER PASSWORD
+            return
+        }
+        // password not safe enough
+        if(!(isAlphaPresent &&  isNumPresent && data.password.length >= 8)) {
+            alert("Please set a alpha-numeric password of minimum 8 characters")
             return
         }
 
@@ -121,7 +140,12 @@ const VerifyPage: React.FC = () => {
                                 </motion.div>
 
                             </div>
-
+                            {!(isAlphaPresent && isNumPresent && data.password.length >= 8) ? (
+                                <div style={{ color: 'red' }}>
+                                    * Password must be alpha-numeric <br />
+                                    * Password must have a minimum length of 8
+                                </div>
+                            ) : null}
                         </>
                         )}
                     </div>
