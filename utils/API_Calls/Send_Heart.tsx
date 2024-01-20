@@ -44,7 +44,7 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
             const pubKey_: string = get_pubKey(id)
             let id_encrypt: string;
             if(R1 < R2) {
-                const id_plain:string  = R1.toString() + R2.toString() + R3
+                const id_plain: string = R1.toString() + '-' + R2.toString() + '-' + R3
                 id_encrypt = await Encryption(id_plain, PubK)
                 const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
@@ -54,7 +54,7 @@ export const SendHeart = async(senderId: string, receiverIds: string [], Submit:
                 enc.push(enc_)
             }
             else {
-                const id_plain: string = R2.toString() + R1.toString() + R3
+                const id_plain: string = R2.toString() + '-' + R1.toString() + '-' + R3
                 id_encrypt = await Encryption(id_plain, PubK)
                 const sha_:string = await SHA256(id_plain)
                 sha.push(sha_)
