@@ -202,23 +202,6 @@ const New = () => {
         setShowStud(!isShowStud);
     }
 
-    useEffect(() => {
-        const show_result = async() => {
-            await get_result();
-            for(let j=0; j < Matched_Ids.length; j++) {
-                const data: Array<Student> = search_students(Matched_Ids[j]);
-                if(!data.length) {
-                    return;
-                }
-                const student = data[0];
-                console.log(student)
-                setMatches(student)
-            }
-        }
-        show_result();
-        console.log(Matches)
-    }, [])
-
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
@@ -256,13 +239,11 @@ const New = () => {
                                             Submit Hearts
                                         </motion.div>
                                     ) : (
-                                        <motion.div
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.9 }}
+                                        <motion.div                    
                                         className={styles["heart-submit-button"]}
-                                        style={{ color: "white" }}
+                                        style={{ color: "white",  backgroundColor: 'grey'}}
                                         >
-                                            <Link href={"/result"}>Results</Link>
+                                            Submitted
                                         </motion.div>
                                     )}
                                 </div>}
