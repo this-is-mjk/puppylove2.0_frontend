@@ -15,6 +15,17 @@ export let Matches: Student[] = []
 export let admin_pulished : boolean = false;
 export let user : Student = {} as Student;
 
+export let batchWiseMatches = {}
+export let batchWiseResgis = {}
+export let femaleRegistration = ''
+export let maleRegistration = ''
+export let totalRegistration = ''
+export let totalMatches = ''
+
+export const setStats = ( StatsVariable : any, stats : any) =>{
+    StatsVariable = stats;
+}
+
 export const setMatches = ( student_matched : any) => {
     if (!Matches.includes(student_matched)) {
         Matches.push(student_matched);
