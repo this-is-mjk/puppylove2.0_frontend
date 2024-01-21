@@ -24,6 +24,10 @@ const siteConfig = {
         id: 'credits',
         label: 'Credits',
       },
+      {
+        id: 'stats',
+        label: 'Statistics',
+      },
     ],
   },
   footer: {

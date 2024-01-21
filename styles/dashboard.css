@@ -92,7 +92,7 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    /* padding: 1rem; */
     width: 100%;
     gap: 1rem;
 }
@@ -161,6 +161,10 @@
 
 
 @media screen and (max-width: 600px) {
+    .hero{
+        display: flex;
+        flex-direction: column;
+    }
     .section-A{
         display: flex;
         flex-direction: column;
@@ -169,9 +173,13 @@
     .image-container{
         padding: .6rem;
     }
-
-    .hero{
-        grid-template-columns: 1fr 2fr;
+    
+    .student-container{
+        border-radius: 10px;
+        background-color: white;
+        gap: 5px;
+        max-height: 100%;
+        overflow-y: scroll;
     }
     
     

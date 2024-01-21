@@ -1,0 +1,121 @@
+
+.graphGrid{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content : space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.doughnutGrid{
+    padding: 30px;
+    color: rgb(255, 255, 255);
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.font{
+    display: flex;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.doghnutchart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.bargraph{
+    padding: 4px;
+    background-color : rgb(240, 209, 248);
+    width: 45%;
+    height: 25vw;
+    display: flex;
+    justify-content: center
+}
+
+.dislikeheart{
+    padding-top: 200px;
+    width: 100%;
+    /* background-color: antiquewhite; */
+    height: 200px;
+    font-size: min(40vw, 200px);
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (min-width: 1199px) {
+    .grid{
+        
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        /* align-items: center; */
+        /* align-content: center; */
+        /* background-color: aquamarine; */
+    }
+
+    .section-1{
+        /* background-color: blanchedalmond; */
+        width: 40%;
+        /* width: 100%; */
+    }
+
+    .section-2{
+        /* background-color: blanchedalmond; */
+        width: 50%;
+        /* height: 100%; */
+    }
+
+    .graphGrid {
+        flex-direction: column;
+        /* background-color: blue; */
+        /* width: 100%; */
+        height: 100%;
+        gap: 30px;
+    }
+
+    .doughnutGrid{
+        width: 100%;
+        /* background-color: blueviolet; */
+    }
+
+    .doghnutchart{
+        width: 90%;
+        /* background-color: aqua; */
+        /* height: 60%; */
+    }
+
+    .bargraph{
+        height: 16vw;
+        width: 100%;
+        gap: 10px;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    /* Adjust the min-width value as needed */
+    .graphGrid {
+      flex-direction: column;
+      align-content: center;
+      gap: 10px;
+    }
+
+    .bargraph{
+        width: 85%;
+        height: 25vh;
+    }
+
+    .doghnutchart{
+        width: 90%;
+    }
+  }
+  
+  

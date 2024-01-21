@@ -59,10 +59,9 @@ const Credits = () => {
                     />
                 ))}
                 </div>
-
-
-            </div>
-                <h1 className="credit-font">Developers</h1>
+            </div>           
+            <div>
+            <h1 className="credit-font">Developers</h1>
                 <div className="credits-sec1">
                 {Developers.map((student) => (
                     <CreditCard
@@ -72,13 +71,8 @@ const Credits = () => {
                   />
                 ))}
                 </div>
-            <div>
-              
             </div>
             <Clear />
-
-
-
         </div>
     )
 }

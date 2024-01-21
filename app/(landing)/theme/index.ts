@@ -15,7 +15,7 @@ const styles = {
       bg: '#f5f4f2',
       fontSize: 'lg',
       _dark: {
-        color: 'gray.600',
+        color: '#e6e6e6',
         bg: 'gray.900',
       },
     },
