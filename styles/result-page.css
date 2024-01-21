@@ -119,8 +119,16 @@
     padding: 0.8rem 1rem;
     background-color: white;
     border-radius: 10px;
-
 }
+
+.logout-button-div{
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 30px;
+    padding-top: 10px;
+}
+
 @media screen and (max-width: 900px){
     .image{
         width: 140px;
