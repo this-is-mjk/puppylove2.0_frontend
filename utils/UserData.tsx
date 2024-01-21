@@ -107,12 +107,13 @@ export async function Set_Data(data: string) {
         if(id === null){
             return
         }
-        if(id.slice(0,6) === Id) {
-            receiverIds[i] = (id.slice(6,12))
+        let str = id.split('-')
+        if(str[0] === Id) {
+            receiverIds[i] = str[1]
             // console.log(id.slice(6,12))
-        }
+        }   
         else {
-            receiverIds[i] = (id.slice(0,6))
+            receiverIds[i] = str[0]
             // console.log(id.slice(0,6))
         }
     }
