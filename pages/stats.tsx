@@ -26,7 +26,7 @@ const Stats = () => {
                 <Clear/>
                 <Clear/>
                 <div className="section">
-                    <h1 className="font">Batch Wise Stats</h1>
+                    <h1 className="font">No Stats To Show Yet</h1>
                     <div className="dislikeheart">
                         <IoHeartDislikeSharp/>
                     </div>

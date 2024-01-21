@@ -26,6 +26,6 @@ export const get_stats = async() => {
     }
     catch(err) {
         console.log(err)
-        alert('Error in Fetching Results')
+        alert('Error in Fetching Stats')
     }
 }
