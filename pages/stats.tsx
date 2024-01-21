@@ -5,10 +5,20 @@ import '../styles/stats.css'
 import DoughnutChart from "@/components/charts/donutChart"
 import { FcDislike } from "react-icons/fc";
 import { IoHeartDislikeSharp } from "react-icons/io5"
+import { useEffect } from "react"
+import { get_stats } from "@/utils/API_Calls/stats_api"
 
 
 
 const Stats = () => {
+
+    useEffect(() => {
+        const show_stats = async() => {
+            await get_stats();
+        }
+        show_stats();
+    }, [])
+
     return (
         <div>
         { !(admin_pulished) ?
