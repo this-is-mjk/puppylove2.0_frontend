@@ -19,6 +19,8 @@ import { FaSignOutAlt } from 'react-icons/fa';
 const ResultPage = () => {
 
     const router = useRouter();
+    const [user, setUser] = useState<Student>({} as Student)
+    const [Matches, setMatches] = useState<Student[]>([])
 
     useEffect(() => {
         
@@ -39,7 +41,9 @@ const ResultPage = () => {
                 }
                 const student = data[0];
                 console.log(student)
-                setMatches(student)
+
+                if(!Matches.includes(student)){
+                setMatches((prev) => [...prev, student])}
             }
         }
         show_result();
@@ -97,7 +101,7 @@ const ResultPage = () => {
                 
                 <div className='section_3r'>
                     <h2>Matches :</h2>
-                    <Results />
+                    <Results Matches = {Matches}/>
                 </div>
                 :
 
