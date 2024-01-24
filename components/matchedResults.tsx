@@ -6,10 +6,10 @@ import '../styles/result-card.css'
 import { Student } from '@/utils/API_Calls/search';
 
 const Results = (Matches : any) => {
-
+  console.log(Matches)
   return (
     <div className="matched-div">
-      {Matches.map((student : any) => (
+      {Matches.Matches.map((student : any) => (
         <MatchedCard
           key={student.i}
           student={student}
