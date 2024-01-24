@@ -1,5 +1,6 @@
 .box{
     max-width: 100%;
+    color: black;
 }
 
 .heror{
@@ -157,6 +158,43 @@
     .hero{
         grid-template-columns: 1fr 2fr;
     }
+    
+    
+    
+}
+
+@media screen and (max-width: 900px){
+    .image{
+        width: 140px;
+        height: 140px;
+    }
+    .image-container{
+        padding: 0.2rem;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .heror{
+        display: flex;
+        flex-direction: column;
+    }
+    .section-Ar{
+        display: flex;
+        flex-direction: column;
+
+    }
+    .image-container{
+        padding: .6rem;
+    }
+    
+    /* .student-container{
+        border-radius: 10px;
+        background-color: white;
+        gap: 5px;
+        max-height: 100%;
+        overflow-y: scroll;
+    } */
     
     
     
