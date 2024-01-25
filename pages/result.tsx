@@ -65,7 +65,9 @@ const ResultPage = () => {
     const stylesss = {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
-
+      if (Id === ''){
+        return (<></>);
+    }
         return (
         <div className='box'>
             <Clear />
@@ -81,8 +83,10 @@ const ResultPage = () => {
                 <div className='section_1r'>
                     <div className="info">
                         <div className="image-container">
-                            <div className="image-box">
-                            <div className="profile" style={stylesss}></div>
+                            <div className="image-boxr">
+                            <div className="profile" style={{
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+      width: '130px',height:'130px',backgroundSize: 'cover',borderRadius:"50%"}}></div>
                             </div>
                             {user && <div className="detail">
                                 <div className="details-text-name">{user?.n}</div>
