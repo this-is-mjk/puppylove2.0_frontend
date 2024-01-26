@@ -5,9 +5,9 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, registerables } from 'chart.js';
 ChartJS.register(...registerables);
 import '../../styles/stats.css'
-import { femaleRegistration, maleRegistration } from "@/utils/UserData";
+// import { femaleRegistration, maleRegistration } from "@/utils/UserData";
 
-const DoughnutChart = () => {
+const DoughnutChart = ({ femaleRegistration, maleRegistration } : any) => {
 	// Sample data
 	const data = {
         labels: [
