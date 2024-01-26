@@ -7,13 +7,19 @@ ChartJS.register(...registerables);
 import '../../styles/stats.css'
 
 const HorizontalBar = ({Data, Label} : any) => {
-	// Sample data
+
+	// let keysLength = Object.keys(Data).length;
+	const data_lables = Object.keys(Data);
+	console.log(data_lables)
+	const data_data = Object.values(Data);
+	console.log(data_data)
+
 	const data = {
-		labels: ["Y23", "Y22", "Y21", "Y20", "Y19"],
+		labels: data_lables,
 		datasets: [
 		  {
 			label: Label,
-			data: [Data.y23, Data.y22, Data.y21, Data.y20, Data.y19], // Adjust the number of data points
+			data: data_data, 
 			fill: true,
 			backgroundColor: "white",
 			borderColor: "white",
@@ -24,7 +30,7 @@ const HorizontalBar = ({Data, Label} : any) => {
 
     const options = {
 		indexAxis: 'x',
-		maintainAspectRatio: true, // Set to false to fix height and width ratio
+		maintainAspectRatio: true,
 		aspectRatio: 2,
 	} as any;
       
