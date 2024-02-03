@@ -11,7 +11,6 @@ export interface Student {
    g: string; //gender
    i: string; //roll number
    n: string; //full name
-   u: string; //username
 }
 
 interface Query {
@@ -28,7 +27,7 @@ var config = {
     "API_KEY": "A6r4akrfAeBxnyxwpUwj5TiyWbiXtmFkfFUnbQw4QWBlqUnd0MKGphsSaYs8bcjd",
     "cluster_name": "Cluster0",
     "db_name": "student_search",
-    "collection_name": "student_search"
+    "collection_name": "puppylove"
 }
 
 const options: Options = {
@@ -327,7 +326,7 @@ function check_query(query: Query) : Array<Student> {
 				//now that we've checked the name completely, we just need to check if the queried name matches the username/roll number if it hasn't matched the name.
 				if (!test1) {
 					let lowercased_name = query.name.toLowerCase();
-					if (!(student.i.includes(lowercased_name)) && !(student.u.startsWith(lowercased_name))) return false;
+					if (!(student.i.includes(lowercased_name))) return false;
 				} //if the name doesn't match EITHER, then we discard that student's record.
 			}
 		}
