@@ -16,7 +16,7 @@ const ConfirmationPage: React.FC = () => {
         const status = await confirmationToPublish();
         if(status.success) {
             alert("Yay! Your confirmation was submitted")
-            router.push("/result")
+            router.push("/")
         }
         else {
             if(status.error === "Results Published") {
