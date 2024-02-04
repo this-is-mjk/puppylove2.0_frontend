@@ -40,14 +40,14 @@ const ResultPage = () => {
                     return;
                 }
                 const student = data[0];
-                console.log(student)
+                // console.log(student)
 
                 if(!Matches.includes(student)){
                 setMatches((prev) => [...prev, student])}
             }
         }
         show_result();
-        console.log(Matches)
+        // console.log(Matches)
     }, [])
 
     const Logout = async () => {

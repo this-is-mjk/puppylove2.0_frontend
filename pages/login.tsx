@@ -37,8 +37,8 @@ const LoginPage: React.FC = () => {
         }
         else {
             // WRONG LOGIN CREDENTENTIALS
-            if(status.credentialErr) {
-                alert("Wrong Credentials !!")
+            if(status.credentialError) {
+                alert("Wrong Credentials. Try again.")
             }
             else {
                 alert("Server Error in Logging, Contact Developers")

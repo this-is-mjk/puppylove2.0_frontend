@@ -67,7 +67,7 @@ const VerifyPage: React.FC = () => {
             router.push("/login")
         }
         else {
-            console.log("Not Verified");
+            // console.log("Not Verified");
             alert("Wrong OTP. Please try again");
             // NOT VEREFIED
         }

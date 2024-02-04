@@ -15,15 +15,19 @@ const RegisterPage: React.FC = () => {
     const router = useRouter()
 
     const handleRegister_api = async () => {
-        const isValid = await handleRegister(id)
+        const res_json : Response = await handleRegister(id)
+        const isValid = res_json.ok;
+        const already_reg = res_json.status
 
         if (isValid) {
             setId("");
             router.push(`/verify?id=${id}`)
         }
-        else {
-            console.log("user Not in Database")
-            alert("User not found in data base")
+        else if(already_reg == 405){
+            router.push('./login')
+            alert("You are already Registered. Login instead.")
+        }else{
+            alert("Check your Roll number and try again")
             // USER NOT CREATED IN DATABASE
         }
     };
