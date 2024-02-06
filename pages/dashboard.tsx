@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, useToast, AlertDialog,AlertDialogBody, AlertDialogContent,AlertDialogFooter,AlertDialogHeader,AlertDialogCloseButton,AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
 import { FaSignOutAlt } from "react-icons/fa";
 import {motion} from "framer-motion";
 import styles from "../styles/login.module.css";
@@ -21,6 +21,8 @@ import { search_students,Student } from '@/utils/API_Calls/search';
 const SERVER_IP = process.env.SERVER_IP
 
 const New = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
     const router = useRouter();
     const toast = useToast();
     const [searchQuery, setSearchQuery] = useState("");
@@ -29,6 +31,7 @@ const New = () => {
     const [hearts_submitted, set_hearts_submitted] = useState(Submit);
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [isShowStud,setShowStud] = useState(false);
+
 
     useEffect(() => {
         toast.closeAll()
@@ -43,7 +46,7 @@ const New = () => {
         }
       }, []);
     
-    useEffect(() => {
+      useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
             await handle_Logout();
             return;
@@ -112,6 +115,7 @@ const New = () => {
 
     const Handle_SendHeart = async () => {
         await SendHeart_api(true)
+        onClose()
     }
     
     const SendHeart_api = async (Submit: boolean) => {
@@ -193,7 +197,7 @@ const New = () => {
             }
         }
 
-        updateVirtualHeart()
+        if(clickedStudents.length>0) updateVirtualHeart()
     },[clickedStudents])
 
     useEffect(() => {
@@ -277,7 +281,7 @@ const New = () => {
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.9 }}
                                         className={styles["heart-submit-button"]}
-                                        onClick={Handle_SendHeart}
+                                        onClick={onOpen}
                                         style={{ color: "white" , margin: "12px 0px"}}
                                         >
                                             Submit
@@ -294,6 +298,32 @@ const New = () => {
                             </div>
                         </div>
                     </div>
+
+                    <AlertDialog
+        motionPreset='slideInBottom'
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Submit Hearts</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Are you sure ?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onClose}>
+              No
+            </Button>
+            <Button ref={cancelRef} onClick={Handle_SendHeart} colorScheme='pink' ml={3}>
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
                     <div className='section_2'>
                         <div className='logout-button-div'>

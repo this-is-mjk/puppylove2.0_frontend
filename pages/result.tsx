@@ -75,10 +75,6 @@ const ResultPage = () => {
             })
         }
     }
-
-    const stylesss = {
-        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
-      };
       if (Id === ''){
         return (<></>);
     }
