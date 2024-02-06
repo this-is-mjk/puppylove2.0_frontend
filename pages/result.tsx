@@ -101,20 +101,19 @@ const ResultPage = () => {
                
             </div>
             <div className="section-Br">
-                {admin_pulished ?
+                {Matches.length>0 ?
                 
-                <div className='section_3r'>
-                    <h2>Matches :</h2>
-                    <Results Matches = {Matches}/>
-                </div>
-                :
+                    <div className='section_3r'>
+                        <h2 style={{fontSize : "25px", fontWeight:"bold"}}>Matches</h2>
+                        <Results Matches = {Matches}/>
+                    </div>
+                    :
 
-                <div className='section_3r'>
-                    <h1>Results Yet to be Published</h1>
-                </div>
+                    <div className='section_3r' style={{display: "flex", justifyContent: "center"}}>
+                        <h1>Sorry! No matches to show</h1>
+                        {/* <h1>Lets try next year</h1> */}
+                    </div>
                 }
-            {/* <Link href="/dashboard"  style={{ color: "white" , fontSize : "20px"}}>Back</Link> */}
-                
             </div>
             </div>
             <Clear />
