@@ -13,12 +13,10 @@ import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import {Matched_Ids, Matches, receiverIds, setMatches, setUser, user} from '../utils/UserData';
+import {receiverIds, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
-import Link from 'next/link';
 import { search_students,Student } from '@/utils/API_Calls/search';
-import { get_result } from '@/utils/API_Calls/get_results';
 
 const SERVER_IP = process.env.SERVER_IP
 
@@ -39,6 +37,8 @@ const New = () => {
           setUser(search_students(Id)[0]);
         }
       }, []);
+
+    if (Id=='') return ;
     
     useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
@@ -206,7 +206,6 @@ const New = () => {
         backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
 
-      if (Id=='') return ;
         return (
             <div className='box'>
                 <Clear />
