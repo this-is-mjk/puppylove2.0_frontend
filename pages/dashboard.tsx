@@ -30,6 +30,7 @@ const New = () => {
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [isShowStud,setShowStud] = useState(false);
 
+
     useEffect(() => {
         toast.closeAll()
     }, [])
@@ -43,7 +44,6 @@ const New = () => {
         }
       }, []);
 
-    if (Id=='') return ;
     
     useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
@@ -55,9 +55,9 @@ const New = () => {
             window.addEventListener('beforeunload', handle_Tab_Close);
         }
       
-        return () => {
-          window.removeEventListener('beforeunload', handle_Tab_Close);
-        };
+        // else{
+        //   window.removeEventListener('beforeunload', handle_Tab_Close);
+        // };
     }, []);
 
     const fetchAndSelectStudents =  () => {
@@ -193,7 +193,7 @@ const New = () => {
             await SendHeart_api(false);
         }
 
-        updateVirtualHeart()
+        if(clickedStudents.length>0) updateVirtualHeart()
     },[clickedStudents])
 
     useEffect(() => {
@@ -246,9 +246,9 @@ const New = () => {
     }
 
     const stylesss = {
-        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"),url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
-
+        if (Id=='') return ;
         return (
             <div className='box'>
                 <Clear />
