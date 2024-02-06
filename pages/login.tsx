@@ -13,9 +13,11 @@ import Clear from "@/components/clear";
 import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
 import { useToast } from "@chakra-ui/react";
+import { IoEye } from "react-icons/io5";
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
+    const [pass,setPass] = useState("password")
 
     const router = useRouter()
     const toast = useToast()
@@ -60,6 +62,11 @@ const LoginPage: React.FC = () => {
         // console.log(data);
     };
 
+    const handleEye = ()=>{
+        if(pass === "password") setPass("text")
+        else setPass("password")
+    }
+
     useEffect(()=>{search_students("")},[])
 
     return (
@@ -93,13 +100,14 @@ const LoginPage: React.FC = () => {
                             <BiSolidLock size={18} />
                             <input
                                 className={styles["login-input"]}
-                                type="password"
+                                type={pass}
                                 name="password"
                                 value={data.password}
                                 onChange={handleSubmit}
                                 required
                                 placeholder="Password"
                             />
+                            <IoEye size={18} onClick={handleEye}/>
                         </motion.div>
                         <div className={styles["login-bottom"]}>
                             <motion.div
@@ -107,7 +115,7 @@ const LoginPage: React.FC = () => {
                                 whileTap={{ scale: 0.9 }}
 
                             >
-                                <Link href={"/register"} className={styles["login-submit-button"]}>Register</Link>
+                                <Link href={"/register"} className={styles["login-submit-button"]} style={{ color: "black" }}>Register</Link>
                             </motion.div>
 
                             <motion.div

@@ -10,8 +10,14 @@ import { handleVerifyOTP } from "../utils/API_Calls/verify_api";
 import Clear from '@/components/clear';
 import Link from 'next/link';
 import { useToast } from '@chakra-ui/react'
+import { IoEye } from 'react-icons/io5';
 
 const VerifyPage: React.FC = () => {
+    const router = useRouter()
+    // if(router.query==null) return (<></>);
+
+    const [pass,setPass] = useState("password")
+    const [pass1,setPass1] = useState("password")
     const toast = useToast()
     const [input_OTP, setOTP] = useState("")
 
@@ -20,11 +26,19 @@ const VerifyPage: React.FC = () => {
         password: '',
     });
 
+    const handleEye = ()=>{
+        if(pass === "password") setPass("text")
+        else setPass("password")
+    }
+
+    const handleEye1 = ()=>{
+        if(pass1 === "password") setPass1("text")
+        else setPass1("password")
+    }
     // flags to enforce alpha-numeric passwords
     const [isAlphaPresent, setIsAlphaPresent] = useState(false)
     const [isNumPresent, setIsNumPresent] = useState(false)
 
-    const router = useRouter()
 
     const handleOTP = (e: any) => {
         e.preventDefault()
@@ -39,6 +53,10 @@ const VerifyPage: React.FC = () => {
     };
 
     useEffect(() => {
+        console.log(router)
+        if(router.asPath==="/verify"){
+            router.push("/")
+        }
         toast.closeAll()
     }, [])
 
@@ -49,6 +67,7 @@ const VerifyPage: React.FC = () => {
         const numRegex = /\d/;
         setIsNumPresent(numRegex.test(data.password))
     }, [data.password]);
+
 
     const handleVerifyOTP_api = async () => {
         const id = router.query
@@ -121,25 +140,27 @@ const VerifyPage: React.FC = () => {
                                     <BiSolidLock size={18} />
                                     <input
                                         className={styles['login-input']}
-                                        type="password"
+                                        type={pass}
                                         name='password'
                                         value={data.password}
                                         onChange={handleSubmit}
                                         required
                                         placeholder='New Password'
                                     />
+                                <IoEye size={18} onClick={handleEye}/>
                                 </motion.div>
                                 <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>
                                     <BiSolidLock size={18} />
                                     <input
                                         className={styles['login-input']}
-                                        type="password"
+                                        type={pass1}
                                         name='confirmPassword'
                                         value={data.confirmPassword}
                                         onChange={handleSubmit}
                                         required
                                         placeholder='Confirm New Password'
                                     />
+                                <IoEye size={18} onClick={handleEye1}/>
                                 </motion.div>
                             </>
                         )}
