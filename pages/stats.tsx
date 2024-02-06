@@ -5,6 +5,7 @@ import { IoHeartDislikeSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { getStats } from "@/utils/API_Calls/stats_api";
 import '../styles/stats.css';
+import { useToast } from '@chakra-ui/react'
 
 interface StatsData {
     totalMatches: number;
@@ -18,6 +19,11 @@ interface StatsData {
 const Stats = () => {
     const [adminPublish, setAdminPublish] = useState(false);
     const [stats, setStats] = useState<StatsData | null>(null);
+    const toast = useToast()
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -29,7 +35,13 @@ const Stats = () => {
                 }
             } catch (error) {
                 console.log(error);
-                alert('Error in Fetching Stats');
+                toast({
+                    title: 'Error fetching Stats, Contact Developers',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                })
             }
         };
         fetchStats();

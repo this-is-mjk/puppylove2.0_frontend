@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
 import "../app/globals.css";
@@ -8,11 +8,13 @@ import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
 import { handleRegister } from "../utils/API_Calls/register_api"
 import { useRouter } from "next/router";
+import { useToast } from "@chakra-ui/react";
 
 const RegisterPage: React.FC = () => {
     const [id, setId] = useState("");
 
     const router = useRouter()
+    const toast = useToast()
 
     const handleRegister_api = async () => {
         const isValid = await handleRegister(id)
@@ -22,11 +24,21 @@ const RegisterPage: React.FC = () => {
             router.push(`/verify?id=${id}`)
         }
         else {
-            console.log("user Not in Database")
-            alert("User not found in data base")
+            // console.log("user Not in Database")
             // USER NOT CREATED IN DATABASE
+            toast({
+                title: 'User not found or already registered',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
     };
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     const handleSubmit = (e: any) => {
         const newId = e.target.value;
