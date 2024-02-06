@@ -7,13 +7,14 @@ export const handleRegister = async (id: string) => {
       method: "POST"
     }
     );
-    if (!res.ok) {
-      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    // console.log(res)
+    if (!res.ok && res.status == 403) {
+      console.log(`HTTP Error: ${res.status} - ${res.statusText}`);
     }
-    return true
+    return res;
   }
   catch (err) {
     console.log(err)
-    return false
+    throw err
   }
 }

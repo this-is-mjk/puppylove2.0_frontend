@@ -17,15 +17,25 @@ const RegisterPage: React.FC = () => {
     const toast = useToast()
 
     const handleRegister_api = async () => {
-        const isValid = await handleRegister(id)
+        const res_json : Response = await handleRegister(id)
+        const isValid = res_json.ok;
+        const already_reg = res_json.status
 
         if (isValid) {
             setId("");
             router.push(`/verify?id=${id}`)
         }
-        else {
-            // console.log("user Not in Database")
-            // USER NOT CREATED IN DATABASE
+
+        else if(already_reg == 405){
+            router.push('./login')
+            toast({
+                title: 'You are already Registered. Login instead',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
+        }else{
             toast({
                 title: 'User not found or already registered',
                 status: 'error',
@@ -33,6 +43,8 @@ const RegisterPage: React.FC = () => {
                 isClosable: true,
                 position: 'top',
             })
+            // USER NOT CREATED IN DATABASE
+            
         }
     };
 

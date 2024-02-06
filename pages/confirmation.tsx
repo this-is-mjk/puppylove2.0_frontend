@@ -17,7 +17,7 @@ const ConfirmationPage: React.FC = () => {
     const submit_yes = async () => {
         const status = await confirmationToPublish();
         if(status.success) {
-            router.push("/result")
+            router.push("/")
             toast({
                 title: 'Yay! Your confirmation was submitted',
                 status: 'success',

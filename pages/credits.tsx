@@ -8,7 +8,7 @@ import CreditCard from "@/components/credits-card"
 
 const Credits = () => {
 
-    const Contributors : string[] = ['210755', '210667', '220120', '220950', '221029', '221223' ]
+    const [Contributors, setcontributors] = useState<string[]> (['210755', '210667', '220120', '220950', '221029', '221223' ])
     const [LeadDevelopers, setLeadDevelopers] = useState<Student[]>([]);
     const [Developers, setDevelopers] = useState<Student[]>([]);
 
