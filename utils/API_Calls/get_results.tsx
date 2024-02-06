@@ -14,7 +14,7 @@ export const get_result = async() => {
             throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
         }
         const res_json = await res.json()
-        console.log(res_json)
+        // console.log(res_json)
         if(res_json.matches){
             setAdminPublished(true)
             matchedId = res_json.matches as string[]
