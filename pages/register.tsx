@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/login.module.css"; // Import your CSS module
 import { MdEmail } from "react-icons/md";
 import "../app/globals.css";
@@ -8,11 +8,13 @@ import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
 import { handleRegister } from "../utils/API_Calls/register_api"
 import { useRouter } from "next/router";
+import { useToast } from "@chakra-ui/react";
 
 const RegisterPage: React.FC = () => {
     const [id, setId] = useState("");
 
     const router = useRouter()
+    const toast = useToast()
 
     const handleRegister_api = async () => {
         const res_json : Response = await handleRegister(id)
@@ -23,14 +25,32 @@ const RegisterPage: React.FC = () => {
             setId("");
             router.push(`/verify?id=${id}`)
         }
+
         else if(already_reg == 405){
             router.push('./login')
-            alert("You are already Registered. Login instead.")
+            toast({
+                title: 'You are already Registered. Login instead',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }else{
-            alert("Check your Roll number and try again")
+            toast({
+                title: 'User not found or already registered',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
             // USER NOT CREATED IN DATABASE
+            
         }
     };
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     const handleSubmit = (e: any) => {
         const newId = e.target.value;

@@ -12,7 +12,7 @@ const Home: NextPage = () => {
     <Box>
       <SEO
         title="Puppy Love"
-        description="Free SaaS landingspage starter kit"
+        description="Dating App of IIT Kanpur"
       />
       <Box>
         <HeroSection />

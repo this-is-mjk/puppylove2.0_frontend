@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import { FaSignOutAlt } from "react-icons/fa";
 import {motion} from "framer-motion";
 import styles from "../styles/login.module.css";
@@ -13,23 +13,26 @@ import "../app/globals.css";
 import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import {Matched_Ids, Matches, receiverIds, setMatches, setUser, user} from '../utils/UserData';
+import {receiverIds, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
-import Link from 'next/link';
 import { search_students,Student } from '@/utils/API_Calls/search';
-import { get_result } from '@/utils/API_Calls/get_results';
 
 const SERVER_IP = process.env.SERVER_IP
 
 const New = () => {
     const router = useRouter();
+    const toast = useToast();
     const [searchQuery, setSearchQuery] = useState("");
     const [students, setStudents] = useState<Student[]>([]);
     const [activeUsers, setActiveUsers] = useState<string[]>([]);
     const [hearts_submitted, set_hearts_submitted] = useState(Submit);
     const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
     const [isShowStud,setShowStud] = useState(false);
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     useEffect(() => {
         
@@ -39,6 +42,8 @@ const New = () => {
           setUser(search_students(Id)[0]);
         }
       }, []);
+
+    if (Id=='') return ;
     
     useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
@@ -80,7 +85,12 @@ const New = () => {
 
     const handleButtonClick = async (studentRoll: string) => {
         if (clickedStudents.length >= 4) {
-            alert('You have already selected the maximum number of students 4.');
+            toast({
+                title: 'You cannot select more than 4 students',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
             return;
         }
         const student = students.find((s) => s.i === studentRoll);
@@ -88,7 +98,12 @@ const New = () => {
         if (student && !clickedStudents.find((s) => s.i === studentRoll)) {
             setClickedStudents([...clickedStudents,student])
         } else {
-            alert('This student has already been clicked!');
+            toast({
+                title: 'This student has already been clicked!',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
         }
     };
 
@@ -117,15 +132,31 @@ const New = () => {
         }
         const isValid = await SendHeart(Id, receiverIds, Submit)
         if(isValid && Submit) {
-            alert('HEARTS SENT')
-            console.log("HEARTS SEND")
+            toast({
+                title: 'HEARTS SENT',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else if(!isValid && Submit) {
-            alert('Error Occurred , Hearts not sent')
-            console.log("Error")
+            toast({
+                title: 'Error occurred , Hearts not sent',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else if(!isValid && !Submit) {
-            console.log('Choices Not Saved')
+            toast({
+                title: 'Choices not saved',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
     }
 
@@ -137,10 +168,22 @@ const New = () => {
         const isValid = await handle_Logout()
         router.push('/')
         if(!isValid) {
-            alert('Some Error Occured while Logging Out')
+            toast({
+                title: 'Some error occured while Logging Out',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else {
-            // console.log('Logged Out')
+            toast({
+                title: 'Logged Out',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
     }
 
@@ -192,7 +235,7 @@ const New = () => {
             }
             const studentData = search_students(searchQuery);
             if(studentData == undefined) {
-                console.log("Not able to Fetch Students");
+                // console.log("Not able to Fetch Students");
                 return;
             }
             setStudents(studentData);
@@ -203,10 +246,9 @@ const New = () => {
     }
 
     const stylesss = {
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
 
-      if (Id=='') return ;
         return (
             <div className='box'>
                 <Clear />

@@ -9,8 +9,10 @@ import { useRouter } from 'next/router';
 import { handleVerifyOTP } from "../utils/API_Calls/verify_api";
 import Clear from '@/components/clear';
 import Link from 'next/link';
+import { useToast } from '@chakra-ui/react'
 
 const VerifyPage: React.FC = () => {
+    const toast = useToast()
     const [input_OTP, setOTP] = useState("")
 
     const [data, setData] = useState({
@@ -37,6 +39,10 @@ const VerifyPage: React.FC = () => {
     };
 
     useEffect(() => {
+        toast.closeAll()
+    }, [])
+
+    useEffect(() => {
         const alphaRegex = /[a-zA-Z]/
         setIsAlphaPresent(alphaRegex.test(data.password))
 
@@ -50,13 +56,25 @@ const VerifyPage: React.FC = () => {
             return
         }
         if (data.password !== data.confirmPassword) {
-            alert("Passwords do not match")
+            toast({
+                title: 'Passwords do not match',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
             // RENTER PASSWORD
             return
         }
         // password not safe enough
         if(!(isAlphaPresent &&  isNumPresent && data.password.length >= 8)) {
-            alert("Please set a alpha-numeric password of minimum 8 characters")
+            toast({
+                title: 'Please set a alpha-numeric password of minimum 8 characters',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
             return
         }
 
@@ -65,13 +83,23 @@ const VerifyPage: React.FC = () => {
 
         if (isValid) {
             router.push("/login")
+            toast({
+                title: 'Verified',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else {
-            // console.log("Not Verified");
-            alert("Wrong OTP. Please try again");
-            // NOT VEREFIED
+            toast({
+                title: 'Wrong OTP. Please try again',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
-
     };
 
     return (
