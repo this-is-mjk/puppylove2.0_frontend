@@ -7,50 +7,19 @@ import { Student, search_students } from "@/utils/API_Calls/search"
 import CreditCard from "@/components/credits-card"
 
 const Credits = () => {
-
-    const [Contributors, setcontributors] = useState<string[]> (['210755', '210667', '220120', '220950', '221029', '221223' ])
-    const [LeadDevelopers, setLeadDevelopers] = useState<Student[]>([]);
-    const [Developers, setDevelopers] = useState<Student[]>([]);
-
-
-    useEffect(() => {
-        const credits = async() => {
-            for(let j=0; j < 2; j++) {
-                const data: Array<Student> = search_students(Contributors[j]);
-                if(!data.length) {
-                    return;
-                }
-                const student = data[0];
-                // console.log(student)
-                if (!LeadDevelopers.some((existingStudent) => existingStudent.i === student.i)) {
-                    setLeadDevelopers((prevLeadDevelopers) => [...prevLeadDevelopers, student]);
-                }
-            }
-
-            for(let j=2; j < Contributors.length; j++) {
-                const data: Array<Student> = search_students(Contributors[j]);
-                if(!data.length) {
-                    return;
-                }
-                const student = data[0];
-                // console.log(student)
-                if (!Developers.some((existingStudent) => existingStudent.i === student.i)) {
-                    setDevelopers((prevDevelopers) => [...prevDevelopers, student]);
-                }
-            }
-        }
-        credits()
-        // console.log(LeadDevelopers)
-    }, [])
-
-    // console.log(LeadDevelopers)
-
+    const ld = [
+        {u:"spratham21",i:"210755",n:"Pratham Sahu"},{u:"nmeena21",i:"210667",n:"Nikhil Meena"},
+    ]
+    const d = [
+        {u:"amansg22",i:"220120",n:"Aman Singh Gill"},{u:"sameer22",i:"220950",n:"Sameer Yadav"},{u:"shreyash22",i:"221029",n:"Shreya Shree"},{u:"yashps22",i:"221223",n:"Yash Pratap Singh"},
+    ]
+        
     return (
         <div className="credits section_padding">
             <div>
                 <h1 className="credit-font">Lead Developers</h1>
                 <div className="credits-sec1">
-                {LeadDevelopers.map((student) => (
+                {ld.map((student) => (
                     // <div key={student.i}>{student.i}</div>
                     <CreditCard
                       key={student.i}
@@ -63,7 +32,7 @@ const Credits = () => {
             <div>
             <h1 className="credit-font">Developers</h1>
                 <div className="credits-sec1">
-                {Developers.map((student) => (
+                {d.map((student) => (
                     <CreditCard
                     key={student.i}
                     student={student}
