@@ -8,27 +8,50 @@ import Clear from "@/components/clear";
 import { useRouter } from "next/router"
 import { confirmationToPublish } from "@/utils/API_Calls/confirmation_api";
 import {Id} from "@/utils/UserData"
+import { useToast } from "@chakra-ui/react";
 
 const ConfirmationPage: React.FC = () => {
     const router = useRouter()
+    const toast = useToast()
 
     const submit_yes = async () => {
         const status = await confirmationToPublish();
         if(status.success) {
-            alert("Yay! Your confirmation was submitted")
             router.push("/")
+            toast({
+                title: 'Yay! Your confirmation was submitted',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else {
             if(status.error === "Results Published") {
-                alert("You are Late, Results are Already Published :(")
                 router.push("/")
+                toast({
+                    title: 'Yay! Your confirmation was submitted',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                })
             }
             else {
-                alert("Error in Publishing, Contact Developers")
+                toast({
+                    title: 'Error in Publishing, Contact Developers',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                })
             }
         }
     }
 
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
     // Either Page was Reloaded or User Tried to Access the page before time.
     // In Any Case push router to Login Page
     useEffect(() => {

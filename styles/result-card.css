@@ -17,11 +17,14 @@
 }
 
 .matched-div {
-    max-width: 100%;
+    /* background-color: rgb(41, 75, 104); */
+    max-width: 660px;
     padding: 1rem;
-    display: grid;
+    display: flex;
     grid-gap: 3rem;
-    align-items: stretch;
+    /* align-items: stretch; */
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 @media (min-width: 768px) {
