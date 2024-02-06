@@ -8,15 +8,17 @@ import CreditCard from "@/components/credits-card"
 
 const Credits = () => {
 
-    const Contributors : string[] = ['210755', '210667', '220120', '220950', '221029', '221223' ]
+    const [Contributors, setcontributors] = useState<string[]> (['210755', '210667', '220120', '220950', '221029', '221223' ])
     const [LeadDevelopers, setLeadDevelopers] = useState<Student[]>([]);
     const [Developers, setDevelopers] = useState<Student[]>([]);
 
+    useEffect(()=>{search_students("")},[])
 
     useEffect(() => {
-        const credits = async() => {
+        const credits = () => {
+            // console.log("hello")
             for(let j=0; j < 2; j++) {
-                const data: Array<Student> = search_students(Contributors[j]);
+                const data: Array<Student> =  search_students(Contributors[j]);
                 if(!data.length) {
                     return;
                 }
@@ -39,7 +41,8 @@ const Credits = () => {
                 }
             }
         }
-        credits()
+        // credits()
+        setTimeout(credits,200)
         // console.log(LeadDevelopers)
     }, [])
 
