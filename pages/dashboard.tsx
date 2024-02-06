@@ -44,7 +44,7 @@ const New = () => {
         }
       }, []);
     
-    useEffect(() => {
+      useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
             await handle_Logout();
             return;
@@ -54,9 +54,9 @@ const New = () => {
             window.addEventListener('beforeunload', handle_Tab_Close);
         }
       
-        // else{
-        //   window.removeEventListener('beforeunload', handle_Tab_Close);
-        // };
+        return () => {
+          window.removeEventListener('beforeunload', handle_Tab_Close);
+        };
     }, []);
 
     const fetchAndSelectStudents =  () => {
