@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Button, useToast, AlertDialog,AlertDialogBody, AlertDialogContent,AlertDialogFooter,AlertDialogHeader,AlertDialogCloseButton,AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
+import { Button, useToast, Box } from "@chakra-ui/react";
 import { FaSignOutAlt } from "react-icons/fa";
 import {motion} from "framer-motion";
 import styles from "../styles/login.module.css";
@@ -21,8 +21,8 @@ import { search_students,Student } from '@/utils/API_Calls/search';
 const SERVER_IP = process.env.SERVER_IP
 
 const New = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = React.useRef()
+    // const { isOpen, onOpen, onClose } = useDisclosure()
+    // const cancelRef = React.useRef()
     const router = useRouter();
     const toast = useToast();
     const [searchQuery, setSearchQuery] = useState("");
@@ -115,8 +115,30 @@ const New = () => {
 
     const Handle_SendHeart = async () => {
         await SendHeart_api(true)
-        onClose()
     }
+
+    const handleYes = async () => {
+        console.log("YES")
+        await Handle_SendHeart();
+        toast.closeAll();
+      };
+
+      const handleToast = () => {
+        toast({
+          position: "top",
+          duration: null,
+          isClosable: true,
+          render: ({ onClose }) => (
+            <Box bg="gray.100" borderRadius="md" p={4} textAlign="center">
+              <p style={{ fontWeight: "bold", color: "black" }}>Are you sure you want to Submit?</p>
+              <Button colorScheme="black" color="gray.800" bg="gray.300" onClick={onClose}>No</Button>
+              <Button colorScheme="pink" ml={2} onClick={() => {
+                handleYes();
+              }}>Yes</Button>
+            </Box>
+          )
+        });
+      };
     
     const SendHeart_api = async (Submit: boolean) => {
         if(hearts_submitted) {
@@ -281,7 +303,7 @@ const New = () => {
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.9 }}
                                         className={styles["heart-submit-button"]}
-                                        onClick={onOpen}
+                                        onClick={handleToast}
                                         style={{ color: "white" , margin: "12px 0px"}}
                                         >
                                             Submit
@@ -298,7 +320,7 @@ const New = () => {
                             </div>
                         </div>
                     </div>
-
+{/* 
                     <AlertDialog
         motionPreset='slideInBottom'
         leastDestructiveRef={cancelRef}
@@ -323,7 +345,7 @@ const New = () => {
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
 
                     <div className='section_2'>
                         <div className='logout-button-div'>
