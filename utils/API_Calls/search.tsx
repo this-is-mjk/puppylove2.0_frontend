@@ -11,6 +11,7 @@ export interface Student {
    g: string; //gender
    i: string; //roll number
    n: string; //full name
+   u: string;//username
 }
 
 interface Query {
