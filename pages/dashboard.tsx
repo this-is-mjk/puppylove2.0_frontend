@@ -42,8 +42,6 @@ const New = () => {
           setUser(search_students(Id)[0]);
         }
       }, []);
-
-    if (Id=='') return ;
     
     useEffect(() => {
         const handle_Tab_Close = async (e: any) => {
@@ -190,7 +188,9 @@ const New = () => {
     useEffect( ()=>{
         const updateVirtualHeart = async () => {
             // console.log(clickedStudents)
-            await SendHeart_api(false);
+            if(clickedStudents.length) {
+                await SendHeart_api(false);
+            }
         }
 
         updateVirtualHeart()
@@ -246,8 +246,10 @@ const New = () => {
     }
 
     const stylesss = {
-        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
+
+    if (Id=='') return ;
 
         return (
             <div className='box'>
