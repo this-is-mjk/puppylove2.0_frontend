@@ -222,7 +222,7 @@ if (typeof window !== 'undefined' && 'indexedDB' in window) {
 		  
 		
 	} catch (error) {
-		console.error("Failed to find data locally");
+		// console.error("Failed to find data locally");
 		console.error(error);
 		error_count += 1;
 	}
@@ -235,7 +235,7 @@ if (typeof window !== 'undefined' && 'indexedDB' in window) {
 		// console.log("Updating local DB with API data...");
 		update_IDB(new_students);
 	} catch (error) {
-		console.error("Failed to fetch data from API and update local DB");
+		// console.error("Failed to fetch data from API and update local DB");
 		console.error(error);
 		error_count += 1;
 	}
@@ -249,7 +249,7 @@ if (typeof window !== 'undefined' && 'indexedDB' in window) {
 	
 	if (error_count === 2) {
 		postMessage("Error");
-		console.error("Could not find data locally or fetch it. This web app will not work.");
+		// console.error("Could not find data locally or fetch it. This web app will not work.");
 	}
 	
 })(); //execute immediately}

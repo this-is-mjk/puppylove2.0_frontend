@@ -5,6 +5,7 @@
     max-width: 100%;;
     grid-template-columns:1fr;
     grid-template-rows: .1fr 1fr 1fr;
+    white-space: nowrap;
     /* background-color: rgb(94, 255, 0); */
     /* width: 100%; */
 }

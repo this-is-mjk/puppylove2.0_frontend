@@ -111,7 +111,6 @@ const VerifyPage: React.FC = () => {
             })
         }
         else {
-            // NOT VEREFIED
             toast({
                 title: 'Wrong OTP. Please try again',
                 status: 'error',
@@ -133,7 +132,7 @@ const VerifyPage: React.FC = () => {
                     <Dog />
 
                     <div className={styles['login-container']}>
-                        <h1 className={styles['login-title']}>Register</h1>
+                        <h1 className={styles['login-title']}>Verify</h1>
                         {(
                             <>
                                 <motion.div whileHover={{ scale: 1.05 }} className={styles['login-form-group']}>

@@ -10,11 +10,10 @@ const Credits = () => {
     const ld = [
         {u:"spratham21",i:"210755",n:"Pratham Sahu"},{u:"nmeena21",i:"210667",n:"Nikhil Meena"},
     ]
-
     const d = [
         {u:"amansg22",i:"220120",n:"Aman Singh Gill"},{u:"sameer22",i:"220950",n:"Sameer Yadav"},{u:"shreyash22",i:"221029",n:"Shreya Shree"},{u:"yashps22",i:"221223",n:"Yash Pratap Singh"},
     ]
-
+        
     return (
         <div className="credits section_padding">
             <div>
