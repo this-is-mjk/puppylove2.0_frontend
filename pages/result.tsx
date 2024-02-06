@@ -4,23 +4,25 @@ import React, { useEffect, useState } from 'react';
 import "../styles/result-page.css";
 import Clear from "@/components/clear";
 import Hearts from "@/components/Hearts";
-import { motion } from "framer-motion";
 import { admin_pulished, Id, Matched_Ids, Matches, setMatches, setUser, Submit, user } from "@/utils/UserData";
 import Results from "@/components/matchedResults";
 import { useRouter } from "next/router"
-import styles from "../styles/login.module.css";
-import Link from 'next/link';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import { get_result } from '@/utils/API_Calls/get_results';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 const ResultPage = () => {
 
     const router = useRouter();
+    const toast = useToast();
     const [user, setUser] = useState<Student>({} as Student)
     const [Matches, setMatches] = useState<Student[]>([])
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     useEffect(() => {
         
@@ -40,14 +42,14 @@ const ResultPage = () => {
                     return;
                 }
                 const student = data[0];
-                console.log(student)
+                // console.log(student)
 
                 if(!Matches.includes(student)){
                 setMatches((prev) => [...prev, student])}
             }
         }
         show_result();
-        console.log(Matches)
+        // console.log(Matches)
     }, [])
 
     const Logout = async () => {
@@ -55,15 +57,27 @@ const ResultPage = () => {
         const isValid = await handle_Logout()
         router.push('/')
         if(!isValid) {
-            alert('Some Error Occured while Logging Out')
+            toast({
+                title: 'Some error occured while Logging Out',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
         else {
-            // console.log('Logged Out')
+            toast({
+                title: 'Logged Out',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
     }
 
     const stylesss = {
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       };
       if (Id === ''){
         return (<></>);
@@ -85,7 +99,7 @@ const ResultPage = () => {
                         <div className="image-container">
                             <div className="image-boxr">
                             <div className="profile" style={{
-        backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+        backgroundImage: `url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
       width: '130px',height:'130px',backgroundSize: 'cover',borderRadius:"50%"}}></div>
                             </div>
                             {user && <div className="detail">

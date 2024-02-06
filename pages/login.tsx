@@ -12,11 +12,13 @@ import Dog from "@/components/Dog";
 import Clear from "@/components/clear";
 import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
+import { useToast } from "@chakra-ui/react";
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
 
     const router = useRouter()
+    const toast = useToast()
 
     const handleLog_api = async () => {
         const status = await handleLog(data)
@@ -36,15 +38,19 @@ const LoginPage: React.FC = () => {
             }
         }
         else {
-            // WRONG LOGIN CREDENTENTIALS
-            if(status.credentialErr) {
-                alert("Wrong Credentials !!")
-            }
-            else {
-                alert("Server Error in Logging, Contact Developers")
-            }
+            toast({
+                title: status.credentialError ? "Wrong Credentials!!" : "Server Error in Logging, Contact Developers",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            })
         }
     }
+
+    useEffect(() => {
+        toast.closeAll()
+    }, [])
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
