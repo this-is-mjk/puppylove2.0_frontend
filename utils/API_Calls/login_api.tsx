@@ -54,7 +54,7 @@ export const handleLog = async(data: any) => {
     }
     catch(err) {
       console.log(err)
-      return {"success": false, "credentialErr": false}
+      return {"success": false, "credentialError": false}
     }
   }
 
