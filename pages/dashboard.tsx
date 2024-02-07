@@ -17,6 +17,7 @@ import {receiverIds, setUser, user} from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit} from "../utils/UserData"
 import { search_students,Student } from '@/utils/API_Calls/search';
+import Image from 'next/image';
 
 const SERVER_IP = process.env.SERVER_IP
 
@@ -389,7 +390,16 @@ const New = () => {
                         </div>
                         <div className="student-container">
 
-                            {students.length == 0 && <p>Welcome to Puppy Love</p>}
+                            {students.length == 0 && 
+                            <div>
+                                {/* <p>Welcome to Puppy Love</p> */}
+                                <Image
+                                src={"/dashboard.jpeg"}
+                                alt="Logo"
+                                width={500}
+                                height={30}
+                                />
+                            </div>}
 
                             {students.map((student) => (
                                 student.i!=Id &&
