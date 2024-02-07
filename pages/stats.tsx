@@ -57,7 +57,7 @@ const Stats = () => {
                         <h1 className="font">No Stats To Show Yet</h1>
                         <div className="dislikeheart">
                             <IoHeartDislikeSharp/>
-                        </div>
+                        </div>  
                     </div>
                 </div> :
                 <div>
@@ -65,6 +65,7 @@ const Stats = () => {
                     <Clear/>
                     <div>
                         <h1 className="font">Total Matches: {stats?.totalMatches}</h1>
+                        <h1 className="font">Total Registrations: {stats?.totalRegisters}</h1>
                     </div>
                     <Clear/>
                     <div className="grid">
