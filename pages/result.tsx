@@ -36,13 +36,15 @@ const ResultPage = () => {
     useEffect(() => {
         const show_result = async() => {
             await get_result();
+            if(Matched_Ids[0]== '') {
+                return
+            };
             for(let j=0; j < Matched_Ids.length; j++) {
                 const data: Array<Student> = search_students(Matched_Ids[j]);
                 if(!data.length) {
                     return;
                 }
                 const student = data[0];
-                // console.log(student)
 
                 if(!Matches.includes(student)){
                 setMatches((prev) => [...prev, student])}
