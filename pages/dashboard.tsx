@@ -352,6 +352,7 @@ const New = () => {
                             <motion.div
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
+                                className='hide-show-btn'
                                 style={{marginBottom:"8px", position: "sticky", top: "0px", cursor: "pointer"}}
                                 onClick={handleShowStud}
                                 >
