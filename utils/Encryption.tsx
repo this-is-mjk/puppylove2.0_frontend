@@ -83,7 +83,7 @@ export async function SHA256(password: string) {
   }
 
   export async function RandInt() {
-    const randomBytes = new Uint8Array(1);
+    const randomBytes = new Uint32Array(1);
     crypto.getRandomValues(randomBytes);
     return randomBytes[0];
   }
