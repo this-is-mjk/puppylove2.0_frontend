@@ -276,9 +276,9 @@ const New = () => {
                                         whileTap={{ scale: 0.9 }}
                                         className={styles["heart-submit-button"]}
                                         onClick={Handle_SendHeart}
-                                        style={{ color: "white" }}
+                                        style={{ color: "white" , margin: "12px 0px"}}
                                         >
-                                            Submit Hearts
+                                            Submit
                                         </motion.div>
                                     ) : (
                                         <motion.div                    
@@ -294,18 +294,29 @@ const New = () => {
                     </div>
 
                     <div className='section_2'>
-                        <button className="button" style={{marginBottom:"8px"}} onClick={handleShowStud} type="button">{isShowStud ? "Hide" : "Show"}</button>
-                        {
-                            isShowStud ? (clickedStudents.length > 0 ?
-                                <div>
-                                    <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} hearts_submitted={hearts_submitted} />
-                                </div>
-                                    :
-                                    <h2>Use search to select someone</h2>
-                            ): ""
-                        }
-                        
-
+                        <div className='logout-button-div'>
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                style={{marginBottom:"8px", position: "sticky", top: "0px", cursor: "pointer"}}
+                                onClick={handleShowStud}
+                                >
+                                {isShowStud ? "Hide" : "Show"}
+                            </motion.div>
+                            
+                            {/* <button className="show-hide" style={{marginBottom:"8px", position: "sticky", top: "0px"}} onClick={handleShowStud} type="button">{isShowStud ? "Hide" : "Show"}</button> */}
+                        </div>
+                        <div>
+                            {
+                                isShowStud ? (clickedStudents.length > 0 ?
+                                    <div>
+                                        <ClickedStudent clickedStudents={clickedStudents} onUnselectStudent={handleUnselectStudent} hearts_submitted={hearts_submitted} />
+                                    </div>
+                                        :
+                                        <h2>Use search to select someone</h2>
+                                ): ""
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="section-B">
