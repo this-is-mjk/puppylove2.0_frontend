@@ -9,7 +9,7 @@ import '../../styles/stats.css'
 const HorizontalBar = ({Data, Label} : any) => {
 
 	// let keysLength = Object.keys(Data).length;
-	const data_lables = Object.keys(Data);
+	const data_lables = Object.keys(Data).map(key => key.toUpperCase());
 	console.log(data_lables)
 	const data_data = Object.values(Data);
 	console.log(data_data)
@@ -21,8 +21,8 @@ const HorizontalBar = ({Data, Label} : any) => {
 			label: Label,
 			data: data_data, 
 			fill: true,
-			backgroundColor: "white",
-			borderColor: "white",
+			backgroundColor: "#f048bd",
+			borderRadius: 10,
 		  },
 		],
 	  };

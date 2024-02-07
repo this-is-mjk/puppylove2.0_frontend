@@ -19,7 +19,7 @@ const DoughnutChart = ({ femaleRegistration, maleRegistration } : any) => {
         //   data: [1, 3],
           data: [maleRegistration, femaleRegistration],
           backgroundColor: [
-            '#ed85b0',
+            '#f048bd',
             '#6dc1d6',
           ],
           borderColor: '#6e6a6c',
