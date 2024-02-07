@@ -9,7 +9,7 @@
   font-weight: 600;
   /* height: 80vh ; */
   overflow: scroll;
-  /* background-color: black; */
+  /* background-color: rgb(222, 18, 18); */
 }
 .login-box2{
   display: flex;
@@ -120,6 +120,17 @@
   color: white;
 
 }
+
+.login-box::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.login-box {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 @media screen and (max-width: 1000px) {
   .login-image{
     width: 250px;

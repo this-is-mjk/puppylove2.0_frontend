@@ -8,7 +8,7 @@ const SERVER_IP = process.env.SERVER_IP
 // Admin Permit to Send Hearts
 export var Permit = true
 
-export const handleLog = async (data: any, recaptchaToken: string) => {
+export const handleLog = async (data: any, recaptchaToken: any) => {
   try {
     Set_Id(data.id);
     const myHeaders = new Headers();
@@ -20,7 +20,7 @@ export const handleLog = async (data: any, recaptchaToken: string) => {
       passHash: passHash
     });
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'POST',
       headers: myHeaders,
       credentials:"include",

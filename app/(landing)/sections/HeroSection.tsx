@@ -25,7 +25,7 @@ import { FiArrowRight } from "react-icons/fi";
               }
               description={
                 <FallInPlace delay={0.4} fontWeight="medium">
-                  Puppy love is the <Em>Dating App of IIT kanpur</Em>
+                  Puppy love is the <Em>Dating App of IIT Kanpur</Em>
                   <Br /> built by the <Em>Programming Club</Em>. Try your luck.<Br />{" "}
                   Happy Dating!
                 </FallInPlace>

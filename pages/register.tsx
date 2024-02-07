@@ -19,9 +19,9 @@ const RegisterPage: React.FC = () => {
     };
 
     // It will be public anyway
-    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6LfyO2spAAAAAAgKJhkhKSs1ai_ryDqDESYCkvUB"
+    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6Lc9nGspAAAAAG--84TvtYFiXLhk1kp70V38VWWj"
 
-    const [recaptchaToken, setRecaptchaToken] = useState(null);
+    const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
     const [id, setId] = useState("");
 
     const router = useRouter()
@@ -91,11 +91,11 @@ const RegisterPage: React.FC = () => {
                             <input
                                 className={styles["login-input"]}
                                 type="text"
-                                name="ID"
+                                name="Roll Number"
                                 value={id}
                                 onChange={handleSubmit}
                                 required
-                                placeholder="ID"
+                                placeholder="Roll Number"
                             />
                         </motion.div>
 

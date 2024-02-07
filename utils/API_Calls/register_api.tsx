@@ -5,7 +5,7 @@ export const handleRegister = async (id: string, recaptchaToken: string) => {
     const myHeaders = new Headers();
     myHeaders.append("g-recaptcha-response", recaptchaToken);
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'POST',
       headers: myHeaders,
       body: "",
