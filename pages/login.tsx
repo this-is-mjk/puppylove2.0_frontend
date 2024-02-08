@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
             return;
         }
 
-        const status = await handleLog(data)
+        const status = await handleLog(data, recaptchaToken)
 
         if (status.success) {
             // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
