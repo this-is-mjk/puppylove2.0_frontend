@@ -14,15 +14,32 @@ import { handleLog } from "../utils/API_Calls/login_api"
 import { useRouter } from "next/router"
 import { useToast } from "@chakra-ui/react";
 import { IoEye } from "react-icons/io5";
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
     const [pass,setPass] = useState("password")
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
+
+    // It will be public anyway
+    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6LfyO2spAAAAAAgKJhkhKSs1ai_ryDqDESYCkvUB"
 
     const router = useRouter()
     const toast = useToast()
 
+    const handleRecaptchaChange = (token: string | null) => {
+        setRecaptchaToken(token);
+    };
+
     const handleLog_api = async () => {
+        // Verify reCAPTCHA before proceeding
+        if (!recaptchaToken) {
+            console.log("reCAPTCHA not verified");
+            alert("Please complete the reCAPTCHA verification");
+            return;
+        }
+
         const status = await handleLog(data)
 
         if (status.success) {
@@ -109,6 +126,18 @@ const LoginPage: React.FC = () => {
                             />
                             <IoEye size={18} onClick={handleEye}/>
                         </motion.div>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "20px"
+                            }}
+                        >
+                            <ReCAPTCHA sitekey={CAPTCHA_KEY} onChange={handleRecaptchaChange} />
+                        </div>
+
                         <div className={styles["login-bottom"]}>
                             <motion.div
                                 whileHover={{ scale: 1.1 }}

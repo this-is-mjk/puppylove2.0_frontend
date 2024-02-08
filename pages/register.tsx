@@ -9,15 +9,33 @@ import Clear from "@/components/clear";
 import { handleRegister } from "../utils/API_Calls/register_api"
 import { useRouter } from "next/router";
 import { useToast } from "@chakra-ui/react";
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const RegisterPage: React.FC = () => {
+
+    const handleRecaptchaChange = (token: string | null) => {
+        setRecaptchaToken(token);
+    };
+
+    // It will be public anyway
+    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6LfyO2spAAAAAAgKJhkhKSs1ai_ryDqDESYCkvUB"
+
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
     const [id, setId] = useState("");
 
     const router = useRouter()
     const toast = useToast()
 
     const handleRegister_api = async () => {
-        const res_json : Response = await handleRegister(id)
+        // Verify reCAPTCHA before proceeding
+        if (!recaptchaToken) {
+            console.log("reCAPTCHA not verified");
+            alert("Please complete the reCAPTCHA verification");
+            return;
+        }
+
+        const res_json : Response = await handleRegister(id, recaptchaToken)
         const isValid = res_json.ok;
         const already_reg = res_json.status
 
@@ -44,7 +62,6 @@ const RegisterPage: React.FC = () => {
                 position: 'top',
             })
             // USER NOT CREATED IN DATABASE
-            
         }
     };
 
@@ -81,6 +98,18 @@ const RegisterPage: React.FC = () => {
                                 placeholder="ID"
                             />
                         </motion.div>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "20px"
+                            }}
+                        >
+                            <ReCAPTCHA sitekey={CAPTCHA_KEY} onChange={handleRecaptchaChange} />
+                        </div>
+
                         <div className={styles["login-bottom"]}>
                             <motion.div
                                 whileHover={{ scale: 1.1 }}

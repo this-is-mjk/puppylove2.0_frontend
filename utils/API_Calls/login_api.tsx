@@ -8,12 +8,12 @@ const SERVER_IP = process.env.SERVER_IP
 // Admin Permit to Send Hearts
 export var Permit = true
 
-export const handleLog = async(data: any) => {
+export const handleLog = async(data: any, recaptchaToken: string) => {
     try {
       Set_Id(data.id);
       const passHash = await SHA256(data.password)
       const res = await fetch(
-          `${SERVER_IP}/session/login`, {
+          `${SERVER_IP}/captcha/user/login`, {
               method: "POST",
               credentials:"include",
               body: JSON.stringify({
