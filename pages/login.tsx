@@ -19,10 +19,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const LoginPage: React.FC = () => {
     const [data, setData] = useState({ id: "", password: "" });
-    const [pass,setPass] = useState("password")
+    const [pass, setPass] = useState("password")
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-    // It will be public anyway
-    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6Lc9nGspAAAAAG--84TvtYFiXLhk1kp70V38VWWj"
+
+    const CAPTCHA_KEY = process.env.CAPTCHA_KEY
 
     const router = useRouter()
     const toast = useToast()
@@ -43,8 +43,8 @@ const LoginPage: React.FC = () => {
 
         if (status.success) {
             // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
-            if(!status.permit) {
-                if(!status.publish) {
+            if (!status.permit) {
+                if (!status.publish) {
                     router.push(`/confirmation`)
                 }
                 else {
@@ -78,12 +78,12 @@ const LoginPage: React.FC = () => {
         // console.log(data);
     };
 
-    const handleEye = ()=>{
-        if(pass === "password") setPass("text")
+    const handleEye = () => {
+        if (pass === "password") setPass("text")
         else setPass("password")
     }
 
-    useEffect(()=>{search_students("")},[])
+    useEffect(() => { search_students("") }, [])
 
     return (
         <div>
@@ -123,7 +123,7 @@ const LoginPage: React.FC = () => {
                                 required
                                 placeholder="Password"
                             />
-                            <IoEye size={18} onClick={handleEye}/>
+                            <IoEye size={18} onClick={handleEye} />
                         </motion.div>
 
                         <div

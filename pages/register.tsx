@@ -18,8 +18,7 @@ const RegisterPage: React.FC = () => {
         setRecaptchaToken(token);
     };
 
-    // It will be public anyway
-    const CAPTCHA_KEY = process.env.CAPTCHA_KEY || "6Lc9nGspAAAAAG--84TvtYFiXLhk1kp70V38VWWj"
+    const CAPTCHA_KEY = process.env.CAPTCHA_KEY
 
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
     const [id, setId] = useState("");
@@ -35,7 +34,7 @@ const RegisterPage: React.FC = () => {
             return;
         }
 
-        const res_json : Response = await handleRegister(id, recaptchaToken)
+        const res_json: Response = await handleRegister(id, recaptchaToken)
         const isValid = res_json.ok;
         const already_reg = res_json.status
 
@@ -44,7 +43,7 @@ const RegisterPage: React.FC = () => {
             router.push(`/verify?id=${id}`)
         }
 
-        else if(already_reg == 405){
+        else if (already_reg == 405) {
             router.push('./login')
             toast({
                 title: 'You are already Registered. Login instead',
@@ -53,7 +52,7 @@ const RegisterPage: React.FC = () => {
                 isClosable: true,
                 position: 'top',
             })
-        }else{
+        } else {
             toast({
                 title: 'User not found or already registered',
                 status: 'error',
