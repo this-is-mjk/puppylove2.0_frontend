@@ -1,4 +1,4 @@
-import { transparentize, mode } from '@chakra-ui/theme-tools'
+import { transparentize, mode } from '@chakra-ui/theme-tools';
 
 const Features = {
   parts: ['container', 'title', 'description', 'icon'],
@@ -45,7 +45,7 @@ const Features = {
   defaultProps: {
     variant: 'subtle',
   },
-}
+};
 
 export const Feature = {
   parts: ['container', 'title', 'description', 'icon'],
@@ -120,6 +120,6 @@ export const Feature = {
   defaultProps: {
     variant: 'default',
   },
-}
+};
 
-export default Features
+export default Features;

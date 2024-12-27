@@ -1,200 +1,191 @@
-.box{
-    max-width: 100%;
-    color: black;
+.box {
+  max-width: 100%;
+  color: black;
 }
 
-.hero{
-    max-width: 100%;
-    padding: 1rem;
-    display: grid;
-    height:fit-content;
-    grid-template-columns:.6fr 2fr;
-    grid-template-rows: 1fr;
-    /* grid-gap: 1rem; */
-    height: 100%;
-    align-items: stretch;
-    grid-template-areas: 
-    "section-A section-B";
+.hero {
+  max-width: 100%;
+  padding: 1rem;
+  display: grid;
+  height: fit-content;
+  grid-template-columns: 0.6fr 2fr;
+  grid-template-rows: 1fr;
+  /* grid-gap: 1rem; */
+  height: 100%;
+  align-items: stretch;
+  grid-template-areas: 'section-A section-B';
 }
 
-.image-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    text-align: center;
-    line-height: 2;
-    padding: 1rem   ;
+.image-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  line-height: 2;
+  padding: 1rem;
 }
-.image-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.image{
-    border-radius: 50%;
-}
-
-.section-A{
-    grid-area: section-A;
-    /* background-color: aqua; */
-    padding: 1rem;
-    display: grid;  
-    max-height: 90vh; 
-    overflow-y: auto; 
-    grid-template-columns:1fr;
-    grid-template-rows: .5fr 2fr;
-    grid-gap: 1rem;
-    grid-template-areas: 
-    "section_1"
-    "section_2";
-}   
-
-.section-B{
-    grid-area: section-B;
-    /* background-color: antiquewhite; */
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    width: 100%;
-    gap: 1rem;
+.image {
+  border-radius: 50%;
 }
 
-.section_1{
-    grid-area: section_1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 10px;
-    gap:0;
+.section-A {
+  grid-area: section-A;
+  /* background-color: aqua; */
+  padding: 1rem;
+  display: grid;
+  max-height: 90vh;
+  overflow-y: auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 2fr;
+  grid-gap: 1rem;
+  grid-template-areas:
+    'section_1'
+    'section_2';
 }
 
-.section_2{
-    grid-area: section_2;
-    display: absolute;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 10px;
-    padding: 6px;
-    /* padding-left: 20%; */
-    overflow-x: scroll;
+.section-B {
+  grid-area: section-B;
+  /* background-color: antiquewhite; */
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  gap: 1rem;
 }
 
-.section_3{
-    grid-area: section_3;
-    background-color: white;
-    border-radius: 10px;
-    padding: 1rem;
+.section_1 {
+  grid-area: section_1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  gap: 0;
 }
 
-.section_4{
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* padding: 1rem; */
-    width: 100%;
-    gap: 1rem;
+.section_2 {
+  grid-area: section_2;
+  display: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px;
+  /* padding-left: 20%; */
+  overflow-x: scroll;
 }
 
-.search-bar{
-    width: 100%;
-    border: none;
-    outline: none;
-    background-color: white;
-
+.section_3 {
+  grid-area: section_3;
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
 }
-.student-container{
-    border-radius: 10px;
-    background-color: white;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding: 1rem 1rem;
-    max-height: 100%;
-    overflow-y: scroll;
+
+.section_4 {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* padding: 1rem; */
+  width: 100%;
+  gap: 1rem;
+}
+
+.search-bar {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: white;
+}
+.student-container {
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 1rem 1rem;
+  max-height: 100%;
+  overflow-y: scroll;
 }
 
 .details-text {
-    font-size: 14px;
-    margin: -9px 0;
+  font-size: 14px;
+  margin: -9px 0;
 }
 
 .details-text-name {
-    font-size: 20px;
-    font-weight: bold;
-    margin: -9px 0;
-    padding: 0;
+  font-size: 20px;
+  font-weight: bold;
+  margin: -9px 0;
+  padding: 0;
 }
 
-.search-div{
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.8rem 1rem;
-    background-color: white;
-    border-radius: 10px;
-
+.search-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background-color: white;
+  border-radius: 10px;
 }
 
-.hide-show-btn{
-    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
-    padding: 3px;
-    border-radius: 6px;
-    border: 1px solid #cecece;
-    /* background-color: rgb(255, 255, 255); */
+.hide-show-btn {
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid #cecece;
+  /* background-color: rgb(255, 255, 255); */
 }
 
-.logout-button-div{
-    max-width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 30px;
-    padding-top: 10px;
+.logout-button-div {
+  max-width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 30px;
+  padding-top: 10px;
 }
 
-@media screen and (max-width: 900px){
-    .image{
-        width: 140px;
-        height: 140px;
-    }
-    .image-container{
-        padding: 0.2rem;
-    }
-    .search-div{
-        padding: .5rem .8rem;
-    }
-    
+@media screen and (max-width: 900px) {
+  .image {
+    width: 140px;
+    height: 140px;
+  }
+  .image-container {
+    padding: 0.2rem;
+  }
+  .search-div {
+    padding: 0.5rem 0.8rem;
+  }
 }
-
 
 @media screen and (max-width: 600px) {
-    .hero{
-        display: flex;
-        flex-direction: column;
-    }
-    .section-A{
-        display: flex;
-        flex-direction: column;
+  .hero {
+    display: flex;
+    flex-direction: column;
+  }
+  .section-A {
+    display: flex;
+    flex-direction: column;
+  }
+  .image-container {
+    padding: 0.6rem;
+  }
 
-    }
-    .image-container{
-        padding: .6rem;
-    }
-    
-    .student-container{
-        border-radius: 10px;
-        background-color: white;
-        gap: 5px;
-        max-height: 100%;
-        overflow-y: scroll;
-    }
-    
-    
-    
+  .student-container {
+    border-radius: 10px;
+    background-color: white;
+    gap: 5px;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
 }

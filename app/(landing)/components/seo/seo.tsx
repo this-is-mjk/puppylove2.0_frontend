@@ -1,7 +1,7 @@
-"use client"
-import React from 'react'
-import { NextSeo, NextSeoProps } from 'next-seo'
-import siteConfig from '../data/config'
+'use client';
+import React from 'react';
+import { NextSeo, NextSeoProps } from 'next-seo';
+import siteConfig from '../data/config';
 
 export interface SEOProps extends NextSeoProps {}
 
@@ -14,4 +14,4 @@ export const SEO = ({ title, description, ...props }: SEOProps) => (
     twitter={siteConfig.seo.twitter}
     {...props}
   />
-)
+);

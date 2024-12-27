@@ -1,19 +1,19 @@
-import * as React from "react";
-import { HStack } from "@chakra-ui/react";
+import * as React from 'react';
+import { HStack } from '@chakra-ui/react';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-import siteConfig from "../data/config";
+import siteConfig from '../data/config';
 
-import { NavLink } from "../nav-link";
+import { NavLink } from '../nav-link';
 
-import { useScrollSpy } from "../../hooks/use-scrollspy";
+import { useScrollSpy } from '../../hooks/use-scrollspy';
 
-import { MobileNavButton } from "../mobile-nav";
-import { MobileNavContent } from "../mobile-nav";
-import { useDisclosure, useUpdateEffect } from "@chakra-ui/react";
+import { MobileNavButton } from '../mobile-nav';
+import { MobileNavContent } from '../mobile-nav';
+import { useDisclosure, useUpdateEffect } from '@chakra-ui/react';
 
-import ThemeToggle from "./theme-toggle";
+import ThemeToggle from './theme-toggle';
 
 const Navigation: React.FC = () => {
   const mobileNav = useDisclosure();
@@ -38,7 +38,7 @@ const Navigation: React.FC = () => {
       {siteConfig.header.links.map(({ id, ...props }, i) => {
         return (
           <NavLink
-            display={["none", null, "block"]}
+            display={['none', null, 'block']}
             href={`/${id}`}
             key={i}
             isActive={

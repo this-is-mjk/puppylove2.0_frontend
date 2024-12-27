@@ -13,4 +13,4 @@ export const fontSizes = {
   '8xl': '4rem',
   '9xl': '5rem',
   '10xl': '6rem',
-}
+};

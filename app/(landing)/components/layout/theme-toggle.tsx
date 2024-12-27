@@ -1,8 +1,8 @@
-import { IconButton, useColorMode } from '@chakra-ui/react'
-import { FiMoon, FiSun } from 'react-icons/fi'
+import { IconButton, useColorMode } from '@chakra-ui/react';
+import { FiMoon, FiSun } from 'react-icons/fi';
 
 const ThemeToggle = () => {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <IconButton
       variant="ghost"
@@ -11,7 +11,7 @@ const ThemeToggle = () => {
       borderRadius="md"
       onClick={toggleColorMode}
     />
-  )
-}
+  );
+};
 
-export default ThemeToggle
+export default ThemeToggle;

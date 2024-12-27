@@ -1,66 +1,60 @@
-
 .student-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin: 1rem;
-    transition: transform 0.2s ease-in-out;
-    text-align: center;
-    width : 40%;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin: 1rem;
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+  width: 40%;
+}
 
-  .student-card:hover {
-    transform: translateY(-5px);
-  }
-  
+.student-card:hover {
+  transform: translateY(-5px);
+}
 
-  .student-image {
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    margin-bottom: 1rem;
-  }
+.student-image {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
 
+.student-info {
+  text-align: center;
+}
 
-  .student-info {
-    text-align: center;
-  }
-  
-  .student-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .student-roll {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #666;
-  }
-  
-  .student-dept {
-    font-size: 1rem;
-    color: #888;
-    margin-top: 0.2rem;
-  }
-  
-  .more-info {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 0.5rem;
-  }
-  
+.student-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
 
-  @media screen and (max-width: 768px) {
-    .student-card {
-      margin: 1rem 0;
-    }
+.student-roll {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.student-dept {
+  font-size: 1rem;
+  color: #888;
+  margin-top: 0.2rem;
+}
+
+.more-info {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .student-card {
+    margin: 1rem 0;
   }
-  
+}

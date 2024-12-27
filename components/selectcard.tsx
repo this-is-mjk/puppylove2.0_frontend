@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../styles/selectcard.css";
+import React, { useState } from 'react';
+import '../styles/selectcard.css';
 
 const Card = ({ student, onClick, hearts_submitted }: any) => {
   const userName = student.u;
@@ -34,9 +34,7 @@ const Card = ({ student, onClick, hearts_submitted }: any) => {
           </button>
         </div>
       ) : (
-        <div className="carddetails">
-          Hearts Submitted
-        </div>
+        <div className="carddetails">Hearts Submitted</div>
       )}
     </div>
   );

@@ -1,27 +1,27 @@
-.recieved-box{
-    max-height: fit-content;
-    display: grid;
-    height:100%;
-    max-width: 100%;;
-    grid-template-columns:1fr;
-    grid-template-rows: .1fr 1fr 1fr;
-    white-space: nowrap;
-    /* background-color: rgb(94, 255, 0); */
-    /* width: 100%; */
+.recieved-box {
+  max-height: fit-content;
+  display: grid;
+  height: 100%;
+  max-width: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 1fr 1fr;
+  white-space: nowrap;
+  /* background-color: rgb(94, 255, 0); */
+  /* width: 100%; */
 }
 
-.heart-container{
-    /* background-color: aqua; */
-    max-height: fit-content;
+.heart-container {
+  /* background-color: aqua; */
+  max-height: fit-content;
 }
 
-.gender-heart{
-    width: 72px;
+.gender-heart {
+  width: 72px;
 }
 
-.hearts{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    color: red;
+.hearts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: red;
 }

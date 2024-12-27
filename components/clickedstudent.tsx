@@ -1,15 +1,19 @@
-import React from "react";
-import Card from "./selectcard";
-import "../styles/selectcard.css";
-import {Student} from "../utils/API_Calls/search"
+import React from 'react';
+import Card from './selectcard';
+import '../styles/selectcard.css';
+import { Student } from '../utils/API_Calls/search';
 
 interface ClickedStudentsProps {
   clickedStudents: Student[];
   onUnselectStudent: (studentRoll: string) => void;
-  hearts_submitted: boolean
+  hearts_submitted: boolean;
 }
 
-const ClickedStudents: React.FC<ClickedStudentsProps> = ({ clickedStudents, onUnselectStudent, hearts_submitted }) => {
+const ClickedStudents: React.FC<ClickedStudentsProps> = ({
+  clickedStudents,
+  onUnselectStudent,
+  hearts_submitted,
+}) => {
   return (
     <div className="clicked-students-container">
       {clickedStudents.map((student) => (

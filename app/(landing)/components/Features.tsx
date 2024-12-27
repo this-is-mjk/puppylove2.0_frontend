@@ -1,4 +1,5 @@
-{/* <Features
+{
+  /* <Features
           id="benefits"
           columns={[1, 2, 4]}
           iconSize={4}
@@ -38,4 +39,5 @@
             },
           ]}
           reveal={FallInPlace}
-        /> */}
+        /> */
+}

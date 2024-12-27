@@ -1,4 +1,4 @@
-import { mode } from '@chakra-ui/theme-tools'
+import { mode } from '@chakra-ui/theme-tools';
 
 const SectionTitle = {
   parts: ['wrapper', 'title', 'description'],
@@ -65,6 +65,6 @@ const SectionTitle = {
       },
     },
   },
-}
+};
 
-export default SectionTitle
+export default SectionTitle;

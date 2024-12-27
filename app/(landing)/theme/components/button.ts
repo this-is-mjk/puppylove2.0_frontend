@@ -1,13 +1,13 @@
-import { mode } from '@chakra-ui/theme-tools'
+import { mode } from '@chakra-ui/theme-tools';
 
-type Dict = Record<string, any>
+type Dict = Record<string, any>;
 
 export default {
   variants: {
     'nav-link': (props: Dict) => {
-      const { isActive } = props
+      const { isActive } = props;
 
-      const hoverColor = mode('gray.900', 'white')(props)
+      const hoverColor = mode('gray.900', 'white')(props);
       return {
         outline: 'none',
         fontWeight: '500',
@@ -19,7 +19,7 @@ export default {
           textDecoration: 'none',
           color: hoverColor,
         },
-      }
+      };
     },
   },
-}
+};

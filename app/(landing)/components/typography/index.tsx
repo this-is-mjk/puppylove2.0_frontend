@@ -1,11 +1,11 @@
-"use client"
+'use client';
 import {
   chakra,
   HTMLChakraProps,
   Text,
   TextProps,
   useColorModeValue,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 export const Em: React.FC<HTMLChakraProps<'em'>> = ({ children, ...props }) => {
   return (
@@ -17,8 +17,8 @@ export const Em: React.FC<HTMLChakraProps<'em'>> = ({ children, ...props }) => {
     >
       {children}
     </Text>
-  )
-}
+  );
+};
 
 // @todo make this configurable
 export const Br: React.FC<HTMLChakraProps<'span'>> = (props) => {
@@ -26,5 +26,5 @@ export const Br: React.FC<HTMLChakraProps<'span'>> = (props) => {
     <chakra.span {...props}>
       <br />
     </chakra.span>
-  )
-}
+  );
+};

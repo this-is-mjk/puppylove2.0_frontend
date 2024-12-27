@@ -16,6 +16,6 @@ const Section = {
   defaultProps: {
     variant: 'subtle',
   },
-}
+};
 
-export default Section
+export default Section;

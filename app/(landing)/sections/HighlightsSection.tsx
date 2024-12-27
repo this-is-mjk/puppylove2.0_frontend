@@ -1,6 +1,6 @@
 // const HighlightsSection = () => {
 //     const { value, onCopy, hasCopied } = useClipboard("yarn add @saas-ui/react");
-  
+
 //     return (
 //       <Highlights>
 //         <HighlightsItem colSpan={[1, null, 2]} title="Core components">
@@ -11,7 +11,7 @@
 //               Fully functional forms with React Hook Form. Data tables with React
 //               Table.
 //             </Text>
-  
+
 //             <Flex
 //               rounded="full"
 //               borderWidth="1px"
@@ -103,7 +103,7 @@
 //       </Highlights>
 //     );
 //   };
-  
+
 //   const FeaturesSection = () => {
 //     return (
 //       <Features
@@ -203,19 +203,19 @@
 //       />
 //     );
 //   };
-  
+
 //   const TestimonialsSection = () => {
 //     const columns = React.useMemo(() => {
 //       return testimonials.items.reduce<Array<typeof testimonials.items>>(
 //         (columns, t, i) => {
 //           columns[i % 3].push(t);
-  
+
 //           return columns;
 //         },
 //         [[], [], []]
 //       );
 //     }, []);
-  
+
 //     return (
 //       <Testimonials
 //         title={testimonials.title}
@@ -234,7 +234,7 @@
 //       </Testimonials>
 //     );
 //   };
-  
+
 //   const PricingSection = () => {
 //     return (
 //       <Pricing {...pricing}>
@@ -244,10 +244,9 @@
 //       </Pricing>
 //     );
 //   };
-  
+
 //   const FaqSection = () => {
 //     return <Faq {...faq} />;
 //   };
-  
+
 //   export default Home;
-  

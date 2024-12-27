@@ -32,6 +32,6 @@ const CTA = {
   defaultProps: {
     variant: 'subtle',
   },
-}
+};
 
-export default CTA
+export default CTA;

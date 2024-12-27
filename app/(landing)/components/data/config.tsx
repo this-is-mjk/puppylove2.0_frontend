@@ -1,10 +1,10 @@
-import { Button } from '@chakra-ui/react'
-import { Link } from '@saas-ui/react'
-import { NextSeoProps } from 'next-seo'
-import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
-import { FiCheck } from 'react-icons/fi'
-import Image from 'next/image'
-import { Logo } from './logo'
+import { Button } from '@chakra-ui/react';
+import { Link } from '@saas-ui/react';
+import { NextSeoProps } from 'next-seo';
+import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FiCheck } from 'react-icons/fi';
+import Image from 'next/image';
+import { Logo } from './logo';
 
 const siteConfig = {
   logo: Logo,
@@ -33,8 +33,7 @@ const siteConfig = {
   footer: {
     copyright: (
       <>
-        Built by{' '}
-        <Link href="https://pclub.in/">Programming Club</Link>
+        Built by <Link href="https://pclub.in/">Programming Club</Link>
       </>
     ),
     links: [
@@ -88,6 +87,6 @@ const siteConfig = {
       },
     ],
   },
-}
+};
 
-export default siteConfig
+export default siteConfig;
