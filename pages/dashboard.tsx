@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Button, useToast, Box } from '@chakra-ui/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -14,11 +14,13 @@ import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import { receiverIds, setUser, user } from '../utils/UserData';
+import { Data, receiverIds, setUser, user } from '../utils/UserData';
 import { handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { handleLog } from '../utils/API_Calls/login_api';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -32,7 +34,67 @@ const New = () => {
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [isShowStud, setShowStud] = useState(false);
+
+  useEffect(() => {
+    const data = sessionStorage.getItem('data');
+    if (data) {
+      setUserData(JSON.parse(data));
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: any) => {
+      setShowCaptcha(true);
+      e.preventDefault();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+  const HandleCapture = () => {
+    const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY;
+    const handleCaptchaResponse = async (recaptchaToken: string | null) => {
+      if (recaptchaToken && userData) {
+        const status = await handleLog(userData, recaptchaToken);
+        console.log('status:' + status);
+        setShowCaptcha(false);
+      } else {
+        toast({
+          title: ' Sorry , Captcha not verified',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+        setShowCaptcha(false);
+      }
+    };
+    return (
+      showCaptcha && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ReCAPTCHA sitekey={CAPTCHA_KEY} onChange={handleCaptchaResponse} />
+        </div>
+      )
+    );
+  };
 
   useEffect(() => {
     toast.closeAll();
@@ -283,10 +345,11 @@ const New = () => {
     backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
   };
 
-  if (Id == '') return;
+  if (!userData) return;
 
   return (
     <div className="box">
+      <HandleCapture />
       <Clear />
       {/* LOGOUT BUTTON */}
       <div className="logout-button-div">
