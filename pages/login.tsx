@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/react';
 import { IoEye } from 'react-icons/io5';
 import ReCAPTCHA from 'react-google-recaptcha';
+import RetrivePassButton from '@/components/retrivePass';
 
 const LoginPage: React.FC = () => {
   const [data, setData] = useState({ id: '', password: '' });
@@ -41,16 +42,7 @@ const LoginPage: React.FC = () => {
     const status = await handleLog(data, recaptchaToken);
 
     if (status.success) {
-      // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
-      if (!status.permit) {
-        if (!status.publish) {
-          router.push(`/confirmation`);
-        } else {
-          router.push(`/result`);
-        }
-      } else {
-        router.push(`/dashboard`);
-      }
+      router.push(`/dashboard`);
     } else {
       toast({
         title: status.credentialError
@@ -127,6 +119,7 @@ const LoginPage: React.FC = () => {
               />
               <IoEye size={18} onClick={handleEye} />
             </motion.div>
+            <RetrivePassButton id={data.id} />
 
             <div
               style={{

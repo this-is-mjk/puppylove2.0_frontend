@@ -16,7 +16,7 @@ const RegisterPage: React.FC = () => {
     setRecaptchaToken(token);
   };
 
-  const CAPTCHA_KEY = process.env.CAPTCHA_KEY;
+  const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY;
 
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [id, setId] = useState('');
