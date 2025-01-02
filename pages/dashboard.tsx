@@ -15,12 +15,14 @@ import { useRouter } from 'next/router';
 import Clear from '@/components/clear';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import { Data, receiverIds, setUser, user } from '../utils/UserData';
-import { handle_Logout } from '@/utils/API_Calls/login_api';
+import { fetchUserData, handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
-import ReCAPTCHA from 'react-google-recaptcha';
-import { handleLog } from '../utils/API_Calls/login_api';
+import { error } from 'console';
+import { generateKey } from 'crypto';
+import { generateRecoveryCode } from '@/utils/recoverCode';
+import SetRecoveryToast from '@/components/recoveryToast';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -34,94 +36,65 @@ const New = () => {
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
-  const [showCaptcha, setShowCaptcha] = useState(false);
-  const [userData, setUserData] = useState(null);
   const [isShowStud, setShowStud] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const data = sessionStorage.getItem('data');
-    if (data) {
-      setUserData(JSON.parse(data));
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleBeforeUnload = (e: any) => {
-      setShowCaptcha(true);
-      e.preventDefault();
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-  const HandleCapture = () => {
-    const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY;
-    const handleCaptchaResponse = async (recaptchaToken: string | null) => {
-      if (recaptchaToken && userData) {
-        const status = await handleLog(userData, recaptchaToken);
-        console.log('status:' + status);
-        setShowCaptcha(false);
-      } else {
+    toast.closeAll();
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const result = await fetchUserData();
+        if (result.success) {
+          // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
+          if (!result.permit) {
+            if (!result.publish) {
+              router.push(`/confirmation`);
+            } else {
+              router.push(`/result`);
+            }
+          }
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error: any) {
+        console.error('Error fetching user data:', error);
+        router.push('/login');
         toast({
-          title: ' Sorry , Captcha not verified',
+          title: error.message,
           status: 'error',
           duration: 5000,
           isClosable: true,
           position: 'top',
         });
-        setShowCaptcha(false);
+      } finally {
+        setIsLoading(false);
       }
     };
-    return (
-      showCaptcha && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ReCAPTCHA sitekey={CAPTCHA_KEY} onChange={handleCaptchaResponse} />
-        </div>
-      )
-    );
-  };
-
-  useEffect(() => {
-    toast.closeAll();
+    fetchData(); // Call the async function
   }, []);
 
   useEffect(() => {
-    if (Id === '') {
-      router.push('/login');
-    } else {
+    if (Id != '') {
       setUser(search_students(Id)[0]);
     }
-  }, []);
+  }, [Id]);
 
-  useEffect(() => {
-    const handle_Tab_Close = async (e: any) => {
-      await handle_Logout();
-      return;
-    };
+  // this was causing the logout to happen on every tab close also on refresh
+  // useEffect(() => {
+  //   const handle_Tab_Close = async (e: any) => {
+  //     await handle_Logout();
+  //     return;
+  //   };
 
-    if (!hearts_submitted) {
-      window.addEventListener('beforeunload', handle_Tab_Close);
-    }
+  //   if (!hearts_submitted) {
+  //     window.addEventListener('beforeunload', handle_Tab_Close);
+  //   }
 
-    return () => {
-      window.removeEventListener('beforeunload', handle_Tab_Close);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handle_Tab_Close);
+  //   };
+  // }, []);
 
   const fetchAndSelectStudents = () => {
     const selected: Student[] = [];
@@ -345,11 +318,10 @@ const New = () => {
     backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
   };
 
-  if (!userData) return;
-
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="box">
-      <HandleCapture />
       <Clear />
       {/* LOGOUT BUTTON */}
       <div className="logout-button-div">
@@ -375,6 +347,16 @@ const New = () => {
                     <div className="details-text-name">{user?.n}</div>
                     {/* <div className="details-text" >{user?.d}</div> */}
                     <div className="details-text">{user?.i}</div>
+                    {/* <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={styles['heart-submit-button']}
+                      onClick={SetRecoveryToast}
+                      style={{ color: 'white', margin: '12px 0px' }}
+                    >
+                      Set Recovery
+                    </motion.div> */}
+                    <SetRecoveryToast />
                     {!hearts_submitted ? (
                       <motion.div
                         whileHover={{ scale: 1.1 }}
