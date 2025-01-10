@@ -1,42 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles/claimedhearts.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { GrUserFemale } from 'react-icons/gr';
+import { GrUser } from 'react-icons/gr';
 import {
   heartsReceivedFromFemales,
   heartsReceivedFromMales,
 } from '../utils/UserData';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const style = { display: 'flex', gap: '10px', alignItems: 'center' };
 function Hearts() {
   return (
     <div className="recieved-box">
-      <div style={{ fontWeight: 'bold' }}>Your Hearts</div>
+      <div style={{ fontWeight: 'bold', fontSize: '1.3rem' }}>Caught !</div>
       <div className="heart-container" style={style}>
-        <div className="gender-heart">Female :</div>
+        <GrUserFemale fontSize="large" />
         <div className="hearts">
-          {Array(heartsReceivedFromFemales)
-            .fill(heartsReceivedFromFemales)
-            .map((_, index) => (
-              <FavoriteIcon
-                key={`female-heart-${index}`}
-                color="secondary"
-                fontSize="small"
-              />
-            ))}
+          <FavoriteIcon color="secondary" fontSize="large" />
+          <span>x{heartsReceivedFromFemales}</span>
         </div>
       </div>
       <div className="heart-container" style={style}>
-        <div className="gender-heart">Male : </div>
+        <GrUser fontSize="large" />
         <div className="hearts">
-          {Array(heartsReceivedFromMales)
-            .fill(heartsReceivedFromMales)
-            .map((_, index) => (
-              <FavoriteIcon
-                key={`male-heart-${index}`}
-                color="secondary"
-                fontSize="small"
-              />
-            ))}
+          <FavoriteIcon color="secondary" fontSize="large" />
+          <span>x{heartsReceivedFromMales}</span>
         </div>
       </div>
     </div>

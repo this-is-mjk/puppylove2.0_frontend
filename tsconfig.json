@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "utils/Encryption.tsx"
+    "utils/Encryption.tsx",
+    "utils/recoverCode.tsx"
   ],
   "exclude": ["node_modules"]
 }

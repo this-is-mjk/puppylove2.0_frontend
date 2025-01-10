@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './selectcard';
+import Card from './card';
 import '../styles/selectcard.css';
 import { Student } from '../utils/API_Calls/search';
 
@@ -21,7 +21,9 @@ const ClickedStudents: React.FC<ClickedStudentsProps> = ({
           key={student.i}
           student={student}
           onClick={() => onUnselectStudent(student.i)}
-          unselectButton={true}
+          isActive={() => true}
+          clickedCheck={true}
+          inSelectSection={true}
           hearts_submitted={hearts_submitted}
         />
       ))}

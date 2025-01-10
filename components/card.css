@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  /* height: 250px; */
+  padding: 10px;
+  height: 270px;
+  background-color: rgb(212, 209, 209);
+  border-radius: 10px;
+}
+
+.card-details {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.profile {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  border-radius: 100%;
+  flex-shrink: 0;
+  background-position: center top;
+  background-size: cover;
+}

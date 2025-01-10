@@ -101,7 +101,7 @@ const VerifyPage: React.FC = () => {
 
     if (isValid) {
       const code = generateRecoveryCode(id);
-      
+
       router.push('/login');
       toast({
         title: 'Verified',

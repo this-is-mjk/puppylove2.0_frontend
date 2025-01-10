@@ -9,12 +9,14 @@ import {
   Set_Id,
   PrivK,
   PubK,
+  setAbout,
+  setIntrestes,
 } from '../UserData';
 import { fetchAndDecodeHearts } from './recievedHearts';
 import { returnHearts_Late } from './returnHearts';
 import { FetchReturnedHearts } from './Matching';
-import { m } from 'framer-motion';
 const SERVER_IP = process.env.SERVER_IP;
+import Cookies from 'js-cookie';
 
 // Admin Permit to Send Hearts
 export var Permit = true;
@@ -88,8 +90,13 @@ export const fetchUserData = async () => {
     }
     const res_json = await res.json();
 
+    // set basic info
+    setAbout(res_json.about);
+    setIntrestes(res_json.intrest);
+
     // Do other calculations
     Permit = res_json.permit;
+    Set_Submit(res_json.submit);
     Set_Id(res_json.id);
     Set_Gender(res_json.gender);
     Set_Submit(res_json.submit);
@@ -118,6 +125,7 @@ export const fetchUserData = async () => {
 export const handle_Logout = async () => {
   try {
     sessionStorage.removeItem('data');
+    Cookies.remove('Authorization');
     const res = await fetch(`${SERVER_IP}/session/logout`, {
       method: 'GET',
     });
