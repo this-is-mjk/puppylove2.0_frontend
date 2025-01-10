@@ -9,6 +9,7 @@ import {
   Set_Id,
   PrivK,
   PubK,
+  Submit,
 } from '../UserData';
 import { fetchAndDecodeHearts } from './recievedHearts';
 import { returnHearts_Late } from './returnHearts';
@@ -90,6 +91,7 @@ export const fetchUserData = async () => {
 
     // Do other calculations
     Permit = res_json.permit;
+    Set_Submit(res_json.submit);
     Set_Id(res_json.id);
     Set_Gender(res_json.gender);
     Set_Submit(res_json.submit);

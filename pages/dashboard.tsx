@@ -20,8 +20,6 @@ import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
 import { error } from 'console';
-import { generateKey } from 'crypto';
-import { generateRecoveryCode } from '@/utils/recoverCode';
 import SetRecoveryToast from '@/components/recoveryToast';
 
 const SERVER_IP = process.env.SERVER_IP;
@@ -38,11 +36,13 @@ const New = () => {
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [isShowStud, setShowStud] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [newDatafetched, setNewDataFetched] = useState(false);
 
   useEffect(() => {
     toast.closeAll();
     const fetchData = async () => {
       try {
+        console.log('Fetching user data..., before data: ' + receiverIds);
         setIsLoading(true);
         const result = await fetchUserData();
         if (result.success) {
@@ -69,9 +69,10 @@ const New = () => {
         });
       } finally {
         setIsLoading(false);
+        setNewDataFetched(true);
       }
     };
-    fetchData(); // Call the async function
+    fetchData(); // Call the async function // select the students after the data is fetched
   }, []);
 
   useEffect(() => {
@@ -79,6 +80,10 @@ const New = () => {
       setUser(search_students(Id)[0]);
     }
   }, [Id]);
+
+  useEffect(() => {
+    set_hearts_submitted(Submit);
+  }, [Submit]);
 
   // this was causing the logout to happen on every tab close also on refresh
   // useEffect(() => {
@@ -96,28 +101,27 @@ const New = () => {
   //   };
   // }, []);
 
-  const fetchAndSelectStudents = () => {
-    const selected: Student[] = [];
-    for (let i = 0; i < 4; i++) {
-      const id = receiverIds[i];
-      if (id === '') {
-        continue;
-      }
-      const data = search_students(id);
-      if (data == undefined) {
-        return;
-      }
-      const student = data[0];
-      if (student) {
-        selected.push(student);
-      }
-    }
-    setClickedStudents([...clickedStudents, ...selected]);
-  };
-
   useEffect(() => {
+    const fetchAndSelectStudents = () => {
+      const selected: Student[] = [];
+      for (let i = 0; i < 4; i++) {
+        const id = receiverIds[i];
+        if (id === '') {
+          continue;
+        }
+        const data = search_students(id);
+        if (data == undefined) {
+          return;
+        }
+        const student = data[0];
+        if (student) {
+          selected.push(student);
+        }
+      }
+      setClickedStudents([...clickedStudents, ...selected]);
+    };
     fetchAndSelectStudents();
-  }, []);
+  }, [newDatafetched]);
 
   const handleButtonClick = async (studentRoll: string) => {
     if (clickedStudents.length >= 4) {
@@ -237,7 +241,9 @@ const New = () => {
 
     await SendHeart_api(false);
     const isValid = await handle_Logout();
-    router.push('/');
+    router.push('/').then(() => {
+      window.location.reload();
+    });
     if (!isValid) {
       toast({
         title: 'Some error occured while Logging Out',
@@ -316,6 +322,7 @@ const New = () => {
 
   const stylesss = {
     backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
+    
   };
 
   return isLoading ? (
