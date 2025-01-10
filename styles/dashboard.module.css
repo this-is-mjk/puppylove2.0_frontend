@@ -1,13 +1,14 @@
 .box {
   max-width: 100%;
   /* color: black; */
-  background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1124&q=100');
+  /* background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1124&q=100'); */
+  background-image: url('https://png.pngtree.com/background/20250103/original/pngtree-a-romantic-night-sky-with-glowing-full-moon-shaped-like-heart-picture-image_15827749.jpg');
   background-position: center;
   background-size: cover;
 }
 
 .dashboard {
-  justify-content: space-between;
+  justify-content: start;
   margin: 0 auto;
   padding: 1%;
   width: 100%;
@@ -27,8 +28,10 @@
 }
 
 .middleSection {
+  height: 80vh;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   gap: 0.5rem;
   padding: 0.8rem 1rem;
   backdrop-filter: blur(5px) saturate(150%);
@@ -39,8 +42,6 @@
 }
 
 .newInfo {
-  flex-grow: 1;
-
   backdrop-filter: blur(5px) saturate(150%);
   -webkit-backdrop-filter: blur(5px) saturate(150%);
   background-color: rgba(17, 25, 40, 0.63);
@@ -62,9 +63,6 @@
   padding: 0;
   color: white;
   line-height: 0.3rem;
-}
-.infoSection {
-  margin: 2%;
 }
 
 .infoSection span {
@@ -94,18 +92,15 @@
 }
 .heartBox {
   width: 200px;
-  background-color: white;
-  -webkit-backdrop-filter: blur(5px) saturate(150%);
-  backdrop-filter: blur(5px) saturate(150%);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   font-size: 1rem;
-  color: black;
-  border: 1px solid black;
+  /* border: 2px solid pink; */
 }
 .selectedPeople {
-  background-color: white;
+  /* background-color: white; */
   border-radius: 10px;
-  border: 1px solid black;
+  background-color: rgba(255, 255, 255, 0.1);
   flex-grow: 1;
   /* height: 200px; */
 }
@@ -117,34 +112,36 @@
 }
 
 .searchDiv {
+  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
-  background-color: white;
+  /* background-color: white; */
   border-radius: 10px;
+  /* border: 2px solid pink; */
 }
 
 .searchBar {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
-  background-color: white;
+  background-color: transparent;
   border-radius: 10px;
   font-size: 14px;
   margin: -9px 0;
+  color: white;
 }
 
 .studentContainer {
   border-radius: 10px;
-  background-color: white;
-  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
   flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
   gap: 20px;
   padding: 1rem 1rem;
   max-height: 100%;
@@ -153,8 +150,56 @@
 
 .bottomMiddleSection {
   width: 100%;
-  flex-grow: 1;
+  flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  /* height: ; */
+}
+
+@media screen and (max-width: 700px) {
+  .studentContainer {
+    justify-content: center;
+  }
+}
+
+.emptyImageDiv {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Open state */
+.open {
+  width: 250px; /* Full width when open */
+}
+
+/* Closed state */
+.closed {
+  width: 50px; /* Thin bar when closed */
+  overflow: hidden; /* Prevent content from spilling out */
+}
+
+/* Toggle button */
+.toggleButton {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  /* transform: translateY(-50%); */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-size: 1.2rem;
+}
+.veritcalText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+  color: black;
 }
