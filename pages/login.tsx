@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
     const status = await handleLog(data, recaptchaToken);
 
     if (status.success) {
-      router.push(`/dashboard`);
+      router.push(`/newDashboard`);
     } else {
       toast({
         title: status.credentialError

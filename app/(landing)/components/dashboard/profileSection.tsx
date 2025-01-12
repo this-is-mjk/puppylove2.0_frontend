@@ -1,16 +1,22 @@
-import { Stack, VStack, Box, HStack, Text } from '@chakra-ui/react';
+import { Stack, VStack, Box, HStack, Text, useToast } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import { motion } from 'framer-motion';
 import { FaHeart, FaRandom, FaKey } from 'react-icons/fa';
-import { MouseEventHandler } from 'react';
+import { BiLogOut } from 'react-icons/bi';
+import { MouseEventHandler, useEffect } from 'react';
 import React, { useState } from 'react';
 import { FaPencilAlt, FaCheck } from 'react-icons/fa';
 import Clear from '@/components/clear';
-const user = {
-  n: 'Manas Jain Kuniya',
-  i: '230626',
-  a: 'Hi i love to talk, and explore new palces!! asdfasdfasdkfasdk asjdfk asdfja kasd fasdkfa sd aksjfk asdjfka',
-};
+import { Id, setUser, user } from '@/utils/UserData';
+import { search_students } from '@/utils/API_Calls/search';
+import { useRouter } from 'next/router';
+import { handle_Logout } from '@/utils/API_Calls/login_api';
+import ActionButton from './actionButton';
+// const user = {
+//   n: 'Manas Jain Kuniya',
+//   i: '230626',
+//   a: 'Hi i love to talk, and explore new palces!! asdfasdfasdkfasdk asjdfk asdfja kasd fasdkfa sd aksjfk asdjfka',
+// };
 
 interface editSection {
   initialValue: string;
@@ -78,39 +84,44 @@ const EditableBox: React.FC<editSection> = ({ initialValue, onSave }) => {
   );
 };
 
-interface ActionButtonProps {
-  text: string;
-  icon: JSX.Element;
-  onClick: MouseEventHandler<HTMLDivElement>;
-}
-
-const ActionButton: React.FC<ActionButtonProps> = ({ text, icon, onClick }) => {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      style={{
-        backgroundColor: 'rgb(222, 217, 217)',
-        outline: 'none',
-        border: 'none',
-        // color: 'gray',
-        /* width: 'max-content', */
-        padding: '0.8rem 1.3rem',
-        borderRadius: '15px',
-        cursor: 'pointer',
-        display: 'flex',
-        gap: '1rem',
-        flexDirection: 'row',
-      }}
-      onClick={onClick}
-    >
-      <span>{icon}</span>
-      <Text hideBelow="md">{text}</Text>
-    </motion.div>
-  );
-};
-
 const ProfileSection = () => {
+  useEffect(() => {
+    if (Id != '') {
+      setUser(search_students(Id)[0]);
+    }
+    console.log(Id); 
+  }, [Id]);
+
+  const Logout = async () => {
+    // console.log(clickedStudents)
+
+    const router = useRouter();
+    const toast = useToast();
+
+    // await SendHeart_api(false); // why?
+    const isValid = await handle_Logout();
+    router.push('/').then(() => {
+      window.location.reload();
+    });
+    if (!isValid) {
+      toast({
+        title: 'Some error occured while Logging Out',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    } else {
+      toast({
+        title: 'Logged Out',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
+
   return (
     <Stack
       className={styles.profileSection}
@@ -145,7 +156,10 @@ const ProfileSection = () => {
             {user?.a || 'Tell us more about you!!'}
           </span> */}
           <EditableBox
-            initialValue={user?.a}
+            initialValue={
+              // user?.a ||
+              'Hi i love to talk, and explore new palces!! asdfasdfasdkfasdk asjdfk asdfja kasd fasdkfa sd aksjfk asdjfka'
+            }
             onSave={() => {
               console.log('save changes');
             }}
@@ -181,6 +195,13 @@ const ProfileSection = () => {
           text={'Recovery Codes'}
           icon={<FaKey />}
           onClick={() => {}}
+        />
+        <ActionButton
+          text={'LogOut'}
+          icon={<BiLogOut />}
+          onClick={() => {
+            Logout();
+          }}
         />
       </Stack>
     </Stack>
