@@ -15,12 +15,11 @@ import {
 import { BiSolidLock } from 'react-icons/bi';
 import { generateRecoveryCode, setUpRecoveryCode } from '@/utils/recoverCode';
 import { Id } from '@/utils/UserData';
-import { FaRegCopy } from 'react-icons/fa';
+import { FaKey, FaRegCopy } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import styles from '../styles/login.module.css';
-import { motion } from 'framer-motion';
+import styles from '../../../../styles/login.module.css';
 import { IoEye, IoKey } from 'react-icons/io5';
-import { title } from 'process';
+import ActionButton from './actionButton';
 
 const SetRecoveryModal = () => {
   const [rCode, setRCode] = useState('');
@@ -83,7 +82,12 @@ const SetRecoveryModal = () => {
   return (
     <>
       {/* Button to open modal */}
-      <motion.div
+      <ActionButton
+          text={'Recovery Codes'}
+          icon={<FaKey />}
+          onClick={onOpen} 
+        />
+      {/* <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className={styles['heart-submit-button']}
@@ -91,7 +95,7 @@ const SetRecoveryModal = () => {
         style={{ color: 'white' }}
       >
         Set Recovery
-      </motion.div>
+      </motion.div> */}
 
       {/* Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>

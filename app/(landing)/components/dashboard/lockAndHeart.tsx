@@ -1,4 +1,5 @@
-import { HStack } from '@chakra-ui/react';
+'useClient';
+import { Box, HStack } from '@chakra-ui/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import styles from '../../../../styles/dashboard.module.css';
 import { useState } from 'react';
@@ -6,17 +7,18 @@ import ClickedStudent from '@/components/clickedstudent';
 import { Student } from '@/utils/API_Calls/search';
 import { Submit } from '@/utils/UserData';
 import Card from '@/components/card';
+import Hearts from '@/components/Hearts';
 
-const user = {
-  n: 'Manas Jain Kuniya',
-  i: '230626',
-  a: 'Hi i love to talk, and explore new palces!! asdfasdfasdkfasdk asjdfk asdfja kasd fasdkfa sd aksjfk asdjfka',
-};
+interface LockAndHeartProps {
+  hearts_submitted: boolean;
+  clickedStudents: Student[];
+  setClickedStudents: (students: Student[]) => void;
+}
 
-const LockAndHeart = () => {
+const LockAndHeart: React.FC<LockAndHeartProps> = ({hearts_submitted, clickedStudents, setClickedStudents}) => {
   const [expandedSection, setExpandedSection] = useState<boolean>(false);
-  const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
-  const [hearts_submitted, set_hearts_submitted] = useState(Submit);
+  // const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+  // const [hearts_submitted, set_hearts_submitted] = useState(Submit);
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
@@ -26,41 +28,42 @@ const LockAndHeart = () => {
   return (
     <HStack className={styles.topMiddleSection}>
       {/* Heart Section */}
-      <div
+      <Box
         className={`${styles.heartBox} ${
           expandedSection ? styles.collapsed : styles.minWidth
         }`}
       >
-        <DotLottieReact
+        {/* <DotLottieReact
           className={styles.animationIcon}
           speed={1}
           src="/heart1.lottie"
           loop
           autoplay
-        />
-      </div>
+        /> */}
+        <Hearts />
+      </Box>
 
       {/* Lock Section */}
-      <div
+      <Box
         className={`${styles.selectedPeople} ${
           expandedSection ? styles.expanded : ''
         }`}
         onClick={() => setExpandedSection(!expandedSection)}
       >
         {expandedSection ? (
-          <div>
+          <Box>
             {clickedStudents.length > 0 ? (
-              <div>
+              <Box>
                 <ClickedStudent
                   clickedStudents={clickedStudents}
                   onUnselectStudent={handleUnselectStudent}
                   hearts_submitted={hearts_submitted}
                 />
-              </div>
+              </Box>
             ) : (
               <h1 style={{ margin: 'auto' }}>no one slected</h1>
             )}
-          </div>
+          </Box>
         ) : (
           <DotLottieReact
             className={styles.animationIcon}
@@ -70,7 +73,7 @@ const LockAndHeart = () => {
             autoplay
           />
         )}
-      </div>
+      </Box>
     </HStack>
   );
 };

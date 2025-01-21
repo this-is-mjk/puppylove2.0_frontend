@@ -12,9 +12,17 @@
 }
 .clicked-students-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  /* justify-content: flex-start; */
+  overflow: scroll;
   gap: 20px;
+}
+
+@media screen and (max-width: 700px) {
+  .clicked-students-container {
+    justify-content: center;
+  }
 }
 
 .select-card-details {

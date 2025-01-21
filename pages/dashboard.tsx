@@ -20,7 +20,7 @@ import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
 import { error } from 'console';
-import SetRecoveryToast from '@/components/recoveryToast';
+import SetRecoveryToast from '@/app/(landing)/components/dashboard/recoveryToast';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -440,7 +440,7 @@ const New = () => {
                     <ClickedStudent
                       clickedStudents={clickedStudents}
                       onUnselectStudent={handleUnselectStudent}
-                      hearts_submitted={hearts_submitted}
+                     hearts_submitted={hearts_submitted}
                     />
                   </div>
                 ) : (

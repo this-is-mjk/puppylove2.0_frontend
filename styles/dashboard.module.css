@@ -16,35 +16,35 @@
 }
 
 .profileSection {
-  background-color: black;
   padding: 1%;
   border-radius: 5%;
-
-  backdrop-filter: blur(5px) saturate(150%);
-  -webkit-backdrop-filter: blur(5px) saturate(150%);
-  background-color: rgba(17, 25, 40, 0.63);
+  backdrop-filter: blur(20px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(100%);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .middleSection {
   height: 80vh;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   gap: 0.5rem;
   padding: 0.8rem 1rem;
-  backdrop-filter: blur(5px) saturate(150%);
-  -webkit-backdrop-filter: blur(5px) saturate(150%);
-  background-color: rgba(17, 25, 40, 0.63);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.4);
+  overflow: auto;
+  
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .newInfo {
-  backdrop-filter: blur(5px) saturate(150%);
-  -webkit-backdrop-filter: blur(5px) saturate(150%);
-  background-color: rgba(17, 25, 40, 0.63);
+  backdrop-filter: blur(20px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(100%);
+  /* background-color: rgba(17, 25, 40, 0.63); */
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
@@ -56,12 +56,10 @@
   font-weight: bold;
   margin: -9px 0;
   padding: 0;
-  color: white;
   line-height: 0.3rem;
 }
 
 .infoSection span {
-  color: orange;
   width: 100%;
 }
 
@@ -86,92 +84,69 @@
   background-color: pink;
 }
 
-/* heart and lock div */
-
-/* .topMiddleSection {
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-.heartBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-.hiddenHeartBox {
-  transition: 1s width 0%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.selectedPeople {
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-  height: auto;
-}
-
-.enlargedPeopleBox {
-  width: 100%;
-  height: auto;
-} */
-
 .topMiddleSection {
+  height: 180px;
   display: flex;
   align-items: center;
   position: relative;
-  overflow: hidden;
-  height: 20%;
   width: 100%; /* Ensure the container spans the full width */
 }
 
 .heartBox,
 .selectedPeople {
   transition:
-    width 0.3s ease,
-    opacity 0.3s ease;
+    width 0.6s ease,
+    opacity 0.2s ease,
+    height 0.6s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  overflow: hidden;
   font-size: 1rem;
   height: auto; /* Allow height to adjust based on content */
   height: 100%;
   align-items: center;
 }
 
+.heartBox {
+  flex-direction: column;
+}
+.selectedPeople {
+  flex-direction: row;
+  padding: 2%;
+  overflow: auto;
+}
+
+.heartContainer {
+  max-height: fit-content;
+}
+
+.hearts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: red;
+}
+
 .minWidth {
-  width: 30%;
-  min-width: 100px;
+  width: 20%;
+  min-width: 150px;
 }
 
 .selectedPeople {
   flex-grow: 1;
-  flex-direction: column;
   cursor: pointer;
 }
 
 .expanded {
-  width: 100%; /* Expanded section takes full width */
+  width: 100%;
 }
 
 .collapsed {
-  width: 0%; /* Collapsed section disappears */
-  pointer-events: none; /* Prevent interaction with collapsed section */
-  opacity: 0; /* Optional: Fade out collapsed section */
+  width: 0%; 
+  pointer-events: none; 
+  opacity: 0; 
 }
 
 .animationIcon {
@@ -186,9 +161,7 @@
   align-items: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
-  /* background-color: white; */
   border-radius: 10px;
-  /* border: 2px solid pink; */
 }
 
 .searchBar {
@@ -202,6 +175,10 @@
   font-size: 14px;
   margin: -9px 0;
   color: white;
+  border: none;
+}
+.searchBar::placeholder {
+  color: white;
 }
 
 .studentContainer {
@@ -209,12 +186,19 @@
   background-color: rgba(255, 255, 255, 0.1);
   overflow-y: auto;
   flex-grow: 1;
-  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex; 
   flex-wrap: wrap;
   gap: 20px;
   padding: 1rem 1rem;
   max-height: 100%;
   overflow-y: scroll;
+
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start; */
 }
 
 .bottomMiddleSection {
@@ -243,25 +227,29 @@
 
 /* Open state */
 .open {
-  width: 250px; /* Full width when open */
+  width: 300px;
+}
+@media screen and (max-width: 700px) {
+  .open {
+    width: 100%;
+    justify-content: center;
+  }
+  
 }
 
 /* Closed state */
 .closed {
-  width: 50px; /* Thin bar when closed */
-  overflow: hidden; /* Prevent content from spilling out */
+  width: fit-content;
+  overflow: hidden;
 }
 
 /* Toggle button */
 .toggleButton {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  /* transform: translateY(-50%); */
   background-color: transparent;
   border: none;
   cursor: pointer;
-
+  height: 100%;
+  margin: 0 auto;
   font-size: 1.2rem;
 }
 .veritcalText {
@@ -271,4 +259,14 @@
   transform-origin: 0 0;
   transform: rotate(90deg);
   color: black;
+}
+.dp {
+  width: 180px;
+  height: 180px;
+  min-width: 110px;
+  min-height: 110px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10%;
 }

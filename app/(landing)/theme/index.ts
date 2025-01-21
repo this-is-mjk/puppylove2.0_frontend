@@ -1,9 +1,13 @@
 'use client';
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, Heading } from '@chakra-ui/react';
 import { theme } from '@saas-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
 
 import components from './components';
 import { fontSizes } from './foundations/typography';
+import button from './components/button';
+import { color } from 'framer-motion';
+import Head from 'next/head';
 
 // import '@fontsource/inter/variable.css'
 
@@ -15,25 +19,53 @@ const styles = {
       fontSize: 'lg',
       _dark: {
         color: '#e6e6e6',
-        bg: 'gray.900',
+        bg: 'black',
       },
+      _light: {
+        color: 'gray.100',
+        bg: '#ffffff30'
+      }
     },
-
     _placeholder: {
       color: 'gray.600',
     },
   }),
 };
 
+const newComponents = {
+  ...components,
+  Button: {
+    variants: {
+      'nav-link': {
+        color: 'gray.900',
+        _dark: {
+          color: '#e6e6e6',
+        },
+        _light: {
+          color: 'gray.100',
+        },
+        _hover: {
+          textDecoration: 'underline',
+        },
+      },
+    },
+  },
+  Heading: {
+    baseStyle: (props: any) => ({
+      color: mode('gray.100', '#e6e6e6')(props),
+    }),
+  }
+};
+
 export default extendTheme(
   {
     config: {
-      initialColorMode: 'dark',
+      initialColorMode: 'light',
       useSystemColorMode: false,
     },
     styles,
     fontSizes,
-    components,
+    components: newComponents,
   },
   theme
 );
