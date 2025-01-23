@@ -1,5 +1,5 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, useToast, Box } from '@chakra-ui/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -14,12 +14,11 @@ import GoToTop from '@/components/GoToTop';
 import { useRouter } from 'next/router';
 import Clear from '@/components/clear';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
-import { Data, receiverIds, setUser, user } from '../utils/UserData';
+import { receiverIds, setUser, user } from '../utils/UserData';
 import { fetchUserData, handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
-import { error } from 'console';
 import SetRecoveryToast from '@/app/(landing)/components/dashboard/recoveryToast';
 
 const SERVER_IP = process.env.SERVER_IP;
@@ -149,6 +148,7 @@ const New = () => {
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
+
     setClickedStudents(updatedStudents);
   };
 

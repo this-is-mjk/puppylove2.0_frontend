@@ -2,17 +2,15 @@
 import { Box, HStack } from '@chakra-ui/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import styles from '../../../../styles/dashboard.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClickedStudent from '@/components/clickedstudent';
 import { Student } from '@/utils/API_Calls/search';
-import { Submit } from '@/utils/UserData';
-import Card from '@/components/card';
 import Hearts from '@/components/Hearts';
 
 interface LockAndHeartProps {
   hearts_submitted: boolean;
   clickedStudents: Student[];
-  setClickedStudents: (students: Student[]) => void;
+  setClickedStudents: Function;
 }
 
 const LockAndHeart: React.FC<LockAndHeartProps> = ({hearts_submitted, clickedStudents, setClickedStudents}) => {
@@ -22,8 +20,15 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({hearts_submitted, clickedStu
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
+    console.log('updatedStudents:', updatedStudents);
     setClickedStudents(updatedStudents);
   };
+
+  // when the hearts are submitted the cards dont update showing hearts submitted.
+  // so its better to close the lock section when hearts are submitted
+  useEffect(() => {
+    setExpandedSection(false);
+  }, [hearts_submitted]);
 
   return (
     <HStack className={styles.topMiddleSection}>

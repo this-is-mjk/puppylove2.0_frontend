@@ -1,10 +1,7 @@
 .box {
   max-width: 100%;
-  /* color: black; */
-  /* background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1124&q=100'); */
-  /* background-image: url('https://png.pngtree.com/background/20250103/original/pngtree-a-romantic-night-sky-with-glowing-full-moon-shaped-like-heart-picture-image_15827749.jpg'); */
   background-position: center;
-  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .dashboard {
@@ -14,14 +11,48 @@
   width: 100%;
   /* height: 80vh; */
 }
-
-.profileSection {
-  padding: 1%;
+.profileSection,
+.intrestChips,
+.infoSection,
+.editAbout {
   border-radius: 5%;
   backdrop-filter: blur(20px) saturate(100%);
   -webkit-backdrop-filter: blur(20px) saturate(100%);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.infoLable {
+  font-size: 0.7rem;
+  text-align: right;
+  font-style: italic;
+}
+
+.profileSection {
+  padding: 1%;
+}
+
+.editAbout {
+  width: 100%;
+  word-break: break-all;
+  padding: 2%;
+}
+
+.infoSection {
+  padding: 2% 3%;
+  align-items: start;
+  justify-content: space-between;
+  backdrop-filter: blur(20px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(100%);
+}
+
+.intrestChips {
+  width: 100%;
+  padding: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  row-gap: 3px;
 }
 
 .middleSection {
@@ -36,15 +67,7 @@
   -webkit-backdrop-filter: blur(10px) saturate(150%);
   background-color: rgba(17, 25, 40, 0.4);
   overflow: auto;
-  
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.125);
-}
 
-.newInfo {
-  backdrop-filter: blur(20px) saturate(100%);
-  -webkit-backdrop-filter: blur(20px) saturate(100%);
-  /* background-color: rgba(17, 25, 40, 0.63); */
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
@@ -54,13 +77,10 @@
 .name {
   font-size: 1.5rem;
   font-weight: bold;
-  margin: -9px 0;
   padding: 0;
-  line-height: 0.3rem;
-}
-
-.infoSection span {
   width: 100%;
+  text-align: right;
+  /* line-height: 1.5rem; */
 }
 
 .greeting {
@@ -73,15 +93,6 @@
   justify-content: start;
   gap: 1px;
   width: auto;
-}
-
-.intrestChips {
-  border-radius: 10px;
-  font-size: 1rem;
-  color: black;
-  border: 1px solid black;
-  padding: 2px 8px;
-  background-color: pink;
 }
 
 .topMiddleSection {
@@ -144,9 +155,9 @@
 }
 
 .collapsed {
-  width: 0%; 
-  pointer-events: none; 
-  opacity: 0; 
+  width: 0%;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .animationIcon {
@@ -188,7 +199,7 @@
   flex-grow: 1;
   justify-content: flex-start;
   align-items: flex-start;
-  display: flex; 
+  display: flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 1rem 1rem;
@@ -225,33 +236,42 @@
   align-items: center;
 }
 
-/* Open state */
-.open {
-  width: 300px;
-}
-@media screen and (max-width: 700px) {
-  .open {
-    width: 100%;
-    justify-content: center;
-  }
+
+.newInfo { 
+  backdrop-filter: blur(20px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(100%);
+  /* background-color: rgba(17, 25, 40, 0.63); */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
   
 }
 
+.verticalText {
+  writing-mode: vertical-rl;
+}
+
+.open .verticalText {
+  writing-mode: horizontal-tb; 
+}
+
+
+/* Open state */
+.newInfo.open {
+  width: 300px;
+}
+@media screen and (max-width: 700px) {
+  .newInfo.open {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Closed state */
-.closed {
+.newInfo.closed {
   width: fit-content;
   overflow: hidden;
 }
 
-/* Toggle button */
-.toggleButton {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  height: 100%;
-  margin: 0 auto;
-  font-size: 1.2rem;
-}
 .veritcalText {
   position: absolute;
   top: 0;

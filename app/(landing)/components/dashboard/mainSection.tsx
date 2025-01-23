@@ -1,28 +1,34 @@
-import { Box, Image, useToast, Input } from '@chakra-ui/react';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Box, useToast } from '@chakra-ui/react';
 import styles from '../../../../styles/dashboard.module.css';
 import { useEffect, useState } from 'react';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import { BsSearch } from 'react-icons/bs';
-import { Id, receiverIds, setUser, Submit } from '@/utils/UserData';
+import { Id, Submit } from '@/utils/UserData';
 import Card from '@/components/card';
 import LockAndHeart from './lockAndHeart';
-import { useRouter } from 'next/router';
-import { fetchUserData } from '@/utils/API_Calls/login_api';
-import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 
 const SERVER_IP = process.env.SERVER_IP;
 
-const MainSection = () => {
+interface mainSection {
+  clickedStudents: Student[];
+  setClickedStudents: Function;
+  hearts_submitted: boolean;
+  set_hearts_submitted: Function;
+  SendHeart_api: Function;
+}
+
+const MainSection: React.FC<mainSection> = ({
+  clickedStudents,
+  setClickedStudents,
+  hearts_submitted,
+  set_hearts_submitted,
+  SendHeart_api,
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [students, setStudents] = useState<Student[]>([]);
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [newDatafetched, setNewDataFetched] = useState(false);
-  const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
 
-  const router = useRouter();
   const toast = useToast();
 
   useEffect(() => {
@@ -71,47 +77,18 @@ const MainSection = () => {
     setStudents(studentData);
   };
 
-  const SendHeart_api = async (Submit: boolean) => {
-    if (hearts_submitted) {
-      return;
-    }
-    if (Submit) {
-      set_hearts_submitted(true);
-    }
-    for (let j = 0; j < clickedStudents.length; j++) {
-      const id: string = clickedStudents[j].i;
-      receiverIds[j] = id;
-    }
-    for (let j = clickedStudents.length; j < 4; j++) {
-      receiverIds[j] = '';
-    }
-    const isValid = await SendHeart(Id, receiverIds, Submit);
-    if (isValid && Submit) {
-      toast({
-        title: 'HEARTS SENT',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'top',
-      });
-    } else if (!isValid && Submit) {
-      toast({
-        title: 'Error occurred , Hearts not sent',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top',
-      });
-    } else if (!isValid && !Submit) {
-      toast({
-        title: 'Choices not saved',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top',
-      });
-    }
-  };
+  // on update the clickedStudents, send the hearts
+  useEffect(() => {
+    const updateVirtualHeart = async () => {
+      // console.log(clickedStudents)
+      // if (clickedStudents.length) {
+      //   await SendHeart_api(false);
+      // }
+      await SendHeart_api(false);
+    };
+
+    if (clickedStudents.length >= 0) updateVirtualHeart();
+  }, [clickedStudents]);
 
   // Fetch all active users
   useEffect(() => {
@@ -140,7 +117,11 @@ const MainSection = () => {
   };
 
   return (
-    <Box width={{ base: '100%', md: '60%' }} _light={{backgroundColor: 'rgba(141, 122, 122, 0.2)'}} className={styles.middleSection}>
+    <Box
+      width={{ base: '100%', md: '60%' }}
+      _light={{ backgroundColor: 'rgba(141, 122, 122, 0.2)' }}
+      className={styles.middleSection}
+    >
       <LockAndHeart
         hearts_submitted={Submit}
         clickedStudents={clickedStudents}

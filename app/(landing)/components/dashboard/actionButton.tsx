@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MouseEventHandler } from 'react';
+import { JSX, MouseEventHandler } from 'react';
 import { Text, Button } from '@chakra-ui/react';
 
 interface ActionButtonProps {
@@ -26,6 +26,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ text, icon, onClick }) => {
         gap: '1rem',
         flexDirection: 'row',
       }} 
+      // color={{base: 'black' , md: 'white'}}
       onClick={onClick}>
         <span>{icon}</span>
         <Text hideBelow="md">{text}</Text>

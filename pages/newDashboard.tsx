@@ -4,17 +4,18 @@ import { Stack, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import NewSection from '@/app/(landing)/components/dashboard/newSection';
 import MainSection from '@/app/(landing)/components/dashboard/mainSection';
-import { Id, receiverIds, setUser, user } from '@/utils/UserData';
+import { Id, receiverIds, setUser, Submit, user } from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/utils/API_Calls/login_api';
 import { useRouter } from 'next/router';
+import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 
 const newDashboard = () => {
-  const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
+  const [hearts_submitted, set_hearts_submitted] = useState(Submit);
 
   const router = useRouter();
   const toast = useToast();
@@ -40,7 +41,6 @@ const newDashboard = () => {
           throw new Error(result.message);
         }
       } catch (error: any) {
-        console.error('Error fetching user data:', error);
         router.push('/login');
         toast({
           title: error.message,
@@ -90,7 +90,54 @@ const newDashboard = () => {
     fetchAndSelectStudents();
   }, [newDatafetched]);
 
+  // sent heart api function
+  const SendHeart_api = async (Submit: boolean) => {
+    if (hearts_submitted) {
+      return;
+    }
+    if (Submit) {
+      set_hearts_submitted(true);
+    }
+    for (let j = 0; j < clickedStudents.length; j++) {
+      const id: string = clickedStudents[j].i;
+      receiverIds[j] = id;
+    }
+    for (let j = clickedStudents.length; j < 4; j++) {
+      receiverIds[j] = '';
+    }
+    const isValid = await SendHeart(Id, receiverIds, Submit);
+    if (isValid && Submit) {
+      toast({
+        title: 'HEARTS SENT',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    } else if (!isValid && Submit) {
+      toast({
+        title: 'Error occurred , Hearts not sent',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    } else if (!isValid && !Submit) {
+      toast({
+        title: 'Choices not saved',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
+
+  const submit = async () => {
+    await SendHeart_api(true);
+    toast.closeAll();
     
+  }
 
   return (
     <VStack
@@ -99,14 +146,22 @@ const newDashboard = () => {
         'url(/bglight.png)', // Light theme image
         'url(/bgdark.jpg)' // Dark theme image
       )}
+      backgroundSize={{base: 'none', md: 'cover'}}
+      
     >
       <Clear />
       <Stack
         direction={{ base: 'column', md: 'row' }}
         className={styles.dashboard}
       >
-        <ProfileSection user={user} />
-        <MainSection />
+        <ProfileSection user={user} submit={submit} submitted={hearts_submitted} />
+        <MainSection
+          clickedStudents={clickedStudents}
+          setClickedStudents={setClickedStudents}
+          hearts_submitted={hearts_submitted}
+          set_hearts_submitted={set_hearts_submitted}
+          SendHeart_api={SendHeart_api}
+        />
         <NewSection />
       </Stack>
       <Clear />

@@ -58,6 +58,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     toast.closeAll();
+    sessionStorage.clear();
   }, []);
 
   const handleSubmit = (e: any) => {
