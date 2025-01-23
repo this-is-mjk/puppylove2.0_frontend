@@ -7,18 +7,22 @@ import {
   Set_Claims,
   Set_Submit,
   Set_Id,
+  PrivK,
+  PubK,
+  setAbout,
+  setIntrestes,
 } from '../UserData';
 import { fetchAndDecodeHearts } from './recievedHearts';
 import { returnHearts_Late } from './returnHearts';
 import { FetchReturnedHearts } from './Matching';
 const SERVER_IP = process.env.SERVER_IP;
+import Cookies from 'js-cookie';
 
 // Admin Permit to Send Hearts
 export var Permit = true;
 
 export const handleLog = async (data: any, recaptchaToken: any) => {
   try {
-    Set_Id(data.id);
     const myHeaders = new Headers();
     myHeaders.append('g-recaptcha-response', recaptchaToken);
     console.log(recaptchaToken);
@@ -47,9 +51,53 @@ export const handleLog = async (data: any, recaptchaToken: any) => {
     const res_json = await res.json();
     const pvtKey_Enc: string = res_json.pvtKey_Enc;
     const pvtKey_login = await Decryption_AES(pvtKey_Enc, data.password);
-    Permit = res_json.permit;
     Set_PrivK(pvtKey_login);
     Set_PubK(res_json.pubKey);
+
+    // Store the private key and public key in the session storage
+    sessionStorage.setItem(
+      'data',
+      JSON.stringify({ k1: pvtKey_login, k2: res_json.pubKey })
+    );
+
+    return { success: true };
+  } catch (err) {
+    console.log(err);
+    return { success: false, credentialError: false };
+  }
+};
+
+export const fetchUserData = async () => {
+  try {
+    // Set the keys from the session storage
+    if (PrivK === '' || PubK === '') {
+      const data = sessionStorage.getItem('data');
+      if (data != null) {
+        const keys = JSON.parse(data);
+        Set_PrivK(keys.k1);
+        Set_PubK(keys.k2);
+      } else {
+        return { success: false, message: 'Please login again' };
+      }
+    }
+    // Send the request
+    const res = await fetch(`${SERVER_IP}/users/data`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    }
+    const res_json = await res.json();
+
+    // set basic info
+    setAbout(res_json.about);
+    setIntrestes(res_json.intrest);
+
+    // Do other calculations
+    Permit = res_json.permit;
+    Set_Submit(res_json.submit);
+    Set_Id(res_json.id);
     Set_Gender(res_json.gender);
     Set_Submit(res_json.submit);
     await Set_Data(res_json.data);
@@ -70,13 +118,14 @@ export const handleLog = async (data: any, recaptchaToken: any) => {
       publish: res_json.publish,
     };
   } catch (err) {
-    console.log(err);
-    return { success: false, credentialError: false };
+    return { success: false, message: 'Please login again' };
   }
 };
 
 export const handle_Logout = async () => {
   try {
+    sessionStorage.removeItem('data');
+    Cookies.remove('Authorization');
     const res = await fetch(`${SERVER_IP}/session/logout`, {
       method: 'GET',
     });

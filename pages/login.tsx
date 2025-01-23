@@ -15,13 +15,14 @@ import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/react';
 import { IoEye } from 'react-icons/io5';
 import ReCAPTCHA from 'react-google-recaptcha';
+import RetrivePassButton from '@/components/retrivePass';
 
 const LoginPage: React.FC = () => {
   const [data, setData] = useState({ id: '', password: '' });
   const [pass, setPass] = useState('password');
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
-  const CAPTCHA_KEY = process.env.CAPTCHA_KEY;
+  const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY;
 
   const router = useRouter();
   const toast = useToast();
@@ -37,20 +38,11 @@ const LoginPage: React.FC = () => {
       alert('Please complete the reCAPTCHA verification');
       return;
     }
-
+    sessionStorage.setItem('data', JSON.stringify(data));
     const status = await handleLog(data, recaptchaToken);
 
     if (status.success) {
-      // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
-      if (!status.permit) {
-        if (!status.publish) {
-          router.push(`/confirmation`);
-        } else {
-          router.push(`/result`);
-        }
-      } else {
-        router.push(`/dashboard`);
-      }
+      router.push(`/newDashboard`);
     } else {
       toast({
         title: status.credentialError
@@ -66,6 +58,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     toast.closeAll();
+    sessionStorage.clear();
   }, []);
 
   const handleSubmit = (e: any) => {
@@ -127,6 +120,7 @@ const LoginPage: React.FC = () => {
               />
               <IoEye size={18} onClick={handleEye} />
             </motion.div>
+            <RetrivePassButton id={data.id} />
 
             <div
               style={{

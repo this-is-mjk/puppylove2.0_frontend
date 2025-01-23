@@ -11,6 +11,7 @@ import Clear from '@/components/clear';
 import Link from 'next/link';
 import { useToast } from '@chakra-ui/react';
 import { IoEye } from 'react-icons/io5';
+import { generateRecoveryCode } from '@/utils/recoverCode';
 
 const VerifyPage: React.FC = () => {
   const router = useRouter();
@@ -99,6 +100,8 @@ const VerifyPage: React.FC = () => {
     const isValid = await handleVerifyOTP(user);
 
     if (isValid) {
+      const code = generateRecoveryCode(id);
+
       router.push('/login');
       toast({
         title: 'Verified',

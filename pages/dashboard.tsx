@@ -15,10 +15,11 @@ import { useRouter } from 'next/router';
 import Clear from '@/components/clear';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import { receiverIds, setUser, user } from '../utils/UserData';
-import { handle_Logout } from '@/utils/API_Calls/login_api';
+import { fetchUserData, handle_Logout } from '@/utils/API_Calls/login_api';
 import { Id, Submit } from '../utils/UserData';
 import { search_students, Student } from '@/utils/API_Calls/search';
 import Image from 'next/image';
+import SetRecoveryToast from '@/app/(landing)/components/dashboard/recoveryToast';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -33,56 +34,93 @@ const New = () => {
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [isShowStud, setShowStud] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [newDatafetched, setNewDataFetched] = useState(false);
 
   useEffect(() => {
     toast.closeAll();
+    const fetchData = async () => {
+      try {
+        console.log('Fetching user data..., before data: ' + receiverIds);
+        setIsLoading(true);
+        const result = await fetchUserData();
+        if (result.success) {
+          // Heart Sending Period Over, Now user is doing last day login to give Confirmation for Matching or to see Results(later)
+          if (!result.permit) {
+            if (!result.publish) {
+              router.push(`/confirmation`);
+            } else {
+              router.push(`/result`);
+            }
+          }
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error: any) {
+        console.error('Error fetching user data:', error);
+        router.push('/login');
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+      } finally {
+        setIsLoading(false);
+        setNewDataFetched(true);
+      }
+    };
+    fetchData(); // Call the async function // select the students after the data is fetched
   }, []);
 
   useEffect(() => {
-    if (Id === '') {
-      router.push('/login');
-    } else {
+    if (Id != '') {
       setUser(search_students(Id)[0]);
     }
-  }, []);
+  }, [Id]);
 
   useEffect(() => {
-    const handle_Tab_Close = async (e: any) => {
-      await handle_Logout();
-      return;
-    };
+    set_hearts_submitted(Submit);
+  }, [Submit]);
 
-    if (!hearts_submitted) {
-      window.addEventListener('beforeunload', handle_Tab_Close);
-    }
+  // this was causing the logout to happen on every tab close also on refresh
+  // useEffect(() => {
+  //   const handle_Tab_Close = async (e: any) => {
+  //     await handle_Logout();
+  //     return;
+  //   };
 
-    return () => {
-      window.removeEventListener('beforeunload', handle_Tab_Close);
-    };
-  }, []);
+  //   if (!hearts_submitted) {
+  //     window.addEventListener('beforeunload', handle_Tab_Close);
+  //   }
 
-  const fetchAndSelectStudents = () => {
-    const selected: Student[] = [];
-    for (let i = 0; i < 4; i++) {
-      const id = receiverIds[i];
-      if (id === '') {
-        continue;
-      }
-      const data = search_students(id);
-      if (data == undefined) {
-        return;
-      }
-      const student = data[0];
-      if (student) {
-        selected.push(student);
-      }
-    }
-    setClickedStudents([...clickedStudents, ...selected]);
-  };
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handle_Tab_Close);
+  //   };
+  // }, []);
 
   useEffect(() => {
+    const fetchAndSelectStudents = () => {
+      const selected: Student[] = [];
+      for (let i = 0; i < 4; i++) {
+        const id = receiverIds[i];
+        if (id === '') {
+          continue;
+        }
+        const data = search_students(id);
+        if (data == undefined) {
+          return;
+        }
+        const student = data[0];
+        if (student) {
+          selected.push(student);
+        }
+      }
+      setClickedStudents([...clickedStudents, ...selected]);
+    };
     fetchAndSelectStudents();
-  }, []);
+  }, [newDatafetched]);
 
   const handleButtonClick = async (studentRoll: string) => {
     if (clickedStudents.length >= 4) {
@@ -110,6 +148,7 @@ const New = () => {
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
+
     setClickedStudents(updatedStudents);
   };
 
@@ -202,7 +241,9 @@ const New = () => {
 
     await SendHeart_api(false);
     const isValid = await handle_Logout();
-    router.push('/');
+    router.push('/').then(() => {
+      window.location.reload();
+    });
     if (!isValid) {
       toast({
         title: 'Some error occured while Logging Out',
@@ -283,9 +324,9 @@ const New = () => {
     backgroundImage: `url("https://home.iitk.ac.in/~${user?.u}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${user?.i}_0.jpg"), url("/dummy.png")`,
   };
 
-  if (Id == '') return;
-
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="box">
       <Clear />
       {/* LOGOUT BUTTON */}
@@ -312,6 +353,16 @@ const New = () => {
                     <div className="details-text-name">{user?.n}</div>
                     {/* <div className="details-text" >{user?.d}</div> */}
                     <div className="details-text">{user?.i}</div>
+                    {/* <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={styles['heart-submit-button']}
+                      onClick={SetRecoveryToast}
+                      style={{ color: 'white', margin: '12px 0px' }}
+                    >
+                      Set Recovery
+                    </motion.div> */}
+                    <SetRecoveryToast />
                     {!hearts_submitted ? (
                       <motion.div
                         whileHover={{ scale: 1.1 }}

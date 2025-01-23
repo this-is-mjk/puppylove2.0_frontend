@@ -20,7 +20,7 @@ export interface FooterProps extends BoxProps {
 export const Footer: React.FC<FooterProps> = (props) => {
   const { columns = 2, ...rest } = props;
   return (
-    <Box bg="#f5f4f2" _dark={{ bg: 'gray.900' }} {...rest}>
+    <Box backdropFilter="blur(5px)" bg="transparent" {...rest}>
       <Container maxW="container.2xl" px="6" py="2" minWidth={'100%'}>
         <SimpleGrid columns={[columns]}>
           <Stack>
