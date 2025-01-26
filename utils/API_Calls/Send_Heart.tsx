@@ -3,7 +3,7 @@ import { PubK, Gender, ReturnHearts, Set_Submit, PrivK } from '../UserData';
 import { returnHearts } from './returnHearts';
 const SERVER_IP = process.env.SERVER_IP;
 
-let PublicKeys: any[] = [];
+let PublicKeys: Record<string,string> = {};
 let isPubliKAvail = false;
 
 async function fetchPubKeys() {
@@ -128,10 +128,8 @@ export const SendHeart = async (
 };
 
 export function get_pubKey(id: string) {
-  for (const publicKey of PublicKeys) {
-    if (publicKey._id === id) {
-      return publicKey.pubKey;
-    }
+  if (PublicKeys[id]) {
+      return PublicKeys[id];
   }
-  throw new Error('Public Key Not Found');
+  throw new Error("Public Key Not Found");
 }
