@@ -15,6 +15,7 @@
     "@chakra-ui/next-js": "^2.4.2",
     "@chakra-ui/react": "^2.10.4",
     "@chakra-ui/skip-nav": "^2.1.0",
+    "@distube/ytdl-core": "^4.16.0",
     "@emotion/is-prop-valid": "^1.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -26,6 +27,7 @@
     "@mui/joy": "^5.0.0-beta.8",
     "@saas-ui/auth": "^2.0.10",
     "@saas-ui/react": "^2.11.3",
+    "axios": "^1.7.9",
     "chart.js": "^4.4.1",
     "crypto-js": "^4.1.1",
     "framer-motion": "^11.17.0",
@@ -38,8 +40,14 @@
     "react-dom": "^18.0.0",
     "react-google-recaptcha": "^3.1.0",
     "react-icons": "^4.12.0",
+    "react-modal": "^3.16.3",
+    "react-player": "^2.16.0",
     "react-remove-scroll": "^2.6.2",
-    "sharp": "^0.33.1"
+    "react-top-loading-bar": "^3.0.2",
+    "react-youtube": "^10.1.0",
+    "react-youtube-music-player": "^1.0.5",
+    "sharp": "^0.33.1",
+    "youtube-metadata-from-url": "^1.0.3"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.2",
