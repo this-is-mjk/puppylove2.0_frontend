@@ -12,7 +12,7 @@
   /* height: 80vh; */
 }
 .profileSection,
-.intrestChips,
+.interestChips,
 .infoSection,
 .editAbout {
   border-radius: 5%;
@@ -46,7 +46,7 @@
   -webkit-backdrop-filter: blur(20px) saturate(100%);
 }
 
-.intrestChips {
+.interestChips {
   width: 100%;
   padding: 2%;
   display: flex;
@@ -66,7 +66,7 @@
   backdrop-filter: blur(10px) saturate(150%);
   -webkit-backdrop-filter: blur(10px) saturate(150%);
   background-color: rgba(17, 25, 40, 0.4);
-  overflow: auto;
+  overflow: scroll;
 
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
@@ -87,7 +87,7 @@
   font-size: 1.5rem;
 }
 
-.intrestBox {
+.interestBox {
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: start;
@@ -101,6 +101,7 @@
   align-items: center;
   position: relative;
   width: 100%; /* Ensure the container spans the full width */
+  overflow: scroll;
 }
 
 .heartBox,
@@ -126,7 +127,14 @@
 .selectedPeople {
   flex-direction: row;
   padding: 2%;
-  overflow: auto;
+  overflow: scroll;
+  display: flex;
+  flex-grow: 1;
+  cursor: pointer;
+  padding-left: 20px;
+}
+.expanded {
+  height: 100%;
 }
 
 .heartContainer {
@@ -143,15 +151,6 @@
 .minWidth {
   width: 20%;
   min-width: 150px;
-}
-
-.selectedPeople {
-  flex-grow: 1;
-  cursor: pointer;
-}
-
-.expanded {
-  width: 100%;
 }
 
 .collapsed {

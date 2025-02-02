@@ -10,7 +10,7 @@ import {
   PrivK,
   PubK,
   setAbout,
-  setIntrestes,
+  setInterestes,
 } from '../UserData';
 import { fetchAndDecodeHearts } from './recievedHearts';
 import { returnHearts_Late } from './returnHearts';
@@ -92,7 +92,7 @@ export const fetchUserData = async () => {
 
     // set basic info
     setAbout(res_json.about);
-    setIntrestes(res_json.intrest);
+    setInterestes(res_json.interest);
 
     // Do other calculations
     Permit = res_json.permit;
@@ -118,6 +118,7 @@ export const fetchUserData = async () => {
       publish: res_json.publish,
     };
   } catch (err) {
+    console.error(err);
     return { success: false, message: 'Please login again' };
   }
 };

@@ -83,7 +83,7 @@ const CustomCard = ({
                 </IconButton>
               )}
 
-              <IconButton
+              {/* <IconButton
                 border="1px solid"
                 borderColor={colorMode === 'light' ? '#FFD700' : '#ffffff60'}
                 color={colorMode == 'light' ? 'green.500' : 'green.300'}
@@ -91,7 +91,7 @@ const CustomCard = ({
                 onClick={clicked}
               >
                 <TbMusicHeart />
-              </IconButton>
+              </IconButton> */}
               {inSelectSection && (
                 <IconButton
                   border="1px solid"

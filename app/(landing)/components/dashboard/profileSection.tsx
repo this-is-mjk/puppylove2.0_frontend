@@ -1,4 +1,4 @@
-import { Stack, VStack, Box, useToast, Button, ring } from '@chakra-ui/react';
+import { Stack, VStack, Box, useToast, Button} from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import { FaHeart, FaRandom } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
@@ -17,13 +17,12 @@ import {
   useEditableControls,
   ButtonGroup,
   Editable,
-  Tooltip,
   EditableInput,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 import SetRecoveryToast from './recoveryToast';
-import IntrestChips from '@/components/intrestChips';
+import InterestChips from '@/components/intrestChips';
 import { About, setAbout } from '@/utils/UserData';
 interface profile {
   user: Student;
@@ -222,7 +221,7 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
 
           <div style={{ width: '100%' }}>
             <p className={styles.infoLable}>You love to do?</p>
-            <IntrestChips />
+            <InterestChips />
           </div>
         </VStack>
       </Stack>

@@ -8,7 +8,6 @@ import {
   Box,
   useToast,
   Input,
-  VStack,
   Button,
 } from '@chakra-ui/react';
 import { JSX, useEffect, useState } from 'react';
@@ -19,7 +18,7 @@ const SERVER_IP = process.env.SERVER_IP;
 
 import styles from '@/styles/dashboard.module.css';
 import { CloseIcon } from '@saas-ui/react';
-import { Intrests } from '@/utils/UserData';
+import { Interests } from '@/utils/UserData';
 
 const IntrestChips = () => {
   const [intrestArray, setIntrestArray] = useState<string[]>([]);
@@ -35,8 +34,8 @@ const IntrestChips = () => {
 
   useEffect(() => {
     // first time fetch the saved intrests
-    setIntrestArray(Intrests);
-  }, [Intrests]);
+    setIntrestArray(Interests);
+  }, [Interests]);
 
   const updateIntrest = async (intrests: string) => {
     try {
@@ -101,7 +100,18 @@ const IntrestChips = () => {
   }
 
   return (
-    <Box className={styles.intrestChips}>
+    <Box className={styles.interestChips}>
+      {intrestArray.length == 0 && (
+        <p
+          style={{
+            fontStyle: 'italic',
+            fontSize: '0.8rem',
+            padding: '0.2rem',
+          }}
+        >
+          Add Intrest
+        </p>
+      )}
       {intrestArray.map((intrest) => {
         return (
           <Tag

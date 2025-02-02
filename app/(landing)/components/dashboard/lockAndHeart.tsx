@@ -19,8 +19,7 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
   setClickedStudents,
 }) => {
   const [expandedSection, setExpandedSection] = useState<boolean>(false);
-  // const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
-  // const [hearts_submitted, set_hearts_submitted] = useState(Submit);
+
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
@@ -70,7 +69,7 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
                 />
               </Box>
             ) : (
-              <h1 style={{ margin: 'auto' }}>no one slected</h1>
+              <h1 style={{ margin: 'auto' }}>no one selected</h1>
             )}
           </Box>
         ) : (

@@ -17,7 +17,7 @@ export let user: Student = {} as Student;
 
 // user info
 export let About: string = '';
-export let Intrests: string[] = [];
+export let Interests: string[] = [];
 
 export let batchWiseMatches = {};
 export let batchWiseResgis = {};
@@ -30,8 +30,10 @@ export let totalMatches = '';
 export const setAbout = (about: string) => {
   About = about;
 };
-export const setIntrestes = (intresteString: string) => {
-  Intrests = intresteString.split(',');
+export const setInterestes = (interesteString: string) => {
+  if (interesteString.length) {
+    Interests = interesteString.split(',');
+  }
 };
 
 export const setStats = (StatsVariable: any, stats: any) => {
