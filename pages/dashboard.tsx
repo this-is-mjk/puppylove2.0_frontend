@@ -4,7 +4,7 @@ import { Stack, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import NewSection from '@/app/(landing)/components/dashboard/newSection';
 import MainSection from '@/app/(landing)/components/dashboard/mainSection';
-import { Id, Matched_Ids, receiverIds, setUser, Submit, user } from '@/utils/UserData';
+import {Id, receiverIds, receiverSongs,setUser, Submit, user, Matched_Ids,} from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/utils/API_Calls/login_api';
@@ -12,13 +12,14 @@ import { useRouter } from 'next/router';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import { get_result } from '@/utils/API_Calls/get_results';
 
-const newDashboard = () => {
+const dashboard  = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [resultPage, setResultPage] = useState(false);
   const [Matches, setMatches] = useState<Student[]>([]);
+  const [selectedSongIds, setSelectedSongIds] = useState<{ [key: string]: string | null }>({});
   const router = useRouter();
   const toast = useToast();
 
@@ -69,12 +70,16 @@ const newDashboard = () => {
     wait();
   }, [Id]);
 
-  // once the data is fetched, select the students from the receiverIds
+
+  // once the data is fetched, select the students and songs from the receiverIds and receiverSongs
   useEffect(() => {
     const fetchAndSelectStudents = () => {
       const selected: Student[] = [];
+      const updatedSongIds: { [key: string]: string | null } = {};
       for (let i = 0; i < 4; i++) {
         const id = receiverIds[i];
+         const songId = receiverSongs[i] || ''; 
+        updatedSongIds[id] = songId;
         if (id === '') {
           continue;
         }
@@ -88,6 +93,7 @@ const newDashboard = () => {
         }
       }
       setClickedStudents([...clickedStudents, ...selected]);
+      setSelectedSongIds((prevSongIds) => ({...prevSongIds,...updatedSongIds,}));
     };
     fetchAndSelectStudents();
   }, [newDatafetched]);
@@ -100,14 +106,17 @@ const newDashboard = () => {
     if (Submit) {
       set_hearts_submitted(true);
     }
+    const selectedSongsData: { [key: string]: string | null } = {};
     for (let j = 0; j < clickedStudents.length; j++) {
       const id: string = clickedStudents[j].i;
       receiverIds[j] = id;
+      selectedSongsData[id] = selectedSongIds[id] || null;
     }
     for (let j = clickedStudents.length; j < 4; j++) {
       receiverIds[j] = '';
+      selectedSongsData[receiverIds[j]] = null;
     }
-    const isValid = await SendHeart(Id, receiverIds, Submit);
+    const isValid = await SendHeart(Id, receiverIds,selectedSongsData, Submit);
     if (isValid && Submit) {
       toast({
         title: 'HEARTS SENT',
@@ -192,6 +201,8 @@ const newDashboard = () => {
           SendHeart_api={SendHeart_api}
           isResultPage={resultPage}
           matches={Matches}
+          selectedSongIds={selectedSongIds}
+          setSelectedSongIds={setSelectedSongIds}
         />
         <NewSection />
       </Stack>
@@ -200,4 +211,4 @@ const newDashboard = () => {
   );
 };
 
-export default newDashboard;
+export default dashboard;

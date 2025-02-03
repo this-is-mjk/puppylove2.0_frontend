@@ -1,6 +1,6 @@
 import { Stack, VStack, Box, useToast, Button} from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
-import { FaHeart, FaRandom } from 'react-icons/fa';
+import { FaHeart, FaRandom, FaSpotify } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -20,10 +20,10 @@ import {
   EditableInput,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-
 import SetRecoveryToast from './recoveryToast';
 import InterestChips from '@/components/InterestChips';
 import { About, setAbout } from '@/utils/UserData';
+
 interface profile {
   user: Student;
   submit: Function;
@@ -53,7 +53,6 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
   const router = useRouter();
   const toast = useToast();
   const [userAbout, setUserAbout] = useState('');
-
   useEffect(() => {
     console.log(About);
     setUserAbout(About.length ? About : 'Tell us more about you!!');
@@ -181,11 +180,9 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
           width={'100%'}
         >
           <div style={{ width: '100%' }}>
-            <p className={styles.infoLable}>Hello, its great to see you!!</p>
             <p className={styles.name}>{user?.n}</p>
           </div>
           <div style={{ width: '100%' }}>
-            <p className={styles.infoLable}>How about you?</p>
             <Editable
               value={userAbout}
               isPreviewFocusable={true}
@@ -214,6 +211,7 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
                   textAlign={'right'}
                   as={EditableInput}
                 />
+               
                 <EditableControls />
               </div>
             </Editable>
@@ -231,6 +229,7 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
         className="action-section"
         justifyContent={{ base: 'right', md: 'center' }}
       >
+
         <ActionButton
           text={submitted ? 'Submitted' : 'Submit Hearts'}
           icon={<FaHeart />}

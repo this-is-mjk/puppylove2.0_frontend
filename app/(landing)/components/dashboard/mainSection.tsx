@@ -19,6 +19,8 @@ interface mainSection {
   SendHeart_api: Function;
   isResultPage: boolean;
   matches: Student[];
+  selectedSongIds: { [key: string]: string | null };
+  setSelectedSongIds: Function;
 }
 
 const MainSection: React.FC<mainSection> = ({
@@ -29,6 +31,8 @@ const MainSection: React.FC<mainSection> = ({
   SendHeart_api,
   isResultPage,
   matches,
+  selectedSongIds,
+  setSelectedSongIds,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState<Student[]>([]);
@@ -125,7 +129,7 @@ const MainSection: React.FC<mainSection> = ({
     };
 
     if (clickedStudents.length >= 0) updateVirtualHeart();
-  }, [clickedStudents]);
+  }, [clickedStudents,selectedSongIds]);
 
   // Fetch all active users
   useEffect(() => {
@@ -149,6 +153,13 @@ const MainSection: React.FC<mainSection> = ({
     fetchActiveUsers();
   }, []);
 
+  const handleSongSelect = (studentId: string, songId: string | null) => {
+    setSelectedSongIds((prev: any) => ({
+      ...prev,
+      [studentId]: songId,
+    }));
+  };
+
   const isActive = (id: string) => {
     return activeUsers.includes(id);
   };
@@ -162,7 +173,9 @@ const MainSection: React.FC<mainSection> = ({
       <LockAndHeart
         hearts_submitted={Submit}
         clickedStudents={clickedStudents}
-        setClickedStudents={setClickedStudents}
+        setClickedStudents={setClickedStudents} 
+        selectedSongIds={selectedSongIds}   
+        setSelectedSongIds={setSelectedSongIds}     
       />
       {isResultPage ? (
         <Box className={styles.bottomMiddleSection}>

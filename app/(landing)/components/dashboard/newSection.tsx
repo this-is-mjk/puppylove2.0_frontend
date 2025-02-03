@@ -6,20 +6,16 @@ import { title } from 'process';
 
 const announcements = [
   {
-    title: 'Talk with song!!',
-    body: 'This time pupply love team has come up with a cute feature for you all to, now you can send songs with your hearts which can be seen after matches!!',
+    title: 'Talk with songs!',
+    body: 'This time pclub has come up with a cute feature for you all to, now you can send songs with your hearts which can be seen after matches!',
   },
   {
     title: 'Express more',
-    body: 'Want to tell people your hobbies? we got you this time, you can put in any 3 hobbies!! Along with a catchy about section!!',
-  },
-  {
-    title: 'Want to meet new people?',
-    body: 'You can make new friends having similar hobbies, and we help you in that too! just click random suggestion',
+    body: 'Want to tell people your hobbies? we got you this time, you can put in any 3 hobbies along with a catchy about section!',
   },
   {
     title: 'NOTE',
-    body: "It's highly recommended that you generate your recovery codes and save them safely, as Pclub don't store your password, and once your passwords are lost, you cant recover them without recovery codes!",
+    body: "It's highly recommended that you generate your recovery codes and save them as we do not store your passwords, and once your passwords are lost you cannot recover them without recovery codes.",
   },
 ];
 
@@ -76,9 +72,6 @@ const NewSection = () => {
         marginTop={'10px'}
         pl={5}
       >
-        <Box>
-          <Text fontSize="xl">Explore Music</Text>
-        </Box>
         <ul>
           {announcements.map((announcement, index) => (
             <div key={index} style={{ padding: '10px' }}>

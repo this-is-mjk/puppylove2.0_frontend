@@ -12,12 +12,16 @@ interface LockAndHeartProps {
   hearts_submitted: boolean;
   clickedStudents: Student[];
   setClickedStudents: Function;
+  selectedSongIds: { [key: string]: string | null };
+  setSelectedSongIds: Function;
 }
 
 const LockAndHeart: React.FC<LockAndHeartProps> = ({
   hearts_submitted,
   clickedStudents,
   setClickedStudents,
+  selectedSongIds,
+  setSelectedSongIds,
 }) => {
   const [expandedSection, setExpandedSection] = useState<boolean>(false);
 
@@ -60,20 +64,22 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
               //   hearts_submitted={hearts_submitted}
               // />
               <div className={styles.clickedStudentsContainer}>
-              {clickedStudents.map((student) => (
-                <Card
-                  key={student.i}
-                  student={student}
-                  onClick={() => handleUnselectStudent(student.i)}
-                  isActive={() => true}
-                  clickedCheck={true}
-                  inSelectSection={true}
-                  hearts_submitted={hearts_submitted}
-                />
-              ))}
-            </div>
+                {clickedStudents.map((student) => (
+                  <Card
+                    key={student.i}
+                    student={student}
+                    onClick={() => handleUnselectStudent(student.i)}
+                    isActive={() => true}
+                    clickedCheck={true}
+                    inSelectSection={true}
+                    hearts_submitted={hearts_submitted}
+                    setSelectedSongId={setSelectedSongIds}
+                    selectedSongId={selectedSongIds[student.i]}
+                  />
+                ))}
+              </div>
             ) : (
-              <h1 style={{ margin: 'auto'}}>no one selected</h1>
+              <h1 style={{ margin: 'auto', width: '100%' }}>no one selected</h1>
             )}
           </Box>
         ) : (
