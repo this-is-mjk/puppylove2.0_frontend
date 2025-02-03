@@ -1,22 +1,40 @@
 import React from 'react';
-import '../styles/result-card.css';
+import '../styles/card.css';
+import { Box, VStack, Text, useColorMode } from '@chakra-ui/react';
 
-const MatchedCard = ({ student }: any) => {
+const MatchedCard = ({ student, about, interestes = [] }: any) => {
   const userName = student.u;
   const roll = student.i;
+  const { colorMode } = useColorMode();
 
   const stylesss = {
     backgroundImage: `url("https://home.iitk.ac.in/~${userName}/dp"), url("https://oa.cc.iitk.ac.in/Oa/Jsp/Photo/${roll}_0.jpg"), url("/dummy.png")`,
   };
 
   return (
-    <div className="cardr">
-      <div className="image-boxr">
-        <div className="profiler" style={stylesss}></div>
-      </div>
-      <p className="card-detailsr">{student.n}</p>
-      <p className="card-detailsr">{student.i}</p>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="row"
+      alignItems="center"
+      className="student-card"
+      p={4}
+      borderRadius="md"
+      boxShadow="md"
+      bg={'#12121260'}
+      color={'#f2f2f2'}
+      border="2px solid"
+      borderColor={'#FFD700'}
+    >
+      <Box borderRadius="md" style={stylesss} className="profile" />
+      <VStack align="start" spacing={2} ml={4} flex="1">
+        <Text fontSize="lg" fontWeight="bold">
+          {student.n}
+        </Text>
+        <Text fontSize="sm" color="gray.300">
+          {about}
+        </Text>
+      </VStack>
+    </Box>
   );
 };
 

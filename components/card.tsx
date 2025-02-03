@@ -57,10 +57,10 @@ const CustomCard = ({
       p={4}
       borderRadius="md"
       boxShadow="md"
-      bg={colorMode === 'light' ? '#FFFDE760' : '#12121260'}
-      color={colorMode === 'light' ? '#333' : '#f2f2f2'}
+      bg={'#12121260'}
+      color={'#f2f2f2'}
       border="2px solid"
-      borderColor={colorMode === 'light' ? '#FFD700' : '#ffffff60'}
+      borderColor={'#ffffff60'}
     >
       <Box
         borderRadius="md"

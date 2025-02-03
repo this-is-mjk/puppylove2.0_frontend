@@ -7,6 +7,7 @@ import { Id, Submit } from '@/utils/UserData';
 import Card from '@/components/card';
 import LockAndHeart from './lockAndHeart';
 import { fetchAllUserInfo } from '@/utils/API_Calls/login_api';
+import MatchedCard from '@/components/matched_card';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -16,6 +17,8 @@ interface mainSection {
   hearts_submitted: boolean;
   set_hearts_submitted: Function;
   SendHeart_api: Function;
+  isResultPage: boolean;
+  matches: Student[];
 }
 
 const MainSection: React.FC<mainSection> = ({
@@ -24,6 +27,8 @@ const MainSection: React.FC<mainSection> = ({
   hearts_submitted,
   set_hearts_submitted,
   SendHeart_api,
+  isResultPage,
+  matches,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState<Student[]>([]);
@@ -159,46 +164,78 @@ const MainSection: React.FC<mainSection> = ({
         clickedStudents={clickedStudents}
         setClickedStudents={setClickedStudents}
       />
-      <Box className={styles.bottomMiddleSection}>
-        <Box className={styles.searchDiv}>
-          <BsSearch size={20} />
-          <input
-            type="text"
-            className={styles.searchBar}
-            placeholder="Enter Name To Search."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </Box>
-        <Box className={styles.studentContainer}>
-          {/* {students.length == 0 && (
-            <Box className={styles.emptyImageDiv}>
-              <Image
-              src={'/dashboard.jpeg'}
-              alt="Logo"
-              width={200}
-              height={200}
-              />
-            </Box>
-          )} */}
-
-          {students.map(
-            (student) =>
-              student.i != Id && (
-                <Card
-                  key={student._id}
-                  student={student}
-                  about={allAbout[student.i] || ''}
-                  interestes={allInterests[student.i]?.split(',')}
-                  onClick={handleButtonClick}
-                  clickedCheck={clickedStudents.includes(student)}
-                  isActive={isActive}
-                  hearts_submitted={hearts_submitted}
-                />
-              )
+      {isResultPage ? (
+        <Box className={styles.bottomMiddleSection}>
+          {matches.length > 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <h1
+                className={styles.searchBar}
+                style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+              >
+                Your Matches
+              </h1>
+              <div
+                className={styles.studentContainer}
+                style={{ width: '100%', height: '100%' }}
+              >
+                {matches.map((student: any) => (
+                  <MatchedCard
+                    key={student.i}
+                    student={student}
+                    about={allAbout[student.i] || ''}
+                    interestes={allInterests[student.i]?.split(',')}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div
+              className={styles.studentContainer}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+            >
+              <p>No matches to show</p>
+            </div>
           )}
         </Box>
-      </Box>
+      ) : (
+        <Box className={styles.bottomMiddleSection}>
+          <Box className={styles.searchDiv}>
+            <BsSearch size={20} />
+            <input
+              type="text"
+              className={styles.searchBar}
+              placeholder="Enter Name To Search."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Box>
+          <Box className={styles.studentContainer}>
+            {students.map(
+              (student) =>
+                student.i != Id && (
+                  <Card
+                    key={student._id}
+                    student={student}
+                    about={allAbout[student.i] || ''}
+                    interestes={allInterests[student.i]?.split(',')}
+                    onClick={handleButtonClick}
+                    clickedCheck={clickedStudents.includes(student)}
+                    isActive={isActive}
+                    hearts_submitted={hearts_submitted}
+                  />
+                )
+            )}
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };

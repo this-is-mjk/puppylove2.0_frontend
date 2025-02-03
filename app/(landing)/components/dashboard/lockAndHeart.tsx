@@ -1,11 +1,12 @@
 'useClient';
 import { Box, HStack } from '@chakra-ui/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import styles from '../../../../styles/dashboard.module.css';
+import styles from '@/styles/dashboard.module.css';
 import { useEffect, useState } from 'react';
-import ClickedStudent from '@/components/clickedstudent';
+// import ClickedStudent from '@/components/clickedstudent';
 import { Student } from '@/utils/API_Calls/search';
 import Hearts from '@/components/Hearts';
+import Card from '@/components/card';
 
 interface LockAndHeartProps {
   hearts_submitted: boolean;
@@ -53,11 +54,24 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
         {expandedSection ? (
           <Box>
             {clickedStudents.length > 0 ? (
-              <ClickedStudent
-                clickedStudents={clickedStudents}
-                onUnselectStudent={handleUnselectStudent}
-                hearts_submitted={hearts_submitted}
-              />
+              // <ClickedStudent
+              //   clickedStudents={clickedStudents}
+              //   onUnselectStudent={handleUnselectStudent}
+              //   hearts_submitted={hearts_submitted}
+              // />
+              <div className={styles.clickedStudentsContainer}>
+              {clickedStudents.map((student) => (
+                <Card
+                  key={student.i}
+                  student={student}
+                  onClick={() => handleUnselectStudent(student.i)}
+                  isActive={() => true}
+                  clickedCheck={true}
+                  inSelectSection={true}
+                  hearts_submitted={hearts_submitted}
+                />
+              ))}
+            </div>
             ) : (
               <h1 style={{ margin: 'auto'}}>no one selected</h1>
             )}

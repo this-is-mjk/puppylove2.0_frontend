@@ -4,19 +4,21 @@ import { Stack, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import NewSection from '@/app/(landing)/components/dashboard/newSection';
 import MainSection from '@/app/(landing)/components/dashboard/mainSection';
-import { Id, receiverIds, setUser, Submit, user } from '@/utils/UserData';
+import { Id, Matched_Ids, receiverIds, setUser, Submit, user } from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/utils/API_Calls/login_api';
 import { useRouter } from 'next/router';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
+import { get_result } from '@/utils/API_Calls/get_results';
 
 const newDashboard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
-
+  const [resultPage, setResultPage] = useState(false);
+  const [Matches, setMatches] = useState<Student[]>([]);
   const router = useRouter();
   const toast = useToast();
 
@@ -34,7 +36,7 @@ const newDashboard = () => {
             if (!result.publish) {
               router.push(`/confirmation`);
             } else {
-              router.push(`/result`);
+              setResultPage(true);
             }
           }
         } else {
@@ -122,7 +124,7 @@ const newDashboard = () => {
         isClosable: true,
         position: 'top',
       });
-    } else if (!isValid && !Submit) {
+    } else if (!isValid && !Submit && newDatafetched) {
       toast({
         title: 'Choices not saved',
         status: 'error',
@@ -138,11 +140,36 @@ const newDashboard = () => {
     toast.closeAll();
   };
 
+  // fetch match resluts
+  useEffect(() => {
+    const show_result = async () => {
+      setIsLoading(true);
+      await get_result();
+      if (Matched_Ids[0] == '') {
+        return;
+      }
+      for (let j = 0; j < Matched_Ids.length; j++) {
+        const data: Array<Student> = search_students(Matched_Ids[j]);
+        if (!data.length) {
+          return;
+        }
+        const student = data[0];
+
+        if (!Matches.includes(student)) {
+          setMatches((prev) => [...prev, student]);
+        }
+      }
+    };
+    if (resultPage) {
+      show_result();
+    }
+  }, [resultPage]);
+
   return (
     <VStack
       className={styles.box}
       backgroundImage={useColorModeValue(
-        'url(/bglight.png)', // Light theme image
+        'url(/bg2.png)', // Light theme image
         'url(/bgdark.jpg)' // Dark theme image
       )}
       backgroundSize={{ base: 'none', md: 'cover' }}
@@ -163,6 +190,8 @@ const newDashboard = () => {
           hearts_submitted={hearts_submitted}
           set_hearts_submitted={set_hearts_submitted}
           SendHeart_api={SendHeart_api}
+          isResultPage={resultPage}
+          matches={Matches}
         />
         <NewSection />
       </Stack>
