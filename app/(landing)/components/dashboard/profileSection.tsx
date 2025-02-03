@@ -22,7 +22,7 @@ import {
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 import SetRecoveryToast from './recoveryToast';
-import InterestChips from '@/components/intrestChips';
+import InterestChips from '@/components/InterestChips';
 import { About, setAbout } from '@/utils/UserData';
 interface profile {
   user: Student;

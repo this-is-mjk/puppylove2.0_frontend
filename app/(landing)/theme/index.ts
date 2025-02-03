@@ -60,7 +60,7 @@ const newComponents = {
 export default extendTheme(
   {
     config: {
-      initialColorMode: 'light',
+      colorMode: 'dark',
       useSystemColorMode: false,
     },
     styles,

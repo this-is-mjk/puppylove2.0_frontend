@@ -20,6 +20,15 @@ import styles from '@/styles/dashboard.module.css';
 import { CloseIcon } from '@saas-ui/react';
 import { Interests } from '@/utils/UserData';
 
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const iconDict: { [key: string]: JSX.Element } = {
+  music: <FaMusic />,
+  treking: <FaMountain />,
+};
+
 const IntrestChips = () => {
   const [intrestArray, setIntrestArray] = useState<string[]>([]);
   const [selectedTag, setSelectedTag] = useState('');
@@ -27,23 +36,18 @@ const IntrestChips = () => {
   const [newIntrest, setNewIntrest] = useState('');
   const toast = useToast();
 
-  const iconDict: { [key: string]: JSX.Element } = {
-    music: <FaMusic />,
-    treking: <FaMountain />,
-  };
-
   useEffect(() => {
-    // first time fetch the saved intrests
+    // first time fetch the saved interests
     setIntrestArray(Interests);
   }, [Interests]);
 
   const updateIntrest = async (intrests: string) => {
     try {
-      const res = await fetch(`${SERVER_IP}/users/intrests`, {
+      const res = await fetch(`${SERVER_IP}/users/interests`, {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({
-          intrests: intrests.toLowerCase(),
+          interests: intrests.toLowerCase(),
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -95,10 +99,6 @@ const IntrestChips = () => {
     }
   };
 
-  function capitalizeFirstLetter(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   return (
     <Box className={styles.interestChips}>
       {intrestArray.length == 0 && (
@@ -147,6 +147,7 @@ const IntrestChips = () => {
             <HStack>
               <Input
                 maxLength={12}
+                className={styles.interestBox}
                 placeholder="Add new interest"
                 value={newIntrest}
                 onChange={(e) => setNewIntrest(e.target.value.toLowerCase())}
