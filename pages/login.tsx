@@ -22,8 +22,6 @@ const LoginPage: React.FC = () => {
   const [pass, setPass] = useState('password');
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
-  const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY ||'';
-
   const router = useRouter();
   const toast = useToast();
 
@@ -131,7 +129,7 @@ const LoginPage: React.FC = () => {
               }}
             >
               <ReCAPTCHA
-                sitekey={CAPTCHA_KEY}
+                sitekey={process.env.NEXT_PUBLIC_CAPTCHA_KEY || ''}
                 onChange={handleRecaptchaChange}
               />
             </div>

@@ -1,11 +1,12 @@
 'useClient';
 import { Box, HStack } from '@chakra-ui/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import styles from '../../../../styles/dashboard.module.css';
+import styles from '@/styles/dashboard.module.css';
 import { useEffect, useState } from 'react';
-import ClickedStudent from '@/components/clickedstudent';
+// import ClickedStudent from '@/components/clickedstudent';
 import { Student } from '@/utils/API_Calls/search';
 import Hearts from '@/components/Hearts';
+import Card from '@/components/card';
 
 interface LockAndHeartProps {
   hearts_submitted: boolean;
@@ -23,6 +24,7 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
   setSelectedSongIds,
 }) => {
   const [expandedSection, setExpandedSection] = useState<boolean>(false);
+
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
     console.log('updatedStudents:', updatedStudents);
@@ -56,16 +58,28 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
         {expandedSection ? (
           <Box>
             {clickedStudents.length > 0 ? (
-              <Box>
-                <ClickedStudent
-                  clickedStudents={clickedStudents}
-                  onUnselectStudent={handleUnselectStudent}
-                  hearts_submitted={hearts_submitted}
-                  selectedSongIds={selectedSongIds} 
-                  setSelectedSongIds={setSelectedSongIds}   />
-              </Box>
+              // <ClickedStudent
+              //   clickedStudents={clickedStudents}
+              //   onUnselectStudent={handleUnselectStudent}
+              //   hearts_submitted={hearts_submitted}
+              // />
+              <div className={styles.clickedStudentsContainer}>
+                {clickedStudents.map((student) => (
+                  <Card
+                    key={student.i}
+                    student={student}
+                    onClick={() => handleUnselectStudent(student.i)}
+                    isActive={() => true}
+                    clickedCheck={true}
+                    inSelectSection={true}
+                    hearts_submitted={hearts_submitted}
+                    setSelectedSongId={setSelectedSongIds}
+                    selectedSongId={selectedSongIds[student.i]}
+                  />
+                ))}
+              </div>
             ) : (
-              <h1 style={{ margin: 'auto' }}>no one selected</h1>
+              <h1 style={{ margin: 'auto', width: '100%' }}>no one selected</h1>
             )}
           </Box>
         ) : (

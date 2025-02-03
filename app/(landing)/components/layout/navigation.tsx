@@ -13,7 +13,7 @@ import { MobileNavButton } from '../mobile-nav';
 import { MobileNavContent } from '../mobile-nav';
 import { useDisclosure, useUpdateEffect } from '@chakra-ui/react';
 
-import ThemeToggle from './theme-toggle';
+// import ThemeToggle from './theme-toggle';
 
 const Navigation: React.FC = () => {
   const mobileNav = useDisclosure();
@@ -55,7 +55,7 @@ const Navigation: React.FC = () => {
         );
       })}
 
-      <ThemeToggle />
+      {/* <ThemeToggle /> */}
 
       <MobileNavButton
         ref={mobileNavBtnRef}

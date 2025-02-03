@@ -74,7 +74,7 @@ const NewSection = () => {
       >
         <ul>
           {announcements.map((announcement, index) => (
-            <div style={{ padding: '10px' }}>
+            <div key={index} style={{ padding: '10px' }}>
               <li key={index}>
                 <Heading
                   fontSize={'1.4rem'}

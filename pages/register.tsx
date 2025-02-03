@@ -16,8 +16,6 @@ const RegisterPage: React.FC = () => {
     setRecaptchaToken(token);
   };
 
-  const CAPTCHA_KEY = process.env.NEXT_PUBLIC_CAPTCHA_KEY;
-
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [id, setId] = useState('');
 
@@ -103,7 +101,7 @@ const RegisterPage: React.FC = () => {
               }}
             >
               <ReCAPTCHA
-                sitekey={CAPTCHA_KEY}
+                sitekey={process.env.NEXT_PUBLIC_CAPTCHA_KEY || ''}
                 onChange={handleRecaptchaChange}
               />
             </div>

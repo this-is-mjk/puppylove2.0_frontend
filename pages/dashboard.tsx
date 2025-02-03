@@ -4,20 +4,22 @@ import { Stack, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import NewSection from '@/app/(landing)/components/dashboard/newSection';
 import MainSection from '@/app/(landing)/components/dashboard/mainSection';
-import { Id, receiverIds, receiverSongs,setUser, Submit, user } from '@/utils/UserData';
+import {Id, receiverIds, receiverSongs,setUser, Submit, user, Matched_Ids,} from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/utils/API_Calls/login_api';
 import { useRouter } from 'next/router';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
+import { get_result } from '@/utils/API_Calls/get_results';
 
-const dashboard = () => {
+const dashboard  = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
+  const [resultPage, setResultPage] = useState(false);
+  const [Matches, setMatches] = useState<Student[]>([]);
   const [selectedSongIds, setSelectedSongIds] = useState<{ [key: string]: string | null }>({});
-
   const router = useRouter();
   const toast = useToast();
 
@@ -35,7 +37,7 @@ const dashboard = () => {
             if (!result.publish) {
               router.push(`/confirmation`);
             } else {
-              router.push(`/result`);
+              setResultPage(true);
             }
           }
         } else {
@@ -131,7 +133,7 @@ const dashboard = () => {
         isClosable: true,
         position: 'top',
       });
-    } else if (!isValid && !Submit) {
+    } else if (!isValid && !Submit && newDatafetched) {
       toast({
         title: 'Choices not saved',
         status: 'error',
@@ -146,14 +148,38 @@ const dashboard = () => {
     await SendHeart_api(true);
     toast.closeAll();
   };
- 
+
+  // fetch match resluts
+  useEffect(() => {
+    const show_result = async () => {
+      setIsLoading(true);
+      await get_result();
+      if (Matched_Ids[0] == '') {
+        return;
+      }
+      for (let j = 0; j < Matched_Ids.length; j++) {
+        const data: Array<Student> = search_students(Matched_Ids[j]);
+        if (!data.length) {
+          return;
+        }
+        const student = data[0];
+
+        if (!Matches.includes(student)) {
+          setMatches((prev) => [...prev, student]);
+        }
+      }
+    };
+    if (resultPage) {
+      show_result();
+    }
+  }, [resultPage]);
 
   return (
     <VStack
       className={styles.box}
       backgroundImage={useColorModeValue(
-        'url(/bglight.png)', // Light theme image
-        'url(/bgdark2.png)' // Dark theme image
+        'url(/bg2.png)', // Light theme image
+        'url(/bgdark.jpg)' // Dark theme image
       )}
       backgroundSize={{ base: 'none', md: 'cover' }}
     >
@@ -162,7 +188,6 @@ const dashboard = () => {
         direction={{ base: 'column', md: 'row' }}
         className={styles.dashboard}
       >
-                     
         <ProfileSection
           user={user}
           submit={submit}
@@ -174,9 +199,10 @@ const dashboard = () => {
           hearts_submitted={hearts_submitted}
           set_hearts_submitted={set_hearts_submitted}
           SendHeart_api={SendHeart_api}
+          isResultPage={resultPage}
+          matches={Matches}
           selectedSongIds={selectedSongIds}
           setSelectedSongIds={setSelectedSongIds}
-
         />
         <NewSection />
       </Stack>

@@ -10,7 +10,7 @@ import {
   PrivK,
   PubK,
   setAbout,
-  setIntrestes,
+  setInterestes,
 } from '../UserData';
 import { fetchAndDecodeHearts } from './recievedHearts';
 import { returnHearts_Late } from './returnHearts';
@@ -91,7 +91,7 @@ export const fetchUserData = async () => {
 
     // set basic info
     setAbout(res_json.about);
-    setIntrestes(res_json.intrest);
+    setInterestes(res_json.interest);
 
     // Do other calculations
     Permit = res_json.permit;
@@ -117,6 +117,7 @@ export const fetchUserData = async () => {
       publish: res_json.publish,
     };
   } catch (err) {
+    console.error(err);
     return { success: false, message: 'Please login again' };
   }
 };
@@ -135,5 +136,26 @@ export const handle_Logout = async () => {
   } catch (err) {
     console.log(err);
     return false;
+  }
+};
+
+export const fetchAllUserInfo = async () => {
+  try {
+    const res = await fetch(`${SERVER_IP}/users/alluserInfo`, {
+      method: 'GET',
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    }
+    const res_json = await res.json();
+    localStorage.setItem('about', res_json.about);
+    localStorage.setItem('interest', res_json.interests);
+    return {
+      success: true,
+      about: res_json.about,
+      interests: res_json.interests,
+    };
+  } catch (err) {
+    return { success: false, message: 'Cannot fetch all users profiles' };
   }
 };
