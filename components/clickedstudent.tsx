@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from './card';
-import '../styles/selectcard.css';
+import styles from "../styles/dashboard.module.css"
 import { Student } from '../utils/API_Calls/search';
 
 interface ClickedStudentsProps {
@@ -15,7 +15,7 @@ const ClickedStudents: React.FC<ClickedStudentsProps> = ({
   hearts_submitted,
 }) => {
   return (
-    <div className="clicked-students-container">
+    <div className={styles.clickedStudentsContainer}>
       {clickedStudents.map((student) => (
         <Card
           key={student.i}

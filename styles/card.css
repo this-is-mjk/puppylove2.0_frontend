@@ -1,4 +1,4 @@
-.card {
+.student-card {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -6,20 +6,13 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
-  width: 350px;
+  width: 300px;
   min-width: 270px;
   height: fit-content;
 }
 
 .inactive {
   filter: blur(3px);
-}
-
-.carddetails {
-  display: flex;
-  flex-direction: column;
-  margin-left: 16px;
-  flex-grow: 1;
 }
 
 .profile {
@@ -31,10 +24,4 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
-}
-
-.infosection {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }

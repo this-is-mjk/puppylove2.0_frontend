@@ -139,3 +139,24 @@ export const handle_Logout = async () => {
     return false;
   }
 };
+
+export const fetchAllUserInfo = async () => {
+  try {
+    const res = await fetch(`${SERVER_IP}/users/alluserInfo`, {
+      method: 'GET',
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+    }
+    const res_json = await res.json();
+    localStorage.setItem('about', res_json.about);
+    localStorage.setItem('interest', res_json.interests);
+    return {
+      success: true,
+      about: res_json.about,
+      interests: res_json.interests,
+    };
+  } catch (err) {
+    return { success: false, message: 'Cannot fetch all users profiles' };
+  }
+};

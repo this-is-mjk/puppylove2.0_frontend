@@ -6,6 +6,7 @@ import { BsSearch } from 'react-icons/bs';
 import { Id, Submit } from '@/utils/UserData';
 import Card from '@/components/card';
 import LockAndHeart from './lockAndHeart';
+import { fetchAllUserInfo } from '@/utils/API_Calls/login_api';
 
 const SERVER_IP = process.env.SERVER_IP;
 
@@ -28,8 +29,39 @@ const MainSection: React.FC<mainSection> = ({
   const [students, setStudents] = useState<Student[]>([]);
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [allAbout, setAllAbout] = useState<any>();
+  const [allInterests, setAllInterests] = useState<any>();
 
   const toast = useToast();
+
+  useEffect(() => {
+    // if local strage already exits
+    const localAbout = localStorage.getItem('about');
+    const localInterests = localStorage.getItem('interests');
+    if (localAbout && localInterests) {
+      setAllAbout(JSON.parse(localAbout));
+      setAllInterests(JSON.parse(localInterests));
+      return;
+    }
+    // else fetch all user info
+    const fetchInfo = async () => {
+      // async function to fetch all the user info in the start and save in local stoage
+      const result = await fetchAllUserInfo();
+      if (result.success) {
+        setAllAbout(result.about);
+        setAllInterests(result.interests);
+      } else {
+        toast({
+          title: result.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+      }
+    };
+    fetchInfo();
+  }, []);
 
   useEffect(() => {
     set_hearts_submitted(Submit);
@@ -156,6 +188,8 @@ const MainSection: React.FC<mainSection> = ({
                 <Card
                   key={student._id}
                   student={student}
+                  about={allAbout[student.i] || ''}
+                  interestes={allInterests[student.i]?.split(',')}
                   onClick={handleButtonClick}
                   clickedCheck={clickedStudents.includes(student)}
                   isActive={isActive}

@@ -9,15 +9,17 @@
   margin: 0 auto;
   padding: 1%;
   width: 100%;
-  /* height: 80vh; */
 }
+
 .profileSection,
 .interestChips,
 .infoSection,
-.editAbout {
+.editAbout,
+.newInfo {
   border-radius: 5%;
-  backdrop-filter: blur(20px) saturate(100%);
-  -webkit-backdrop-filter: blur(20px) saturate(100%);
+  opacity: 1;
+  backdrop-filter: blur(30px) saturate(100%);
+  -webkit-backdrop-filter: blur(30px) saturate(100%);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
@@ -66,8 +68,6 @@
   backdrop-filter: blur(10px) saturate(150%);
   -webkit-backdrop-filter: blur(10px) saturate(150%);
   background-color: rgba(17, 25, 40, 0.4);
-  overflow: scroll;
-
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
@@ -87,21 +87,11 @@
   font-size: 1.5rem;
 }
 
-.interestBox {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  gap: 1px;
-  width: auto;
-}
-
 .topMiddleSection {
   height: 180px;
   display: flex;
   align-items: center;
   position: relative;
-  width: 100%; /* Ensure the container spans the full width */
-  overflow: scroll;
 }
 
 .heartBox,
@@ -111,12 +101,9 @@
     opacity 0.2s ease,
     height 0.6s ease;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   font-size: 1rem;
-  height: auto; /* Allow height to adjust based on content */
   height: 100%;
   align-items: center;
 }
@@ -127,7 +114,7 @@
 .selectedPeople {
   flex-direction: row;
   padding: 2%;
-  overflow: scroll;
+  overflow-x: scroll;
   display: flex;
   flex-grow: 1;
   cursor: pointer;
@@ -157,6 +144,34 @@
   width: 0%;
   pointer-events: none;
   opacity: 0;
+}
+
+.selectCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 160px;
+  padding: 10px;
+  height: 250px;
+  background-color: rgb(212, 209, 209);
+  border-radius: 10px;
+  flex: 0 0 auto;
+}
+.clickedStudentsContainer {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+  .clickedStudentsContainer {
+    justify-content: center;
+  }
 }
 
 .animationIcon {
@@ -189,6 +204,9 @@
 }
 .searchBar::placeholder {
   color: white;
+}
+.interestBox::placeholder {
+  color: rgb(87, 85, 85);
 }
 
 .studentContainer {
@@ -236,9 +254,6 @@
 }
 
 .newInfo {
-  backdrop-filter: blur(20px) saturate(100%);
-  -webkit-backdrop-filter: blur(20px) saturate(100%);
-  /* background-color: rgba(17, 25, 40, 0.63); */
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
