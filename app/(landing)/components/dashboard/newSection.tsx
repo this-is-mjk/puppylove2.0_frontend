@@ -1,26 +1,29 @@
 import { useState } from 'react';
-import { VStack, Box, Heading, Text, Button, HStack } from '@chakra-ui/react';
+import {
+  VStack,
+  Heading,
+  Text,
+  Button,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  TagLeftIcon,
+} from '@chakra-ui/react';
 import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
-import styles from '../../../../styles/dashboard.module.css';
-import { title } from 'process';
-
-const announcements = [
-  {
-    title: 'Talk with songs!',
-    body: 'This time pclub has come up with a cute feature for you all to, now you can send songs with your hearts which can be seen after matches!',
-  },
-  {
-    title: 'Express more',
-    body: 'Want to tell people your hobbies? we got you this time, you can put in any 3 hobbies along with a catchy about section!',
-  },
-  {
-    title: 'NOTE',
-    body: "It's highly recommended that you generate your recovery codes and save them as we do not store your passwords, and once your passwords are lost you cannot recover them without recovery codes.",
-  },
-];
+import styles from '@/styles/dashboard.module.css';
+import { IoHeartCircle } from 'react-icons/io5';
+import { useData } from '../layout/dataContext';
+import {
+  groupedTags,
+  hashStringToColor,
+  announcements,
+  capitalizeFirstLetter,
+  iconDict,
+} from '@/utils/constant';
 
 const NewSection = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { addingNewTags } = useData();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -54,13 +57,13 @@ const NewSection = () => {
         <Heading
           as="h2"
           size="lg"
-          textAlign="center"
+          textAlign="start"
           lineHeight={1.5}
           p={2}
           className={`${styles.verticalText} ${isOpen ? '' : styles.verticalTextClosed}`}
           color={{ base: 'orange.400', md: 'white' }}
         >
-          What's New?
+          {addingNewTags ? 'Options ?' : "What's New?"}
         </Heading>
       </div>
 
@@ -72,22 +75,62 @@ const NewSection = () => {
         marginTop={'10px'}
         pl={5}
       >
-        <ul>
-          {announcements.map((announcement, index) => (
-            <div key={index} style={{ padding: '10px' }}>
-              <li key={index}>
-                <Heading
-                  fontSize={'1.4rem'}
-                  size="md"
-                  color={{ base: 'orange.300', md: 'white' }}
+        {addingNewTags ? (
+          <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
+            {Object.keys(groupedTags).map((category) => (
+              <div key={category}>
+                <h3
+                  style={{
+                    margin: '10px 0',
+                    fontSize: '1.2rem',
+                    fontWeight: 'bold',
+                  }}
                 >
-                  {announcement.title}
-                </Heading>
-                <Text>{announcement.body}</Text>
-              </li>
-            </div>
-          ))}
-        </ul>
+                  {category}
+                </h3>
+                <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
+                  {groupedTags[category].map((intrest) => (
+                    <Tag
+                      size={'sm'}
+                      key={intrest}
+                      variant="solid"
+                      colorScheme="blue"
+                      padding={1.5}
+                      gap={2.5}
+                      bg={hashStringToColor(intrest)}
+                    >
+                      <TagLabel style={{ fontSize: '0.9rem' }}>
+                        {capitalizeFirstLetter(intrest)}
+                      </TagLabel>
+                      <TagLeftIcon
+                        as={() =>
+                          iconDict[intrest.toLowerCase()] || <IoHeartCircle />
+                        }
+                      />
+                    </Tag>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ul>
+            {announcements.map((announcement, index) => (
+              <div key={index} style={{ padding: '10px' }}>
+                <li key={index}>
+                  <Heading
+                    fontSize={'1.4rem'}
+                    size="md"
+                    color={{ base: 'orange.300', md: 'white' }}
+                  >
+                    {announcement.title}
+                  </Heading>
+                  <Text>{announcement.body}</Text>
+                </li>
+              </div>
+            ))}
+          </ul>
+        )}
       </VStack>
     </VStack>
   );

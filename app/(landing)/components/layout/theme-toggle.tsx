@@ -1,15 +1,20 @@
-import { IconButton, useColorMode } from '@chakra-ui/react';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { IconButton } from '@chakra-ui/react';
+import { FiMoon } from 'react-icons/fi';
+import { useTheme } from './ThemeContext';
+import { BsStars } from 'react-icons/bs';
 
 const ThemeToggle = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { bgImg, toggleBgImg } = useTheme();
+
   return (
     <IconButton
       variant="ghost"
       aria-label="theme toggle"
-      icon={colorMode === 'light' ? <FiMoon size="14" /> : <FiSun size="14" />}
+      icon={
+        bgImg === 'url(/bg2.png)' ? <BsStars size="14" /> : <FiMoon size="14" />
+      }
       borderRadius="md"
-      onClick={toggleColorMode}
+      onClick={toggleBgImg}
     />
   );
 };

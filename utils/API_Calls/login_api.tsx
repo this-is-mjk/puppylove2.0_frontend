@@ -138,7 +138,34 @@ export const handle_Logout = async () => {
   }
 };
 
+// Function to set an item with expiration
+export function setWithExpiry(key: string, value: string, ttl: number) {
+  const now = new Date();
+  const item = {
+    value: value,
+    expiry: now.getTime() + ttl,
+  };
+  localStorage.setItem(key, JSON.stringify(item));
+}
+
+// Function to get an item and check for expiration
+export function getWithExpiry(key: string) {
+  const itemStr = localStorage.getItem(key);
+  if (!itemStr) {
+    return null;
+  }
+  console.log(itemStr);
+  const item = JSON.parse(itemStr);
+  const now = new Date();
+  if (now.getTime() > item.expiry) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return item.value;
+}
+
 export const fetchAllUserInfo = async () => {
+  const defalutDelay = 60 * 1000 * 30; // 30 minutes
   try {
     const res = await fetch(`${SERVER_IP}/users/alluserInfo`, {
       method: 'GET',
@@ -147,8 +174,8 @@ export const fetchAllUserInfo = async () => {
       throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
     }
     const res_json = await res.json();
-    localStorage.setItem('about', res_json.about);
-    localStorage.setItem('interest', res_json.interests);
+    setWithExpiry('about', res_json.about, defalutDelay);
+    setWithExpiry('interests', res_json.interests, defalutDelay);
     return {
       success: true,
       about: res_json.about,

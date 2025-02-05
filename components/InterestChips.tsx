@@ -10,8 +10,7 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
-import { JSX, useEffect, useState } from 'react';
-import { FaMountain, FaMusic } from 'react-icons/fa6';
+import { useEffect, useState } from 'react';
 import { IoHeartCircle } from 'react-icons/io5';
 import { MdAdd } from 'react-icons/md';
 const SERVER_IP = process.env.SERVER_IP;
@@ -19,22 +18,16 @@ const SERVER_IP = process.env.SERVER_IP;
 import styles from '@/styles/dashboard.module.css';
 import { CloseIcon } from '@saas-ui/react';
 import { Interests } from '@/utils/UserData';
-
-export function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-export const iconDict: { [key: string]: JSX.Element } = {
-  music: <FaMusic />,
-  treking: <FaMountain />,
-};
-
+import { useData } from '@/app/(landing)/components/layout/dataContext';
+import { capitalizeFirstLetter, iconDict } from '@/utils/constant';
+import { hashStringToColor } from '@/utils/constant';
 const IntrestChips = () => {
   const [intrestArray, setIntrestArray] = useState<string[]>([]);
   const [selectedTag, setSelectedTag] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [newIntrest, setNewIntrest] = useState('');
   const toast = useToast();
+  const { toogleAddingNewTags } = useData();
 
   useEffect(() => {
     // first time fetch the saved interests
@@ -59,7 +52,7 @@ const IntrestChips = () => {
         throw new Error(data.error);
       }
       toast({
-        title: data.message,
+        title: data.message + ' it may take some time to reflect',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -95,6 +88,7 @@ const IntrestChips = () => {
         setIntrestArray([...intrestArray, newIntrest]);
         setNewIntrest('');
         setShowInput(false);
+        toogleAddingNewTags(false);
       }
     }
   };
@@ -120,6 +114,8 @@ const IntrestChips = () => {
             variant="solid"
             colorScheme="blue"
             onClick={() => setSelectedTag(intrest)}
+            gap={1.5}
+            bg={hashStringToColor(intrest)}
           >
             <TagLabel>{capitalizeFirstLetter(intrest)}</TagLabel>
             {
@@ -133,13 +129,16 @@ const IntrestChips = () => {
           </Tag>
         );
       })}
-      {intrestArray.length < 3 && (
+      {intrestArray.length < 4 && (
         <>
           <IconButton
             aria-label="add hobbies"
             colorScheme="blue"
             variant={'solid'}
-            onClick={() => setShowInput(!showInput)}
+            onClick={() => {
+              setShowInput(!showInput);
+              toogleAddingNewTags(!showInput);
+            }}
           >
             {showInput ? <CloseIcon /> : <MdAdd />}
           </IconButton>

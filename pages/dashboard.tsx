@@ -1,27 +1,43 @@
 import Clear from '@/components/clear';
 import ProfileSection from '@/app/(landing)/components/dashboard/profileSection';
-import { Stack, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
+import { Stack, useToast, VStack } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
 import NewSection from '@/app/(landing)/components/dashboard/newSection';
 import MainSection from '@/app/(landing)/components/dashboard/mainSection';
-import {Id, receiverIds, receiverSongs,setUser, Submit, user, Matched_Ids,} from '@/utils/UserData';
+import {
+  Id,
+  receiverIds,
+  receiverSongs,
+  setUser,
+  Submit,
+  user,
+  Matched_Ids,
+} from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/utils/API_Calls/login_api';
 import { useRouter } from 'next/router';
 import { SendHeart } from '@/utils/API_Calls/Send_Heart';
 import { get_result } from '@/utils/API_Calls/get_results';
+import { useTheme } from '../app/(landing)/components/layout/ThemeContext';
+import { CalculateSimilarUsers } from '@/utils/API_Calls/get_similarUser';
 
-const dashboard  = () => {
+const dashboard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
   const [clickedStudents, setClickedStudents] = useState<Student[]>([]);
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [resultPage, setResultPage] = useState(false);
   const [Matches, setMatches] = useState<Student[]>([]);
-  const [selectedSongIds, setSelectedSongIds] = useState<{ [key: string]: string | null }>({});
+  const [selectedSongIds, setSelectedSongIds] = useState<{
+    [key: string]: string | null;
+  }>({});
+  const [offset, setOffset] = useState(0);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [similarInterestIds, setSimilarInterestIds] = useState<string[]>([]);
   const router = useRouter();
   const toast = useToast();
+  const { bgImg } = useTheme();
 
   // Fetch user data
   useEffect(() => {
@@ -70,7 +86,6 @@ const dashboard  = () => {
     wait();
   }, [Id]);
 
-
   // once the data is fetched, select the students and songs from the receiverIds and receiverSongs
   useEffect(() => {
     const fetchAndSelectStudents = () => {
@@ -78,7 +93,7 @@ const dashboard  = () => {
       const updatedSongIds: { [key: string]: string | null } = {};
       for (let i = 0; i < 4; i++) {
         const id = receiverIds[i];
-         const songId = receiverSongs[i] || ''; 
+        const songId = receiverSongs[i] || '';
         updatedSongIds[id] = songId;
         if (id === '') {
           continue;
@@ -93,7 +108,10 @@ const dashboard  = () => {
         }
       }
       setClickedStudents([...clickedStudents, ...selected]);
-      setSelectedSongIds((prevSongIds) => ({...prevSongIds,...updatedSongIds,}));
+      setSelectedSongIds((prevSongIds) => ({
+        ...prevSongIds,
+        ...updatedSongIds,
+      }));
     };
     fetchAndSelectStudents();
   }, [newDatafetched]);
@@ -116,7 +134,7 @@ const dashboard  = () => {
       receiverIds[j] = '';
       selectedSongsData[receiverIds[j]] = null;
     }
-    const isValid = await SendHeart(Id, receiverIds,selectedSongsData, Submit);
+    const isValid = await SendHeart(Id, receiverIds, selectedSongsData, Submit);
     if (isValid && Submit) {
       toast({
         title: 'HEARTS SENT',
@@ -174,13 +192,44 @@ const dashboard  = () => {
     }
   }, [resultPage]);
 
+  const similarUsers = () => {
+    setStudents([]);
+    let result = similarInterestIds;
+    const limit = 5;
+    if (result.length === 0) {
+      console.log('Calculating similar users');
+      result = CalculateSimilarUsers(Id);
+      setSimilarInterestIds(result);
+    }
+    const ids = result.slice(offset, offset + limit);
+    const similarStudentList: Student[] = [];
+    for (let i = 0; i < ids.length; i++) {
+      const data = search_students(ids[i]);
+      if (data.length) {
+        similarStudentList.push(data[0]);
+      }
+    }
+    setOffset(offset + limit);
+    setStudents(similarStudentList);
+    if (ids.length == 0) {
+      toast({
+        title: 'No more similar users found',
+        status: 'info',
+        duration: 1000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
+
   return (
     <VStack
       className={styles.box}
-      backgroundImage={useColorModeValue(
-        'url(/bg2.png)', // Light theme image
-        'url(/bgdark.jpg)' // Dark theme image
-      )}
+      // backgroundImage={useColorModeValue(
+      //   'url(/bg2.png)', // Light theme image
+      //   'url(/bgdark.jpg)' // Dark theme image
+      // )}
+      backgroundImage={bgImg}
       backgroundSize={{ base: 'none', md: 'cover' }}
     >
       <Clear />
@@ -192,6 +241,7 @@ const dashboard  = () => {
           user={user}
           submit={submit}
           submitted={hearts_submitted}
+          fetchSimilarUsers={similarUsers}
         />
         <MainSection
           clickedStudents={clickedStudents}
@@ -203,6 +253,8 @@ const dashboard  = () => {
           matches={Matches}
           selectedSongIds={selectedSongIds}
           setSelectedSongIds={setSelectedSongIds}
+          students={students}
+          setStudents={setStudents}
         />
         <NewSection />
       </Stack>
