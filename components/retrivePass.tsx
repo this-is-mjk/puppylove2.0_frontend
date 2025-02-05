@@ -119,7 +119,15 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent
+          maxHeight="80vh"
+          overflowY="auto"
+          borderRadius="10px"
+          bg="rgba(0, 0, 0, 0.45)"
+          boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+          backdropFilter="blur(15.5px)"
+          border="1px solid rgba(255, 255, 255, 0.18)"
+        >
           <ModalHeader>Retrive Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody style={{ color: 'black' }}>

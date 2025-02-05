@@ -6,7 +6,7 @@ import { BsSearch } from 'react-icons/bs';
 import { Id, Submit } from '@/utils/UserData';
 import Card from '@/components/card';
 import LockAndHeart from './lockAndHeart';
-import { fetchAllUserInfo } from '@/utils/API_Calls/login_api';
+import { fetchAllUserInfo, getWithExpiry } from '@/utils/API_Calls/login_api';
 import MatchedCard from '@/components/matched_card';
 
 const SERVER_IP = process.env.SERVER_IP;
@@ -21,6 +21,8 @@ interface mainSection {
   matches: Student[];
   selectedSongIds: { [key: string]: string | null };
   setSelectedSongIds: Function;
+  students: Student[];
+  setStudents: Function;
 }
 
 const MainSection: React.FC<mainSection> = ({
@@ -33,9 +35,10 @@ const MainSection: React.FC<mainSection> = ({
   matches,
   selectedSongIds,
   setSelectedSongIds,
+  students,
+  setStudents,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [students, setStudents] = useState<Student[]>([]);
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allAbout, setAllAbout] = useState<any>();
@@ -45,11 +48,11 @@ const MainSection: React.FC<mainSection> = ({
 
   useEffect(() => {
     // if local strage already exits
-    const localAbout = localStorage.getItem('about');
-    const localInterests = localStorage.getItem('interests');
+    const localAbout = getWithExpiry('about');
+    const localInterests = getWithExpiry('interests');
     if (localAbout && localInterests) {
-      setAllAbout(JSON.parse(localAbout));
-      setAllInterests(JSON.parse(localInterests));
+      setAllAbout(localAbout);
+      setAllInterests(localInterests);
       return;
     }
     // else fetch all user info
@@ -129,7 +132,7 @@ const MainSection: React.FC<mainSection> = ({
     };
 
     if (clickedStudents.length >= 0) updateVirtualHeart();
-  }, [clickedStudents,selectedSongIds]);
+  }, [clickedStudents, selectedSongIds]);
 
   // Fetch all active users
   useEffect(() => {
@@ -173,9 +176,9 @@ const MainSection: React.FC<mainSection> = ({
       <LockAndHeart
         hearts_submitted={Submit}
         clickedStudents={clickedStudents}
-        setClickedStudents={setClickedStudents} 
-        selectedSongIds={selectedSongIds}   
-        setSelectedSongIds={setSelectedSongIds}     
+        setClickedStudents={setClickedStudents}
+        selectedSongIds={selectedSongIds}
+        setSelectedSongIds={setSelectedSongIds}
       />
       {isResultPage ? (
         <Box className={styles.bottomMiddleSection}>

@@ -1,6 +1,6 @@
-import { Stack, VStack, Box, useToast, Button} from '@chakra-ui/react';
+import { Stack, VStack, Box, useToast, Button } from '@chakra-ui/react';
 import styles from '@/styles/dashboard.module.css';
-import { FaHeart, FaRandom, FaSpotify } from 'react-icons/fa';
+import { FaHeart, FaRandom } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -28,6 +28,7 @@ interface profile {
   user: Student;
   submit: Function;
   submitted: boolean;
+  fetchSimilarUsers: Function;
 }
 
 function EditableControls() {
@@ -49,7 +50,12 @@ function EditableControls() {
     </ButtonGroup>
   ) : null;
 }
-const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
+const ProfileSection: React.FC<profile> = ({
+  user,
+  submit,
+  submitted,
+  fetchSimilarUsers,
+}) => {
   const router = useRouter();
   const toast = useToast();
   const [userAbout, setUserAbout] = useState('');
@@ -122,9 +128,10 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
 
   const updateAbout = async (about: string) => {
     try {
-      if (about === '') {
+      if (about === '' || about === 'Tell us more about you!!') {
         about = 'Tell us more about you!!';
         setUserAbout(about);
+        return;
       }
       const res = await fetch(`${SERVER_IP}/users/about`, {
         method: 'POST',
@@ -142,7 +149,7 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
         throw new Error('Some error occured, Try again later.');
       }
       toast({
-        title: data.message,
+        title: data.message + ' it may take some time to reflect',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -211,7 +218,7 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
                   textAlign={'right'}
                   as={EditableInput}
                 />
-               
+
                 <EditableControls />
               </div>
             </Editable>
@@ -229,16 +236,15 @@ const ProfileSection: React.FC<profile> = ({ user, submit, submitted }) => {
         className="action-section"
         justifyContent={{ base: 'right', md: 'center' }}
       >
-
         <ActionButton
           text={submitted ? 'Submitted' : 'Submit Hearts'}
           icon={<FaHeart />}
           onClick={submitted ? () => {} : handleToast}
         />
         <ActionButton
-          text={'Random Search'}
+          text={'Find Similar Users'}
           icon={<FaRandom />}
-          onClick={() => {}}
+          onClick={() => fetchSimilarUsers()}
         />
         <SetRecoveryToast />
         <ActionButton text={'LogOut'} icon={<BiLogOut />} onClick={Logout} />
