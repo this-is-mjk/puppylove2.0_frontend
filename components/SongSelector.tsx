@@ -78,7 +78,7 @@ const SongSelector: React.FC<SongSelectorProps> = ({ onConfirm }) => {
     onConfirm(selectedSong ? selectedSong.videoId : null);
     setSearchQuery('');
     setSongs([]);
-    console.log(selectedSong?.videoId)
+    //console.log(selectedSong?.videoId)
   };
 
   const handleRemove = () => {

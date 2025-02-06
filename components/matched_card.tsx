@@ -1,8 +1,9 @@
 import React from 'react';
 import '../styles/card.css';
 import { Box, VStack, Text, useColorMode } from '@chakra-ui/react';
+import YoutubeAudioPlayer from './YoutubeAudioPlayer';
 
-const MatchedCard = ({ student, about, interestes = [] }: any) => {
+const MatchedCard = ({ student, about,song, interestes = [] }: any) => {
   const userName = student.u;
   const roll = student.i;
   const { colorMode } = useColorMode();
@@ -12,6 +13,8 @@ const MatchedCard = ({ student, about, interestes = [] }: any) => {
   };
 
   return (
+    <VStack spacing={3} align="stretch" width="100%">
+
     <Box
       display="flex"
       flexDirection="row"
@@ -23,7 +26,7 @@ const MatchedCard = ({ student, about, interestes = [] }: any) => {
       bg={'#12121260'}
       color={'#f2f2f2'}
       border="2px solid"
-      borderColor={'#FFD700'}
+     
     >
       <Box borderRadius="md" style={stylesss} className="profile" />
       <VStack align="start" spacing={2} ml={4} flex="1">
@@ -35,6 +38,13 @@ const MatchedCard = ({ student, about, interestes = [] }: any) => {
         </Text>
       </VStack>
     </Box>
+
+    {song && song !== "No song" ? (
+      <YoutubeAudioPlayer youtubeUrl={`https://www.youtube.com/watch?v=${song}`} />
+    ) : (
+      <Text fontSize="sm" color="gray.400" >No song sent by this user</Text>
+    )}
+  </VStack>
   );
 };
 

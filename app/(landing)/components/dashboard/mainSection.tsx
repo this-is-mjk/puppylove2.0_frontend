@@ -19,6 +19,7 @@ interface mainSection {
   SendHeart_api: Function;
   isResultPage: boolean;
   matches: Student[];
+  songs:string[];
   selectedSongIds: { [key: string]: string | null };
   setSelectedSongIds: Function;
   students: Student[];
@@ -33,6 +34,7 @@ const MainSection: React.FC<mainSection> = ({
   SendHeart_api,
   isResultPage,
   matches,
+  songs,
   selectedSongIds,
   setSelectedSongIds,
   students,
@@ -202,14 +204,15 @@ const MainSection: React.FC<mainSection> = ({
                 className={styles.studentContainer}
                 style={{ width: '100%', height: '100%' }}
               >
-                {matches.map((student: any) => (
-                  <MatchedCard
-                    key={student.i}
-                    student={student}
-                    about={allAbout[student.i] || ''}
-                    interestes={allInterests[student.i]?.split(',')}
-                  />
-                ))}
+               {matches.map((student: any, index: number) => (
+               <MatchedCard
+                key={student.i}
+                student={student}
+                about={allAbout[student.i] || ''}
+                interestes={allInterests[student.i]?.split(',')}
+                song={songs[index] || 'No song'} 
+                />
+              ))}
               </div>
             </div>
           ) : (

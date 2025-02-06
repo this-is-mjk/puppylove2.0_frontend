@@ -1,8 +1,8 @@
 import { Decryption } from '../Encryption';
-import { setAdminPublished, setMatchedIds, PrivK } from '../UserData';
+import { setAdminPublished, setMatchedIds, PrivK,setMatchedSongs } from '../UserData';
 
 let matchedId: string[] = [];
-
+let matchedSong: string[]=[];
 const SERVER_IP = process.env.SERVER_IP;
 // GET request for IDs with whom user got matched and storing in Matched_Ids array
 export const get_result = async () => {
@@ -22,10 +22,23 @@ export const get_result = async () => {
       // matchedId = res_json.matches as string[];
       setMatchedIds(matchedId);
 
-      const songs: string[] = Object.values(res_json.matches);
-      console.log('Songs:', songs);
-      let x = await Decryption(songs[0], PrivK);
-      console.log(x);
+      matchedSong = Object.values(res_json.matches);
+    
+      const decryptedSongs = await Promise.all(
+        matchedSong.map(async (song) => {
+          if (!song) return ''; 
+          let decrypted = await Decryption(song, PrivK);
+          console.log(decrypted)
+          if (decrypted === 'Fail') {
+            console.error(`Decryption failed for song: ${song}`);
+            return ''; // Return empty string if decryption fails
+          }
+          return decrypted;
+        })
+      );
+      
+     console.log(decryptedSongs)
+      setMatchedSongs(decryptedSongs);
       // console.log(Decryption(songs[0], PrivK));
     }
   } catch (err) {

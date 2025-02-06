@@ -12,6 +12,7 @@ export let Submit = false;
 export let receiverIds: string[] = [];
 export let receiverSongs: string[] = [];
 export let Matched_Ids: string[] = [];
+export let Matched_Songs: string[] = [];
 export let Matches: Student[] = [];
 export let admin_pulished: boolean = false;
 export let user: Student = {} as Student;
@@ -56,6 +57,9 @@ export const setAdminPublished = (publish: boolean) => {
 
 export const setMatchedIds = (newIds: string[]) => {
   Matched_Ids = newIds;
+};
+export const setMatchedSongs = (newIds: string[]) => {
+  Matched_Songs = newIds;
 };
 
 export function Set_Id(id: string) {

@@ -27,7 +27,7 @@ const LockAndHeart: React.FC<LockAndHeartProps> = ({
 
   const handleUnselectStudent = async (studentRoll: string) => {
     const updatedStudents = clickedStudents.filter((s) => s.i !== studentRoll);
-    console.log('updatedStudents:', updatedStudents);
+   // console.log('updatedStudents:', updatedStudents);
     setClickedStudents(updatedStudents);
   };
 
