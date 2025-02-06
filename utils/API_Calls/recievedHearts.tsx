@@ -50,7 +50,11 @@ export const fetchAndDecodeHearts = async () => {
             genderOfSender: gender,
           });
           if (Submit === true) {
-            Claims_Late.push({ enc: encoded_sha, sha: decrypted_sha });
+            Claims_Late.push({
+              enc: encoded_sha,
+              sha: decrypted_sha,
+              genderOfSender: gender,
+            });
           }
         }
       })

@@ -5,11 +5,14 @@ import {
   ReturnHearts_Late,
   Claims_Late,
   receiverIds,
+  receiverSongs,
 } from '../UserData';
 import { get_pubKey } from './Send_Heart';
 const SERVER_IP = process.env.SERVER_IP;
 
-export const returnHearts = async () => {
+export const returnHearts = async (selectedSongs: {
+  [key: string]: string | null;
+}) => {
   // console.log(Claims)
   for (let i = 0; i < Claims.length; i++) {
     const sha = Claims[i].sha;
@@ -17,9 +20,15 @@ export const returnHearts = async () => {
       if (receiverIds[j] === '') {
         continue;
       }
+      let song = selectedSongs[receiverIds[j]];
       const pubKey = await get_pubKey(receiverIds[j]);
+      if (song) {
+        song = await Encryption(song, pubKey);
+      } else {
+        song = '';
+      }
       const enc = await Encryption(sha, pubKey);
-      ReturnHearts.push({ enc: enc, sha: sha });
+      ReturnHearts.push({ enc: enc, sha: sha, songID_enc: song });
     }
   }
 };
@@ -36,8 +45,14 @@ export const returnHearts_Late = async () => {
         continue;
       }
       const pubKey = await get_pubKey(receiverIds[j]);
+      let song = receiverSongs[j];
+      if (song != '') {
+        song = await Encryption(song, pubKey);
+      } else {
+        song = '';
+      }
       const enc = await Encryption(sha, pubKey);
-      ReturnHearts_Late.push({ enc: enc, sha: sha });
+      ReturnHearts_Late.push({ enc: enc, sha: sha, songID_enc: song });
     }
   }
   const res = await fetch(`${SERVER_IP}/special/returnclaimedheartlate`, {

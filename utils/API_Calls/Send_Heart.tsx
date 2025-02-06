@@ -1,9 +1,14 @@
-import { SHA256, Encryption, Encryption_AES, generateRandomString } from '../Encryption';
+import {
+  SHA256,
+  Encryption,
+  Encryption_AES,
+  generateRandomString,
+} from '../Encryption';
 import { PubK, Gender, ReturnHearts, Set_Submit, PrivK } from '../UserData';
 import { returnHearts } from './returnHearts';
 const SERVER_IP = process.env.SERVER_IP;
 
-let PublicKeys: Record<string,string> = {};
+let PublicKeys: Record<string, string> = {};
 let isPubliKAvail = false;
 
 async function fetchPubKeys() {
@@ -22,8 +27,8 @@ export const SendHeart = async (
   senderId: string,
   receiverIds: string[],
   selectedSongs: { [key: string]: string | null },
- 
-  Submit: boolean,
+
+  Submit: boolean
 ) => {
   try {
     if (!isPubliKAvail) {
@@ -54,7 +59,7 @@ export const SendHeart = async (
       // need to imporove this code, only id_plain is different
       if (R1 < R2) {
         const id_plain: string = R1.toString() + '-' + R2.toString() + '-' + R3;
-        id_encrypt = await Encryption(id_plain, PubK); 
+        id_encrypt = await Encryption(id_plain, PubK);
         const sha_: string = await SHA256(id_plain);
         sha.push(sha_);
         const sha_encrypt_: string = await Encryption_AES(sha_, PrivK);
@@ -72,17 +77,16 @@ export const SendHeart = async (
         enc.push(enc_);
       }
       ids_encrypt.push(id_encrypt);
-     // Encrypt song ID
-     const songId = selectedSongs[id] || '';
-     if (songId) {
-       const song_plain: string = `${R1}-${R2}-${songId}-${R3}`;
-       
-       const song_enc: string = await Encryption(song_plain, PubK);
-       song_encrypt.push(song_enc);
-     } else {
-       song_encrypt.push(''); 
-     }
-     
+      // Encrypt song ID
+      const songId = selectedSongs[id] || '';
+      if (songId) {
+        const song_plain: string = `${R1}-${R2}-${songId}-${R3}`;
+
+        const song_enc: string = await Encryption(song_plain, PubK);
+        song_encrypt.push(song_enc);
+      } else {
+        song_encrypt.push('');
+      }
     }
     const res = await fetch(`${SERVER_IP}/users/sendheartVirtual`, {
       method: 'POST',
@@ -92,22 +96,22 @@ export const SendHeart = async (
           heart1: {
             sha_encrypt: sha_encrypt[0],
             id_encrypt: ids_encrypt[0],
-            song_id: song_encrypt[0],
+            songID_enc: song_encrypt[0],
           },
           heart2: {
             sha_encrypt: sha_encrypt[1],
             id_encrypt: ids_encrypt[1],
-            song_id: song_encrypt[1],
+            songID_enc: song_encrypt[1],
           },
           heart3: {
             sha_encrypt: sha_encrypt[2],
             id_encrypt: ids_encrypt[2],
-            song_id: song_encrypt[2],
+            songID_enc: song_encrypt[2],
           },
           heart4: {
             sha_encrypt: sha_encrypt[3],
             id_encrypt: ids_encrypt[3],
-            song_id: song_encrypt[3],
+            songID_enc: song_encrypt[3],
           },
         },
       }),
@@ -117,7 +121,7 @@ export const SendHeart = async (
     }
     if (Submit) {
       Set_Submit(Submit);
-      await returnHearts();
+      await returnHearts(selectedSongs);
       const res = await fetch(`${SERVER_IP}/users/sendheart`, {
         method: 'POST',
         credentials: 'include', // For CORS
@@ -125,12 +129,16 @@ export const SendHeart = async (
           genderofsender: Gender,
           enc1: enc[0],
           sha1: sha[0],
+          song1_enc: song_encrypt[0],
           enc2: enc[1],
           sha2: sha[1],
+          song2_enc: song_encrypt[1],
           enc3: enc[2],
           sha3: sha[2],
+          song3_enc: song_encrypt[2],
           enc4: enc[3],
           sha4: sha[3],
+          song4_enc: song_encrypt[3],
           returnhearts: ReturnHearts,
         }),
       });
@@ -147,7 +155,7 @@ export const SendHeart = async (
 
 export function get_pubKey(id: string) {
   if (PublicKeys[id]) {
-      return PublicKeys[id];
+    return PublicKeys[id];
   }
-  throw new Error("Public Key Not Found");
+  throw new Error('Public Key Not Found');
 }

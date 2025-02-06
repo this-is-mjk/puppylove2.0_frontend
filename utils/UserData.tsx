@@ -1,5 +1,5 @@
 import { Student } from './API_Calls/search';
-import { Decryption} from './Encryption';
+import { Decryption } from './Encryption';
 
 export let Id = '';
 export let Gender = '';
@@ -82,8 +82,7 @@ export function Set_Submit(submit: boolean) {
 export interface Heart {
   sha_encrypt: string;
   id_encrypt: string;
-  song_id:string;
-  
+  songID_enc: string;
 }
 
 export interface Hearts {
@@ -113,7 +112,7 @@ export async function Set_Data(data: string) {
 
   for (const key in Sent_Hearts) {
     idEncrypts.push(Sent_Hearts[key as keyof Hearts].id_encrypt);
-    songEncrypts.push(Sent_Hearts[key as keyof Hearts].song_id);
+    songEncrypts.push(Sent_Hearts[key as keyof Hearts].songID_enc);
   }
 
   for (let i = 0; i < 4; i++) {
@@ -138,17 +137,17 @@ export async function Set_Data(data: string) {
     }
 
     // Decrypt the song IDs
-  
-    const song_enc = songEncrypts[i]; 
+
+    const song_enc = songEncrypts[i];
     if (song_enc) {
-      const song_plain: string = await Decryption(song_enc, PrivK); 
-   
+      const song_plain: string = await Decryption(song_enc, PrivK);
+
       if (song_plain === 'Fail') {
         receiverSongs[i] = '';
       } else {
-        const parts = song_plain.split('-'); 
+        const parts = song_plain.split('-');
         receiverSongs[i] = parts[2];
-        console.log(receiverSongs[i]) 
+        console.log(receiverSongs[i]);
       }
     }
   }
@@ -176,13 +175,14 @@ interface heart {
 interface ReturnHeart {
   enc: string;
   sha: string;
+  songID_enc: string;
 }
 
 export let ReturnHearts: ReturnHeart[] = [];
 export let ReturnHearts_Late: ReturnHeart[] = [];
 
 export let Claims: heart[] = [];
-export let Claims_Late: ReturnHeart[] = [];
+export let Claims_Late: heart[] = [];
 
 export async function Set_Claims(claims: string) {
   // Initializing Every State Varibale to 0 incase user logins again immediately after logout
