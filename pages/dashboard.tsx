@@ -12,6 +12,7 @@ import {
   Submit,
   user,
   Matched_Ids,
+  Matched_Songs
 } from '@/utils/UserData';
 import { Student, search_students } from '@/utils/API_Calls/search';
 import { useEffect, useState } from 'react';
@@ -22,6 +23,7 @@ import { get_result } from '@/utils/API_Calls/get_results';
 import { useTheme } from '../app/(landing)/components/layout/ThemeContext';
 import { CalculateSimilarUsers } from '@/utils/API_Calls/get_similarUser';
 
+
 const dashboard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newDatafetched, setNewDataFetched] = useState(false);
@@ -29,6 +31,7 @@ const dashboard = () => {
   const [hearts_submitted, set_hearts_submitted] = useState(Submit);
   const [resultPage, setResultPage] = useState(false);
   const [Matches, setMatches] = useState<Student[]>([]);
+  const [Songs, setSongs] = useState<string[]>([]);
   const [selectedSongIds, setSelectedSongIds] = useState<{
     [key: string]: string | null;
   }>({});
@@ -184,6 +187,8 @@ const dashboard = () => {
 
         if (!Matches.includes(student)) {
           setMatches((prev) => [...prev, student]);
+          setSongs((prev) => [...prev, Matched_Songs[j] && Matched_Songs[j].trim() !== '' ? Matched_Songs[j] : "No song"]);
+          console.log(Songs)
         }
       }
     };
@@ -251,6 +256,7 @@ const dashboard = () => {
           SendHeart_api={SendHeart_api}
           isResultPage={resultPage}
           matches={Matches}
+          songs={Songs}
           selectedSongIds={selectedSongIds}
           setSelectedSongIds={setSelectedSongIds}
           students={students}
