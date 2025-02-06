@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/react';
 import { IoEye } from 'react-icons/io5';
 import ReCAPTCHA from 'react-google-recaptcha';
-import RetrivePassButton from '@/components/retrivePass';
+import RetrievePassButton from '@/components/retrievePass';
 
 const LoginPage: React.FC = () => {
   const [data, setData] = useState({ id: '', password: '' });
@@ -118,7 +118,7 @@ const LoginPage: React.FC = () => {
               />
               <IoEye size={18} onClick={handleEye} />
             </motion.div>
-            <RetrivePassButton id={data.id} />
+            <RetrievePassButton id={data.id} />
 
             <div
               style={{

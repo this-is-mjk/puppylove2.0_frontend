@@ -20,11 +20,11 @@ import { getRecoveryCode } from '@/utils/recoverCode';
 import { Decryption_AES } from '@/utils/Encryption';
 import { FaRegCopy } from 'react-icons/fa';
 
-interface RetrivePassButtonProps {
+interface RetrievePassButtonProps {
   id: string; // Expecting a string
 }
 
-const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
+const RetrievePassButton: React.FC<RetrievePassButtonProps> = ({ id }) => {
   const [rCode, setRCode] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false); // Show/hide password toggle
@@ -59,7 +59,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
     onClose();
   };
 
-  const retrivePass = async () => {
+  const retrievePass = async () => {
     if (rCode === '') {
       toast({
         title: 'Please fill the Recovery Code',
@@ -85,7 +85,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
       }
       setPassword(password);
       toast({
-        title: 'Password Retrived Successfully',
+        title: 'Password Retrieved Successfully',
         status: 'success',
         duration: 1000,
         position: 'top-right',
@@ -115,7 +115,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
           marginTop: '-0.5rem',
         }}
       >
-        <button onClick={openModel}>Retrive Password</button>
+        <button onClick={openModel}>Retrieve Password</button>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -128,7 +128,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
           backdropFilter="blur(15.5px)"
           border="1px solid rgba(255, 255, 255, 0.18)"
         >
-          <ModalHeader>Retrive Password</ModalHeader>
+          <ModalHeader>Retrieve Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody style={{ color: 'black' }}>
             {/* <p style={{ fontWeight: 'bold', color: 'white' }}>
@@ -172,7 +172,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
             <div style={{ marginTop: '20px auto', color: 'white' }}>
               <h1 style={{ fontWeight: 'bold' }}>Important information</h1>
               <ul>
-                <li>Please Copy Your password Once Retrived.</li>
+                <li>Please Copy Your password Once Retrieved.</li>
                 <li>We recomment you to regenerate your recovery code after</li>
               </ul>
             </div>
@@ -182,7 +182,7 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
               colorScheme="pink"
               ml={2}
               onClick={() => {
-                retrivePass();
+                retrievePass();
               }}
             >
               Proceed
@@ -194,4 +194,4 @@ const RetrivePassButton: React.FC<RetrivePassButtonProps> = ({ id }) => {
   );
 };
 
-export default RetrivePassButton;
+export default RetrievePassButton;

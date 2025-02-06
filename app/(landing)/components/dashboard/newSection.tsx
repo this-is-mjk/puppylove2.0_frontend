@@ -89,22 +89,22 @@ const NewSection = () => {
                   {category}
                 </h3>
                 <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
-                  {groupedTags[category].map((intrest) => (
+                  {groupedTags[category].map((interest) => (
                     <Tag
                       size={'sm'}
-                      key={intrest}
+                      key={interest}
                       variant="solid"
                       colorScheme="blue"
                       padding={1.5}
                       gap={2.5}
-                      bg={hashStringToColor(intrest)}
+                      bg={hashStringToColor(interest)}
                     >
                       <TagLabel style={{ fontSize: '0.9rem' }}>
-                        {capitalizeFirstLetter(intrest)}
+                        {capitalizeFirstLetter(interest)}
                       </TagLabel>
                       <TagLeftIcon
                         as={() =>
-                          iconDict[intrest.toLowerCase()] || <IoHeartCircle />
+                          iconDict[interest.toLowerCase()] || <IoHeartCircle />
                         }
                       />
                     </Tag>
